@@ -26,7 +26,7 @@ const Hero = () => {
             className="w-32 h-32 mx-auto mb-8"
           >
             <img 
-              src="/img1.png" 
+              src="./img1.png" 
               alt="Minner's Avatar" 
               className="w-full h-full rounded-full object-cover shadow-xl mt-1"
             />
