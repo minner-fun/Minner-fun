@@ -100,7 +100,7 @@ const Hero = () => {
             className="flex justify-center space-x-6 mt-8"
           >
             <a
-              href="https://github.com"
+              href="https://github.com/minner-fun"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-primary-600 transition-colors duration-200"
@@ -116,7 +116,7 @@ const Hero = () => {
               <Linkedin size={24} />
             </a>
             <a
-              href="mailto:your.email@example.com"
+              href="xiaoqideguge@gmail.com"
               className="text-gray-600 hover:text-primary-600 transition-colors duration-200"
             >
               <Mail size={24} />

@@ -6,22 +6,22 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: <Github className="w-5 h-5" />,
-      href: "https://github.com",
+      href: "https://github.com/minner-fun",
       label: "GitHub"
     },
     {
       icon: <Linkedin className="w-5 h-5" />,
-      href: "https://linkedin.com",
+      href: "https://www.linkedin.com/in/fumin-qi-bbaa862bb/",
       label: "LinkedIn"
     },
     {
       icon: <Mail className="w-5 h-5" />,
-      href: "mailto:minner@example.com",
+      href: "xiaoqideguge@gmail.com",
       label: "Email"
     },
     {
       icon: <X className="w-5 h-5" />,
-      href: "https://x.com",
+      href: "https://x.com/Minner_Qi",
       label: "X"
     }
   ]
