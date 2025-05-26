@@ -25,9 +25,11 @@ const Hero = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="w-32 h-32 mx-auto mb-8"
           >
-            <div className="w-full h-full rounded-full bg-gradient-to-r from-primary-500 to-purple-500 flex items-center justify-center text-white text-4xl font-bold shadow-xl">
-              M
-            </div>
+            <img 
+              src="/img1.png" 
+              alt="Minner's Avatar" 
+              className="w-full h-full rounded-full object-cover shadow-xl mt-1"
+            />
           </motion.div>
 
           {/* Main heading */}
