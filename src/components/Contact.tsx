@@ -61,7 +61,7 @@ const Contact = () => {
     {
       icon: <Github className="w-5 h-5" />,
       name: "GitHub",
-      url: "https://github.com",
+      url: "https://github.com/minner-fun",
       color: "hover:text-gray-900"
     },
     {

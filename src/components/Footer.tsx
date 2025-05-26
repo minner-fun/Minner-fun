@@ -1,4 +1,4 @@
-import { Heart, Github, Linkedin, Mail } from 'lucide-react'
+import { Heart, Github, Linkedin, Mail, X } from 'lucide-react'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -18,6 +18,11 @@ const Footer = () => {
       icon: <Mail className="w-5 h-5" />,
       href: "mailto:minner@example.com",
       label: "Email"
+    },
+    {
+      icon: <X className="w-5 h-5" />,
+      href: "https://x.com",
+      label: "X"
     }
   ]
 
