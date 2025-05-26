@@ -62,6 +62,16 @@ const Projects = () => {
       githubUrl: "https://github.com",
       liveUrl: "https://minner.fun",
       featured: false
+    },
+    {
+      id: 7,
+      title: "Web3 Website",
+      description: "This very portfolio website built with modern technologies and optimized for performance and SEO.",
+      image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=500&h=300&fit=crop",
+      technologies: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+      githubUrl: "https://github.com",
+      liveUrl: "https://minner.fun",
+      featured: false
     }
   ]
 
