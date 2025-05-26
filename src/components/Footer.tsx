@@ -1,4 +1,5 @@
 import { Heart, Github, Linkedin, Mail, X } from 'lucide-react'
+import { Send as Telegram } from 'lucide-react'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -23,6 +24,11 @@ const Footer = () => {
       icon: <X className="w-5 h-5" />,
       href: "https://x.com/Minner_Qi",
       label: "X"
+    },
+    {
+      icon: <Telegram className="w-5 h-5" />,
+      href: "https://t.me/Minner_Qi",
+      label: "Telegram"
     }
   ]
 
