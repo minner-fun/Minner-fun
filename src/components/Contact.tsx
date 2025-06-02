@@ -40,7 +40,7 @@ const Contact = () => {
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email",
-      value: "minner@example.com",
+      value: "qifumin2017@163.com",
       link: "mailto:minner@example.com"
     },
     {
@@ -52,7 +52,7 @@ const Contact = () => {
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Location",
-      value: "Beijing, China",
+      value: "Shanghai, China",
       link: "#"
     }
   ]
