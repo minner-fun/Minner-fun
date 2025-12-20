@@ -30,10 +30,88 @@
   flex-wrap: wrap;
 }
 
-.buttons .button {
-  min-width: 150px;
-}
-
 .githubLink {
   margin-top: 2rem;
+}
+
+.cardsSection {
+  padding: 0 0 4rem;
+}
+
+.cardsHeader {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.cardsSub {
+  color: var(--ifm-color-secondary);
+  margin: 0.25rem 0 0;
+}
+
+.cardsGrid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-card-background-color);
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.25);
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 14px 36px -16px rgba(0, 0, 0, 0.3);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.35rem;
+}
+
+.cardIcon {
+  font-size: 1.4rem;
+}
+
+.cardTitle {
+  margin: 0;
+}
+
+.cardDescription {
+  margin: 0.25rem 0 0.75rem;
+  color: var(--ifm-color-secondary);
+}
+
+.cardMeta {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  display: grid;
+  gap: 0.2rem;
+}
+
+.cardMetaLabel {
+  font-size: 0.85rem;
+  color: var(--ifm-color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.cardMetaTitle {
+  font-weight: 600;
+}
+
+.cardMetaDate {
+  font-size: 0.9rem;
+  color: var(--ifm-color-secondary);
 }
