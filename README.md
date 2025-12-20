@@ -1,124 +1,135 @@
-# Minner Documentation Site
+# Hi there, I'm Minner 👋
 
-> Smart Contract Notes · Protocol Research · Builder Log
-
-一个基于 Docusaurus 构建的现代化技术文档站点，支持中英文双语切换。
-
-## 📁 项目结构
-
-```
-Minner-fun/
-├── minner-fun-docs/          # Docusaurus 文档站项目
-├── vercel.json                # Vercel 部署配置
-├── DEPLOYMENT.md              # 详细部署指南
-├── PROJECT_SUMMARY.md         # 项目概览
-└── 改造文档.md                # 原始需求文档
-```
-
-## 🚀 快速开始
-
-```bash
-cd minner-fun-docs
-npm install
-npm start
-```
-
-访问 http://localhost:3000 查看站点
-
-## 📚 功能特性
-
-- ✅ **中英文双语** - 完整的国际化支持
-- ✅ **三大栏目** - Notes（笔记）/ Protocols（协议）/ Projects（项目）
-- ✅ **示例文档** - Foundry、Uniswap V2、Fuzzing 等
-- ✅ **自动侧边栏** - 基于目录结构自动生成
-- ✅ **简洁首页** - 技术名片风格
-
-## 📖 文档内容
-
-### 📝 Notes - 笔记
-- Foundry 介绍和使用指南
-- Cheatcodes 详细说明
-
-### 🔬 Protocols - 协议
-- Uniswap V2 架构分析和实现细节
-
-### 🚀 Projects - 项目
-- 智能合约模糊测试模板
-- 开发工具和最佳实践
-
-## 🌐 语言切换
-
-- **英文版**: `/`
-- **中文版**: `/zh-Hans/`
-
-导航栏右上角有语言切换按钮
-
-## 🚢 部署到 Vercel
-
-### 方法一：GitHub + Vercel（推荐）
-
-1. 推送代码到 GitHub
-2. 在 Vercel 导入仓库
-3. 自动检测配置（已包含 vercel.json）
-4. 一键部署
-
-### 方法二：Vercel CLI
-
-```bash
-npm i -g vercel
-vercel
-```
-
-详细步骤请查看 [DEPLOYMENT.md](./DEPLOYMENT.md)
-
-## 📝 添加新文档
-
-### 英文文档
-在 `minner-fun-docs/docs/` 对应目录创建 `.md` 文件
-
-### 中文翻译
-在 `minner-fun-docs/i18n/zh-Hans/docusaurus-plugin-content-docs/current/` 对应路径创建同名文件
-
-侧边栏会自动更新！
-
-## 🛠️ 技术栈
-
-- **框架**: Docusaurus 3
-- **语言**: TypeScript
-- **样式**: CSS Modules
-- **部署**: Vercel
-
-## 📚 文档参考
-
-- [项目概览](./PROJECT_SUMMARY.md) - 快速了解项目
-- [部署指南](./DEPLOYMENT.md) - 详细部署步骤
-- [Docusaurus 文档](https://docusaurus.io) - 官方文档
-
-## 🔗 相关链接
-
-- **GitHub**: https://github.com/minner-fun
-- **Docusaurus**: https://docusaurus.io
-- **Vercel**: https://vercel.com
-
-## ⚙️ 构建命令
-
-```bash
-# 开发
-cd minner-fun-docs && npm start
-
-# 构建
-cd minner-fun-docs && npm run build
-
-# 预览构建结果
-cd minner-fun-docs && npm run serve
-```
-
-## 📞 支持
-
-有问题或建议？欢迎提 Issue！
+[English](#english) | [中文](#中文)
 
 ---
 
-**注意**: 主项目位于 `minner-fun-docs/` 目录下。所有开发和构建命令都需要在该目录下执行。
+## English
 
-Copyright © 2025 Minner. Built with ❤️ and Docusaurus.
+### 👨‍💻 About Me
+
+I'm a **Smart Contract Developer** and **Blockchain Researcher** focusing on:
+
+- 🔐 **Smart Contract Security** - Auditing and fuzzing
+- 🏗️ **DeFi Protocols** - Deep dive into AMM, lending, and derivatives
+- 🛠️ **Developer Tools** - Building with Foundry, Hardhat, and testing frameworks
+- 📝 **Technical Writing** - Documenting protocols and sharing knowledge
+
+### 🌐 My Documentation Site
+
+📚 **[Minner Documentation](https://minner-fun.vercel.app)** - Technical notes on smart contracts, protocols, and projects
+
+- **Notes**: Development guides, Foundry tutorials, testing patterns
+- **Protocols**: In-depth analysis of Uniswap, Aave, and more
+- **Projects**: Templates and best practices for smart contract development
+
+🌍 Available in **English** and **简体中文** (Chinese)
+
+### 🔧 Tech Stack
+
+```text
+Languages:     Solidity, TypeScript, JavaScript, Rust
+Frameworks:    Foundry, Hardhat, Ethers.js, Web3.js
+Tools:         Slither, Echidna, Mythril, Git
+Platforms:     Ethereum, Arbitrum, Optimism, Base
+```
+
+### 📊 GitHub Stats
+
+![Minner's GitHub stats](https://github-readme-stats.vercel.app/api?username=Minner-fun&show_icons=true&theme=dark)
+
+### 🚀 Featured Projects
+
+#### 📖 [Minner Documentation](https://github.com/Minner-fun/Minner-fun)
+A comprehensive technical documentation site covering smart contract development, DeFi protocols, and security best practices.
+
+**Tech**: Docusaurus, TypeScript, React, Vercel  
+**Features**: Bilingual (EN/中文), Auto-generated sidebars, Dark mode
+
+### 📫 Connect With Me
+
+- 🌐 Website: [minner-fun.vercel.app](https://minner-fun.vercel.app)
+- 💼 GitHub: [@Minner-fun](https://github.com/Minner-fun)
+- 📧 Email: [Your Email - Optional]
+
+### 💡 Current Focus
+
+- 🔬 Researching advanced fuzzing techniques for smart contracts
+- 📝 Writing detailed protocol analysis and security guides
+- 🛠️ Building developer tools and templates for the Web3 ecosystem
+
+---
+
+### 📈 Activity
+
+<!--START_SECTION:activity-->
+<!--END_SECTION:activity-->
+
+---
+
+## 中文
+
+### 👨‍💻 关于我
+
+我是一名 **智能合约开发者** 和 **区块链研究员**，专注于：
+
+- 🔐 **智能合约安全** - 审计和模糊测试
+- 🏗️ **DeFi 协议** - 深入研究 AMM、借贷和衍生品协议
+- 🛠️ **开发工具** - 使用 Foundry、Hardhat 等测试框架
+- 📝 **技术写作** - 记录协议研究和分享知识
+
+### 🌐 我的文档站点
+
+📚 **[Minner 文档站](https://minner-fun.vercel.app)** - 智能合约、协议和项目的技术笔记
+
+- **笔记 (Notes)**: 开发指南、Foundry 教程、测试模式
+- **协议 (Protocols)**: Uniswap、Aave 等协议的深度分析
+- **项目 (Projects)**: 智能合约开发的模板和最佳实践
+
+🌍 支持 **English** 和 **简体中文**
+
+### 🔧 技术栈
+
+```text
+语言:         Solidity, TypeScript, JavaScript, Rust
+框架:         Foundry, Hardhat, Ethers.js, Web3.js
+工具:         Slither, Echidna, Mythril, Git
+平台:         Ethereum, Arbitrum, Optimism, Base
+```
+
+### 🚀 精选项目
+
+#### 📖 [Minner 技术文档](https://github.com/Minner-fun/Minner-fun)
+全面的技术文档站点，涵盖智能合约开发、DeFi 协议和安全最佳实践。
+
+**技术栈**: Docusaurus, TypeScript, React, Vercel  
+**特性**: 双语支持 (EN/中文)、自动生成侧边栏、暗色模式
+
+### 📫 联系我
+
+- 🌐 网站: [minner-fun.vercel.app](https://minner-fun.vercel.app)
+- 💼 GitHub: [@Minner-fun](https://github.com/Minner-fun)
+- 📧 邮箱: [您的邮箱 - 可选]
+
+### 💡 当前关注
+
+- 🔬 研究智能合约的高级模糊测试技术
+- 📝 编写详细的协议分析和安全指南
+- 🛠️ 为 Web3 生态系统构建开发工具和模板
+
+---
+
+<div align="center">
+
+### 💬 "Smart contracts are eating the world"
+
+**Building the future of decentralized finance, one line of code at a time.**
+
+---
+
+![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=Minner-fun.Minner-fun)
+
+*Last updated: 2025*
+
+</div>
+
