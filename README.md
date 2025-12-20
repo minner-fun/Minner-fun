@@ -1,140 +1,124 @@
-# Minner's Portfolio Website
+# Minner Documentation Site
 
-A modern, responsive personal portfolio website built with React, TypeScript, and Tailwind CSS. This website showcases my skills, projects, and provides a way for potential employers and collaborators to get in touch.
+> Smart Contract Notes · Protocol Research · Builder Log
 
-## 🌟 Features
+一个基于 Docusaurus 构建的现代化技术文档站点，支持中英文双语切换。
 
-- **Modern Design**: Clean, professional design with smooth animations
-- **Responsive**: Fully responsive design that works on all devices
-- **Performance Optimized**: Built with Vite for fast development and optimized builds
-- **SEO Friendly**: Proper meta tags and semantic HTML structure
-- **Interactive**: Smooth scrolling navigation and engaging animations
-- **Contact Form**: Functional contact form for easy communication
+## 📁 项目结构
 
-## 🛠️ Tech Stack
-
-- **Frontend**: React 18, TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Build Tool**: Vite
-- **Deployment**: Ready for deployment on Vercel, Netlify, or any static hosting
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js (version 16 or higher)
-- npm or yarn
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/minner-fun-portfolio.git
-cd minner-fun-portfolio
+```
+Minner-fun/
+├── minner-fun-docs/          # Docusaurus 文档站项目
+├── vercel.json                # Vercel 部署配置
+├── DEPLOYMENT.md              # 详细部署指南
+├── PROJECT_SUMMARY.md         # 项目概览
+└── 改造文档.md                # 原始需求文档
 ```
 
-2. Install dependencies:
+## 🚀 快速开始
+
 ```bash
+cd minner-fun-docs
 npm install
+npm start
 ```
 
-3. Start the development server:
+访问 http://localhost:3000 查看站点
+
+## 📚 功能特性
+
+- ✅ **中英文双语** - 完整的国际化支持
+- ✅ **三大栏目** - Notes（笔记）/ Protocols（协议）/ Projects（项目）
+- ✅ **示例文档** - Foundry、Uniswap V2、Fuzzing 等
+- ✅ **自动侧边栏** - 基于目录结构自动生成
+- ✅ **简洁首页** - 技术名片风格
+
+## 📖 文档内容
+
+### 📝 Notes - 笔记
+- Foundry 介绍和使用指南
+- Cheatcodes 详细说明
+
+### 🔬 Protocols - 协议
+- Uniswap V2 架构分析和实现细节
+
+### 🚀 Projects - 项目
+- 智能合约模糊测试模板
+- 开发工具和最佳实践
+
+## 🌐 语言切换
+
+- **英文版**: `/`
+- **中文版**: `/zh-Hans/`
+
+导航栏右上角有语言切换按钮
+
+## 🚢 部署到 Vercel
+
+### 方法一：GitHub + Vercel（推荐）
+
+1. 推送代码到 GitHub
+2. 在 Vercel 导入仓库
+3. 自动检测配置（已包含 vercel.json）
+4. 一键部署
+
+### 方法二：Vercel CLI
+
 ```bash
-npm run dev
+npm i -g vercel
+vercel
 ```
 
-4. Open your browser and visit `http://localhost:3000`
+详细步骤请查看 [DEPLOYMENT.md](./DEPLOYMENT.md)
 
-### Building for Production
+## 📝 添加新文档
+
+### 英文文档
+在 `minner-fun-docs/docs/` 对应目录创建 `.md` 文件
+
+### 中文翻译
+在 `minner-fun-docs/i18n/zh-Hans/docusaurus-plugin-content-docs/current/` 对应路径创建同名文件
+
+侧边栏会自动更新！
+
+## 🛠️ 技术栈
+
+- **框架**: Docusaurus 3
+- **语言**: TypeScript
+- **样式**: CSS Modules
+- **部署**: Vercel
+
+## 📚 文档参考
+
+- [项目概览](./PROJECT_SUMMARY.md) - 快速了解项目
+- [部署指南](./DEPLOYMENT.md) - 详细部署步骤
+- [Docusaurus 文档](https://docusaurus.io) - 官方文档
+
+## 🔗 相关链接
+
+- **GitHub**: https://github.com/minner-fun
+- **Docusaurus**: https://docusaurus.io
+- **Vercel**: https://vercel.com
+
+## ⚙️ 构建命令
 
 ```bash
-npm run build
+# 开发
+cd minner-fun-docs && npm start
+
+# 构建
+cd minner-fun-docs && npm run build
+
+# 预览构建结果
+cd minner-fun-docs && npm run serve
 ```
 
-The built files will be in the `dist` directory, ready for deployment.
+## 📞 支持
 
-## 📁 Project Structure
-
-```
-src/
-├── components/          # React components
-│   ├── Navbar.tsx      # Navigation component
-│   ├── Hero.tsx        # Hero section
-│   ├── About.tsx       # About section
-│   ├── Skills.tsx      # Skills showcase
-│   ├── Projects.tsx    # Projects portfolio
-│   ├── Contact.tsx     # Contact form
-│   └── Footer.tsx      # Footer component
-├── App.tsx             # Main app component
-├── main.tsx           # App entry point
-└── index.css          # Global styles
-```
-
-## 🎨 Customization
-
-### Personal Information
-
-Update the following files with your personal information:
-
-1. **src/components/Hero.tsx** - Update name, title, and description
-2. **src/components/About.tsx** - Update about section content
-3. **src/components/Skills.tsx** - Update your skills and proficiency levels
-4. **src/components/Projects.tsx** - Add your projects with descriptions and links
-5. **src/components/Contact.tsx** - Update contact information
-6. **index.html** - Update meta tags and title
-
-### Styling
-
-- Colors can be customized in `tailwind.config.js`
-- Global styles are in `src/index.css`
-- Component-specific styles use Tailwind CSS classes
-
-### Adding New Sections
-
-1. Create a new component in `src/components/`
-2. Import and add it to `src/App.tsx`
-3. Update the navigation in `src/components/Navbar.tsx`
-
-## 🌐 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy with default settings
-
-### Netlify
-
-1. Build the project: `npm run build`
-2. Upload the `dist` folder to Netlify
-3. Configure custom domain if needed
-
-### GitHub Pages
-
-1. Install gh-pages: `npm install --save-dev gh-pages`
-2. Add to package.json scripts: `"deploy": "gh-pages -d dist"`
-3. Run: `npm run build && npm run deploy`
-
-## 📧 Contact
-
-- **Email**: minner@example.com
-- **Website**: [minner.fun](https://minner.fun)
-- **GitHub**: [github.com/yourusername](https://github.com/yourusername)
-- **LinkedIn**: [linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🙏 Acknowledgments
-
-- Design inspiration from modern portfolio websites
-- Icons by [Lucide](https://lucide.dev/)
-- Images from [Unsplash](https://unsplash.com/)
-- Built with [Vite](https://vitejs.dev/) and [React](https://reactjs.org/)
+有问题或建议？欢迎提 Issue！
 
 ---
 
-Made with ❤️ and lots of coffee by Minner
+**注意**: 主项目位于 `minner-fun-docs/` 目录下。所有开发和构建命令都需要在该目录下执行。
+
+Copyright © 2025 Minner. Built with ❤️ and Docusaurus.

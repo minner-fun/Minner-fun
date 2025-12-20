@@ -1,0 +1,19 @@
+{
+  "version.label": {
+    "message": "下一个",
+    "description": "The label for version current"
+  },
+  "sidebar.notesSidebar.category.Notes": {
+    "message": "笔记",
+    "description": "The label for category Notes in sidebar notesSidebar"
+  },
+  "sidebar.protocolsSidebar.category.Protocols": {
+    "message": "协议",
+    "description": "The label for category Protocols in sidebar protocolsSidebar"
+  },
+  "sidebar.projectsSidebar.category.Projects": {
+    "message": "项目",
+    "description": "The label for category Projects in sidebar projectsSidebar"
+  }
+}
+

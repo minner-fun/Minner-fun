@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd minner-fun-docs && npm install && npm run build",
+  "outputDirectory": "minner-fun-docs/build",
+  "framework": null,
+  "installCommand": "cd minner-fun-docs && npm install"
+}
+
