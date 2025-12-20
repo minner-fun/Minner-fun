@@ -2,7 +2,7 @@
 
 # 👋 Hi, I'm Minner
 
-[![Website](https://img.shields.io/badge/Website-minner--fun.vercel.app-blue?style=flat-square&logo=vercel)](https://minner-fun.vercel.app)
+[![Website](https://img.shields.io/badge/Website-minner--fun.vercel.app-blue?style=flat-square&logo=vercel)](https://www.minner.fun)
 [![GitHub](https://img.shields.io/badge/GitHub-Minner--fun-181717?style=flat-square&logo=github)](https://github.com/Minner-fun)
 [![English](https://img.shields.io/badge/Language-English-blue?style=flat-square)](#english)
 [![中文](https://img.shields.io/badge/语言-中文-red?style=flat-square)](#中文)
