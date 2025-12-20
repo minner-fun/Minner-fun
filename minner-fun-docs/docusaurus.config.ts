@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Minner',
   tagline: 'Smart Contract Notes · Protocol Research · Builder Log',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/myLogo.jpg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -52,7 +52,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/myLogo.jpg',
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -60,7 +60,7 @@ const config: Config = {
       title: 'Minner',
       logo: {
         alt: 'Minner Logo',
-        src: 'img/logo.svg',
+        src: 'img/myLogo.jpg',
       },
       items: [
         {

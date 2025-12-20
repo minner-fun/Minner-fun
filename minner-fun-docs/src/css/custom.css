@@ -28,3 +28,16 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Custom logo styling */
+.navbar__logo img {
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+
+/* Favicon and logo styling */
+img[src*="myLogo"] {
+  border-radius: 8px;
+}
