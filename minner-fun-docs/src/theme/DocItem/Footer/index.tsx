@@ -6,7 +6,7 @@ import ShareButtons from '@site/src/components/ShareButtons';
 
 type Props = WrapperProps<typeof FooterType>;
 
-export default function FooterWrapper(props: Props): JSX.Element {
+export default function FooterWrapper(props: Props): React.ReactElement {
   return (
     <>
       <ShareButtons />

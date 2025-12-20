@@ -6,7 +6,7 @@ interface ShareButtonsProps {
   description?: string;
 }
 
-export default function ShareButtons({ title, description }: ShareButtonsProps): JSX.Element {
+export default function ShareButtons({ title, description }: ShareButtonsProps): React.ReactElement {
   const [showQRCode, setShowQRCode] = useState(false);
   const [copied, setCopied] = useState(false);
 
