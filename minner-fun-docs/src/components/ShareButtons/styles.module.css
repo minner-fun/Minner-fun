@@ -1,0 +1,209 @@
+.shareContainer {
+  margin: 3rem 0 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.shareTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.shareButtons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.shareButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  position: relative;
+}
+
+.shareButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.shareButton:active {
+  transform: translateY(-1px);
+}
+
+/* Platform specific colors */
+.twitter {
+  background: #000000;
+}
+
+.twitter:hover {
+  background: #1a1a1a;
+}
+
+.telegram {
+  background: #0088cc;
+}
+
+.telegram:hover {
+  background: #0077b5;
+}
+
+.linkedin {
+  background: #0077b5;
+}
+
+.linkedin:hover {
+  background: #006399;
+}
+
+.wechat {
+  background: #07c160;
+}
+
+.wechat:hover {
+  background: #06ad56;
+}
+
+.copy {
+  background: #6c757d;
+}
+
+.copy:hover {
+  background: #5a6268;
+}
+
+.copy.copied {
+  background: #28a745;
+}
+
+/* QR Code Modal */
+.qrcodeModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.qrcodeOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.qrcodeContent {
+  position: relative;
+  background: var(--ifm-background-color);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 1;
+  max-width: 90%;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.qrcodeContent h4 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  color: var(--ifm-color-emphasis-900);
+}
+
+.qrcodeContent img {
+  display: block;
+  margin: 0 auto 1rem;
+  border-radius: 8px;
+  border: 4px solid var(--ifm-color-emphasis-200);
+}
+
+.qrcodeContent p {
+  margin: 0;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.9rem;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ifm-color-emphasis-600);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-900);
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .shareContainer {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .shareTitle {
+  color: var(--ifm-color-emphasis-900);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .shareContainer {
+    padding: 1rem;
+    margin: 2rem 0 1rem;
+  }
+
+  .shareButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .qrcodeContent {
+    padding: 1.5rem;
+  }
+
+  .qrcodeContent img {
+    max-width: 180px;
+  }
+}
+
