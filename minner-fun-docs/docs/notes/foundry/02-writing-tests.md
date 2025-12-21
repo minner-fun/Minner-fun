@@ -1,4 +1,4 @@
-# Writing Tests
+# 2、Writing Tests
 
 Learn how to write effective tests for your smart contracts using Foundry.
 

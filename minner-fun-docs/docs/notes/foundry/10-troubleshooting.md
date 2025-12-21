@@ -1,4 +1,4 @@
-# Troubleshooting
+# 10、Troubleshooting
 
 Common issues and their solutions when working with Foundry.
 

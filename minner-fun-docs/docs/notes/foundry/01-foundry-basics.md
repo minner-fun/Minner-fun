@@ -1,4 +1,4 @@
-# Foundry Basics Guide
+# 1、Foundry Basics Guide
 
 ## What is Foundry?
 

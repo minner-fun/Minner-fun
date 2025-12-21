@@ -1,4 +1,4 @@
-# CI/CD Integration
+# 7、CI/CD Integration
 
 Learn how to integrate Foundry tests into your CI/CD pipeline for automated testing.
 

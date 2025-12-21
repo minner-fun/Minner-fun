@@ -1,4 +1,4 @@
-# Debugging Tools
+# 4、Debugging Tools
 
 Master Foundry's powerful debugging tools to troubleshoot and optimize your smart contracts.
 
