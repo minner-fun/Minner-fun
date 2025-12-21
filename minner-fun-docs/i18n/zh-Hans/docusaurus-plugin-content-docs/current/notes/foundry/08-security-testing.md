@@ -919,6 +919,3 @@ jobs:
 
 完成安全测试学习后，继续学习：
 
-1. [实战案例](./09-real-world-examples.md)
-2. [故障排除](./10-troubleshooting.md)
-3. [高级技巧](./11-advanced-techniques.md)

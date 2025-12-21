@@ -927,6 +927,3 @@ esac
 
 完成 CI/CD 集成后，继续学习：
 
-1. [安全测试](./08-security-testing.md)
-2. [实战案例](./09-real-world-examples.md)
-3. [故障排除](./10-troubleshooting.md)

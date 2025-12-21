@@ -484,6 +484,4 @@ function test_MemoryUsage() public {
 
 掌握调试技巧后，继续学习：
 
-1. [测试最佳实践](./05-best-practices.md)
-2. [性能优化](./06-performance-optimization.md)
-3. [CI/CD 集成](./07-cicd-integration.md)
+

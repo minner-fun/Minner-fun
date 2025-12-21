@@ -677,8 +677,3 @@ forge test --match-test "specific_test" -vvvv
 
 ## 下一步
 
-解决了常见问题后，继续学习：
-
-1. [高级技巧](./11-advanced-techniques.md)
-2. [社区资源](./12-community-resources.md)
-3. [总结和展望](./13-conclusion.md)

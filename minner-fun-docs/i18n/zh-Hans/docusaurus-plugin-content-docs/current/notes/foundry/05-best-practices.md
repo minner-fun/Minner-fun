@@ -667,6 +667,3 @@ contract TestMetrics is BaseTest {
 
 掌握最佳实践后，继续学习：
 
-1. [性能优化](./06-performance-optimization.md)
-2. [CI/CD 集成](./07-cicd-integration.md)
-3. [安全测试](./08-security-testing.md)

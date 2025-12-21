@@ -1114,6 +1114,3 @@ contract FlashLoanAttacker {
 
 学习完实战案例后，继续学习：
 
-1. [故障排除](./10-troubleshooting.md)
-2. [高级技巧](./11-advanced-techniques.md)
-3. [社区资源](./12-community-resources.md)
