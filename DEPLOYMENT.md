@@ -142,6 +142,9 @@ npm install
 # 启动开发服务器
 npm start
 
+# 启动中文
+npm start --locale zh-Hans
+
 # 访问 http://localhost:3000
 ```
 

@@ -1,4 +1,4 @@
-# 性能优化指南
+# 6、性能优化指南
 
 ## 测试执行性能优化
 
@@ -721,6 +721,4 @@ contract PerformanceAnalysis is Test {
 
 了解性能优化后，继续学习：
 
-1. [CI/CD 集成](./07-cicd-integration.md)
-2. [安全测试](./08-security-testing.md)
-3. [实战案例](./09-real-world-examples.md)
+
