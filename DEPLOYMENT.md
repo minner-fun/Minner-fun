@@ -143,9 +143,13 @@ npm install
 npm start
 
 # 启动中文
-npm start --locale zh-Hans
+npm start -- --locale zh-Hans --port 3001
+# 如果只要英文就直接 npm start
 
-# 访问 http://localhost:3000
+# 在本地构建
+npm run build
+# 运行构建服务（中英同时可用）
+npm run serve
 ```
 
 ### 语言切换测试
