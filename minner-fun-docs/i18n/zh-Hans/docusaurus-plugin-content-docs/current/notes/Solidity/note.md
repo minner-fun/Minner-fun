@@ -1,0 +1,857 @@
+
+# 常规基础
+## solidity基础
+
+### 单词
+contract    合约
+constructor 构造函数
+constant    常量
+
+### 头部
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+```
+
+## 数据类型
+
+### 基本变量类型(值类型)
+```
+uint  // 0
+int   // 0
+strig  // ''
+bool   // false
+address  // 0x0000...0000000000  40个0
+bytes32  // 0x0000...00000000   64个0
+```
+可以查看int的最大最小值
+```
+    int public b = type(int).min;
+    int public c = type(int).max;
+```
+简写
+```solidity
+int 默认为 int256
+uint 默认为 uint256
+```
+
+### 引用类型
+```
+int[]
+mapping(int->address)
+```
+
+### bytes类型
+https://chatgpt.com/s/t_68be42d2fed0819184d8b148f950e371
+https://chatgpt.com/s/t_68be4467d6c48191864536636d0f6dbe
+
+bytes1,2,3,4,,,32 这种加数字的是表示长度固定的字节数组，最大只到bytes32，没有bytes64，这受限于evm
+bytes  表示长度不固定，可以很长，理论上可以2的256次方-1的大小。
+常见类型：
+bytes4: 函数选择器的类型
+bytes20: address类型
+bytes32: keccak256 的结果，存储槽大小
+
+
+```solidity
+pragma solidity ^0.8.24;
+
+contract Example {
+    bytes4 public sel;
+    bytes32 public hash;
+    bytes public data;
+
+    constructor() {
+        // 计算函数选择器
+        sel = bytes4(keccak256("transfer(address,uint256)"));
+        // 计算哈希
+        hash = keccak256(abi.encodePacked("hello"));
+        // 动态字节数组
+        data = abi.encodePacked(uint256(123), address(this));
+    }
+}
+
+```
+
+### unchecked
+用unchecked包裹的语句，当数据有溢出的时候，不会报错
+正常语句是会报错的。但是unchecked相当于要就解释器，不去检查溢出问题，所以更节省一些gas
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract Math{
+    uint8 public num;
+
+    constructor(uint8 init){
+        num = init;
+    }
+
+    function inc() external returns(uint8){
+        unchecked{
+            return num += 1;
+        }
+    }
+    function edd() external returns(uint8){
+        return num -=1;
+    }
+    function getMax() external pure returns(uint8){
+        return type(uint8).max;
+    }
+}
+```
+
+### bytes 和 string 的成员方法
+https://docs.soliditylang.org/zh-cn/v0.8.24/types.html#bytes-concat-string-concat
+```solidity
+bytes.concat(...) returns (bytes memory)： 将可变数量的参数连接成一个字节数组。
+string.concat(...) returns (string memory)： 将可变数量的参数连接成一个字符串数组。
+```
+
+## 变量
+### 状态变量
+如果把contract比作类，状态变量也就是类变量。是一种定义函数外，但是在合约内部的变量。状态变量会被记录在链上。也可以是理解成合约的全局变量
+
+### 本地变量
+定义在合约中的函数内，生命周期随着一次运行从创建到销毁，不会永久存在链上
+
+### 全局变量 https://docs.soliditylang.org/zh-cn/v0.8.24/units-and-global-variables.html#index-3
+solidity的全局变量，其实是一些内部变量，比如msg.sender,block.xxxx等
+
+## 常量
+使用constant关键字定义的状态变量称为常量，用大写字母，注意常量是状态变量，也就是定义在函数外面，合约内部的变量
+因为常量是固定不变的。如果一个方法只返回了一个常量，那么这个方法的修饰符可以是 pure，而不是view
+```
+// 其实通过pure和view也可以看出，如果返回的是常量，就相当于内部操作了，需要用pure修饰
+contract constantVar{
+    uint public constant A=122;
+    function getVar() external pure returns (uint){
+        uint b = 3;
+        return b+A;
+    }
+}
+```
+
+
+## 流程控制语句
+### if...else
+```solidity
+contract processNumber{
+    function ifElse(uint x) external pure returns(uint){
+        if (x<10){          // 判断条件加括号
+            return 1;
+        }else if (x < 20){  // else if 不是简写的
+            return 2;
+        }else{
+            return 3;
+        }
+    }
+    function tenary(uint x) external pure returns(uint){
+        return x<10 ? 1 : x<20 ? 2 :3;  // 三元表达式嵌套
+    }   // 可以用另一个语句替代else部分，就构成了三元表达式嵌套
+}
+```
+
+### for  while
+```solidity
+contract Summation{
+    function sum(uint x) external pure returns(uint){
+        uint res = 0;
+        for (uint i=0; i< x; i++){   // 标准的c语言的写法
+            res += i;
+        }
+        return res;
+    }
+
+    function sumWhile(uint x) external pure returns(uint){
+        uint total = 0;
+        uint i = 0;
+        while(i < x){
+            total += i;
+            i +=1;
+        }
+        return total;
+    }
+}
+```
+
+## 错误
+ https://docs.soliditylang.org/zh-cn/v0.8.24/cheatsheet.html#index-6
+
+assert(bool condition)： 如果条件为 false，则中止执行并恢复状态变化（用于内部错误）。
+
+require(bool condition)： 如果条件为 false，则中止执行并恢复状态变化（用于错误的输入或外部组件的错误）。
+
+require(bool condition, string memory message)： 如果条件为 false，则中止执行并恢复状态变化（用于错误的输入或外部组件的错误）。同时提供错误信息。
+
+revert()： 中止执行并恢复状态变化
+
+revert(string memory message)： 中止执行并恢复状态变化，提供一个解释性的字符串
+
+
+### 自定义错误 error关键字
+```
+error MyError(address sender, uint value);
+```
+### 抛出错误
+`revert MyError(msg.sender, x);`
+### 判断错误
+```
+        require(x > 10, "x <= 10");
+        assert(x >10);
+```
+
+## 引用类型
+
+### Array
+
+#### 属性
+获取长度
+```
+uint[] a;
+a.length
+```
+
+#### 增
+```
+int[] a;   // 不指定具体长度，动态数组
+int[3] b = [1,2,3]   // 长度固定
+a.push(2)  // 固定长度的不支持push，因为长度已经固定了，push会增加长度
+
+```
+#### 删
+```
+a.pop() 弹出最后一个  拿不到值
+```
+取到最后一个值，并且删除应该这样写
+```
+uint val = a[a.length-1]
+a.pop()
+```
+```
+delete a[1]; // 这会使a[1]变为该类型的默认值
+```
+两种删除方法
+一，不打乱排序，gas高
+```
+function orderDelEle(uint index) external {
+    require(index < arr.length, "out of index");
+    for(uint i = index; i< arr.length-1; i++){
+        arr[i] = arr[i+1];
+    }
+    arr.pop();
+}
+```
+二, 直接交换目标索引与最后一个元素
+```
+    function delEle(uint index) external {
+        require(index < arr.length, "out of index");
+        arr[index] = arr[arr.length -1];
+        arr.pop();
+    }
+```
+#### 改
+```
+delete a[1];  //可使该索引变为默认值
+a[2] = 3;   // 一般重新赋值的方法
+```
+
+#### 查
+```
+uint val = a[index]  // 通过索引查
+```
+
+## 映射 （字典）
+```
+mapping(address => uint) public balance; // 
+mapping(address => mapping(address => bool)) public isFriend; // 嵌套
+```
+增删改查，就是很常规用[]对应取值或赋值
+#### 删除：
+```
+balances[msg.sender] = amount;
+delete balance[msg.sender]; // 然后再次获取balance[2] 得到默认值
+balances[msg.sender] 
+```
+#### 示例
+要实现可迭代的mapping，需要再配合一个mapping类型和array类型一块
+```
+contract SimpleBank{
+    mapping(address => uint) public balances;   // 存放余额
+    mapping(address => bool) public isCustomer;  // 便捷判断
+    address[] public customers; //相当于存放所有的key，通过遍历这个array就可以遍历balance所有的值
+    address public owner;
+
+    constructor(){
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner(){
+        require(owner == msg.sender, "only owner can do this");
+        _;
+    }
+
+    function clearCustomer() external onlyOwner {
+        customers = new address[](0);
+    }
+
+    function deposit(uint amount) external returns(uint){
+        if (isCustomer[msg.sender] == false){
+            balances[msg.sender] = amount;
+            isCustomer[msg.sender] = true;
+            customers.push(msg.sender);
+        }else{
+            balances[msg.sender] += amount;
+        }
+        return balances[msg.sender];
+    }
+    
+    function withdrawn(uint amount) external returns(uint){
+        require(balances[msg.sender] >= amount, "Insufficient Balance");
+        balances[msg.sender] -= amount;
+        return balances[msg.sender];
+    }
+
+    function checkBalance() external view returns(uint){
+        return balances[msg.sender];
+    }
+
+    function getSize() public view returns(uint){
+        return customers.length;
+    }
+
+    function getAllCustomers() external view returns(address[] memory){
+        uint size = getSize();
+        address[] memory _customers = new address[](size);
+        for (uint i = 0; i< size; i++){
+            _customers[i] = customers[i];
+        }
+        return _customers;
+    }
+    function delSomeone(address addr) external onlyOwner{
+        delete isCustomer[addr];
+        delete balances[addr];
+    }
+
+    function firstBalance() external view returns(uint, uint){
+        return (balances[customers[0]], balances[customers[customers.length-1]]);
+    }
+}
+```
+
+## 结构体 struct
+官方解释为：一组变量，表示将数据分组。应该是不能包含方法，只是包含基本类型和引用mapping
+可以理解成一个自定义类型，类似于uint int等
+
+定义
+```
+    struct Vehicle{
+        string make;
+        string model;
+        uint year;
+        address owner;
+    }
+```
+
+有了Vehicle结构体，可以定义Vehicle类型的变量，Vehicle类型的array，Vehicle类型的mapping
+```
+Vehicle public car; // 定义一辆车
+Vehicle[] public cars; // 定义一个array，用来存放Vehicle类型的数据
+mappint(address => Vehicle[])； // 定义一个映射，一个地址有一个Vehicle类型的array
+
+
+function buy(string memory make, string memory model, uint year) external{
+    Vehicle memory car = Vehicle(make, model, year, msg.sender);  // 第一种 直接用参数创建一个实例
+    Vehicle memory car2 = Vehicle({make:make, model:model, year:year, owner:msg.sender});  // 第二种  把参数放入一个类似python字典的结构中，创建实例
+    Vehicle memory car3;  // 第三种 先创建实例，然后通过点的方式赋值
+    car3.make = make;
+    car3.model = model;
+    car3.year = year;
+    car3.owner = msg.sender;
+    carpark.push(car);
+    carpark.push(car2);
+}
+
+```
+
+完整案例
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract Structs{
+    
+    struct Vehicle{
+        string make;
+        string model;
+        uint year;
+        address owner;
+    }
+
+    // Vehicle public car;
+    // Vehicle public car2;
+    Vehicle[] public carpark;
+
+    function buy(string memory make, string memory model, uint year) external{
+        Vehicle memory car = Vehicle(make, model, year, msg.sender);
+        Vehicle memory car2 = Vehicle({make:make, model:model, year:year, owner:msg.sender});
+        Vehicle memory car3;
+        car3.make = make;
+        car3.model = model;
+        car3.year = year;
+        car3.owner = msg.sender;
+        carpark.push(car);
+        carpark.push(car2);
+    }
+
+    function carInfo(uint index) external view returns(string memory, string memory, uint){
+        Vehicle memory _car = carpark[index];
+        return(_car.make, _car.model, _car.year); 
+    }
+
+    function delCar(uint index) external{
+        carpark[index] = carpark[carpark.length-1];
+        carpark.pop();
+    }
+
+    function changeInfo(uint index, string memory make, string memory model, uint year) external{
+        carpark[index].make = make;
+        carpark[index].model = model;
+        carpark[index].year = year;
+    }
+
+}
+```
+
+## 枚举
+
+通过关键词enum定义 
+```
+    enum OrderStatus{
+        None,     // 对应  0
+        Pending,  // 1
+        Shipped,  // 2
+        Completed,
+        Rejected,
+        Cancelled
+    }
+```
+枚举叫做枚举类型，定义好了枚举类型，是可以创建实例的
+```
+    struct Order{
+        address buyer;
+        OrderStatus orderStatus;
+    }
+```
+完整案例
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract OrderSystem{
+
+    enum OrderStatus{
+        None,
+        Pending,
+        Shipped,
+        Completed,
+        Rejected,
+        Cancelled
+    }
+
+    struct Order{
+        address buyer;
+        OrderStatus orderStatus;
+    }
+    Order[] private orders;
+
+    function newOrder(address buyer, OrderStatus orderStatus) public{
+        Order memory order = Order(buyer, orderStatus);
+        orders.push(order);
+    }
+
+    function changeStatus(uint index, OrderStatus orderStatus) public{
+        Order memory order = orders[index];
+        order.orderStatus = orderStatus;
+        orders[index] = order;
+    }
+
+    // function getStatus(uint index) public view returns(address, OrderStatus){
+    //     Order memory order = orders[index];
+    //     return (order.buyer, order.orderStatus);
+    // }
+
+    function getStatus(uint index) public view returns(Order memory){
+        Order memory order = orders[index];
+        return order;
+    }
+}
+
+```
+
+## 存储位置
+https://docs.soliditylang.org/zh-cn/v0.8.24/types.html#data-location-assignment
+storage, memory, calldata
+
+对于更新数组里面结构体元素的值，
+```
+// 如果只改一两个值，这样方便，也节省gas
+tasks[index].completed = true;
+
+
+Task memory _task = tasks[index];
+_task.completed = true;  // 如果有多个值要改，就先把元素从列表中取出来，再改，更节省gas
+_task.completed = true;
+_task.completed = true;
+_task.completed = true;
+_task.completed = true;
+
+tasks[index] = _task;
+
+```
+
+## 事件event
+index其实是有4个，但是默认被占用了一个，所以给用户可用的只有三个了
+index1是 The keccak256 hash of the event signature.
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract MessageSys{
+
+    // 定义事件，并指定索引参数
+    event LogMessage(address indexed sender, address indexed reveive, string indexed message);
+    // 不指定索引，结果是除了index0外在topics中，其他数据在data中
+    event noindex(address sender, address reveive, string message);
+    function sendMessage(address to, string calldata message) external {
+        emit LogMessage(msg.sender, to, message);
+        emit noindex(msg.sender, to, message);
+    }
+}
+```
+
+## 继承
+要想函数可以被override，父合约中需要把方法改为virtual
+
+### 继承+构造函数
+
+```
+contract ContractC is ContractB("QFM"), ContractA{  // 可以在创建合约的时候，给父合约传值
+    string public text_C;
+    constructor(string memory _text, string memory cc) ContractA(_text) {  // 在子合约的构造函数被调用的时候，声明一下那些是给父合约的构造函数的
+        text_C = cc;
+    }
+}
+```
+应该这种更常用，在子合约的创建的时候一并传入
+```
+contract ContractC is ContractB, ContractA{
+    string public text_C;
+    constructor(string memory _text, string memory cc, string memory bb) ContractA(_text) ContractB(bb) {
+        text_C = cc;
+    }
+}
+```
+完整示例
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract ContractA{
+    string public name;
+    constructor(string memory _name){
+        name = _name;
+    }
+}
+
+contract ContractB{
+    string public text;
+    constructor(string memory _text){
+        text = _text;
+    }
+}
+
+// contract ContractC is ContractB("QFM"), ContractA{
+//     string public text_C;
+//     constructor(string memory _text, string memory cc) ContractA(_text) {
+//         text_C = cc;
+//     }
+// }
+
+contract ContractC is ContractB, ContractA{
+    string public text_C;
+    constructor(string memory _text, string memory cc, string memory bb) ContractA(_text) ContractB(bb) {
+        text_C = cc;
+    }
+}
+```
+
+### 调用父类的方法
+```
+string memory tmp_b = super.too(); //用super调用，最后一个继承的父类中，同名的方法，最后一个就是在合约声明继承的时候，最后一个父合约
+or
+string memory tmp_b = ContractB.too(); // 指定调用具体父类的方法
+
+```
+完整示例
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract ContractA{
+
+    uint public age = 20;
+    function foo() public pure returns(string memory){
+        return "foo A";
+    }
+    function too() public pure virtual returns(string memory){
+        return "too A";
+    }
+}
+
+contract ContractB is ContractA{
+    function too() public pure override virtual returns(string memory){
+        return "too B";
+    }
+}
+
+contract ContractC is ContractA{
+    function too() public pure override virtual returns(string memory){
+        return "too C";
+    }
+}
+
+contract ContractD is ContractB, ContractC{
+    function too() public pure override(ContractB, ContractC) returns(string memory){
+        return "too D";
+    }
+    function call() external pure returns(string memory, string memory) {
+        string memory tmp_b = ContractB.too();
+        string memory tmp_c = ContractC.too();
+        return (tmp_b, tmp_c);
+    }
+    function call2() external pure {
+        super.too();
+    }
+}
+```
+
+## 可见性
+```
+private：仅在定义它们的合约内访问。
+internal：在定义它们的合约及其⼦合约中访问。
+public：在合约内部和外部都可以访问。
+external：只能从其他合约或外部账⼾调⽤。 不能修饰状态变量
+```
+private 和 virtual不可同时使用
+```
+    function fu1() private virtual pure returns(uint){
+        return 2;
+    }
+```
+
+## immutable
+定义和特性
+◦ 只能在合约部署时初始化
+◦ 初始化后不能改变
+相当于丰富了constant 常量，使其一个变量，可以在初始化时被赋值一次。然后就充当了常量的作用了
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+contract A{
+    // 2492 gas
+    address public owner;
+    // 358 gas
+    // uint public constant owner = 100;
+    constructor(){
+        owner = msg.sender;
+    }
+    function get() external view returns(address){
+        return owner;
+    }
+}
+```
+
+
+
+## 函数相关
+### 函数可见性
+```
+https://docs.soliditylang.org/zh-cn/v0.8.24/cheatsheet.html#index-10
+public： 内部、外部都可见
+
+private： 仅在当前合约内可见
+internal： 同项目可见，仅在内部可见（也就是在当前 Solidity 源代码文件内均可见，不仅限于当前合约内，译者注）
+external： 部署完后的调用，仅在外部可见（仅可修饰函数）——就是说，仅可用于消息调用（即使在合约内调用，也只能通过 this.func 的方式）
+
+```
+
+### 构造函数
+写在合约内部的特色方法，一个合约只能有一个，一般作用为给合约设定初始的状态
+constructor 没啥可说的，类似于python的init，其他语言中，当创建一个对象的时候，会有一个与该对象同名的函数，在对象初始化的时候被调用一次，这就是构造函数
+```
+contract SimpleStorage{
+    uint public number;
+    constructor(uint x){
+        number = x;
+    }
+}
+```
+
+
+### 修饰器
+```
+https://docs.soliditylang.org/zh-cn/v0.8.24/cheatsheet.html#index-11
+pure 修饰函数时：不允许修改或访问状态变量。
+
+view 修饰函数时：不允许修改状态变量。
+
+payable 修饰函数时：允许从调用中接收以太币。
+
+constant 修饰状态变量时：不允许赋值（除初始化以外），不会占据存储插槽（storage slot）。
+
+immutable 修饰状态变量时：允许在构造时分配并在部署时保持不变。存储在代码中。
+
+anonymous 修饰事件时：不把事件签名作为 topic 存储。
+
+indexed 修饰事件参数时：将参数作为 topic 存储。
+
+virtual 修饰函数和修改时：允许在派生合约中改变函数或修改器的行为。
+
+override 表示该函数、修改器或公共状态变量改变了基类合约中的函数或修改器的行为
+```
+
+#### 函数修饰器
+modifier 类似于python里面的装饰器的作用，就是给方法添加一段代码功能
+```
+modifier whenNotPaused(){
+    assert(!paused);
+    _;
+}
+```
+
+### 函数返回值
+返回多个变量，用（，，）括号逗号隔开，类似于python中的元祖
+一般写法，显式返回，写出return语句
+隐式返回，在定义返回类型的时候写好返回的变量的变量名
+```
+contract MultipleOutput{
+    address public a;
+    uint public b;
+    string public c;
+    address public d;
+    uint public e;
+    string public f;
+
+    function MultipleOut() private view returns(address, uint, string memory){
+        return(msg.sender, 234, "hello world");
+    }
+
+    // 隐式返回：将需要返回的变量名写到方法定义的时候。
+    // 注意配合修饰器，view/pure等   
+    // view/pure 等叫做Modifiers   modifier 关键字 称为function modifier 
+    function display() private view returns(address addr, uint num, string memory name){
+        // addr = address(0);
+        // addr = msg.sender;
+        addr = a;
+        num = 234;
+        name = "hello world";
+    }
+
+    function CapOut() external {
+        (a,b,c) = MultipleOut();   // 注意，多返回值需要用（）括号
+        // 如果只需要其中一个值，可以用逗号隔开
+        // (a,,) = MultipleOut();
+        (d,e,f) = display();
+    }
+}
+```
+
+### new的使用
+用来创建合约，和内存定长数组
+#### 合约
+```
+ContractName newInstance = new ContractName{value: <可选Wei>, gas: <可选Gas>}(构造函数参数...);
+```
+完整示例
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract Account{
+    address public owner;
+    constructor(address _owner) payable{  // 加上payable可以接受eth
+        owner = _owner;
+    }
+}
+
+contract AccountFactory{
+    Account[] public accounts;
+
+    function createAccount(address owner, uint num) external payable {  // 创建Account的时候需要传eth所以这里也是payable
+        Account acc = new Account{value: num}(owner); // {}是传给evm的参数，表示携带num wei的eth
+        accounts.push(acc);
+    }
+}
+```
+
+#### 数组
+只能在内存中，并且长度固定
+```
+Type[] memory arr = new Type[](长度);
+```
+示例
+
+```
+function getArray(uint len) public pure returns (uint[] memory) {
+    uint[] memory arr = new uint[](len); // 长度为 len 的数组
+    for (uint i = 0; i < len; i++) {
+        arr[i] = i + 1;
+    }
+    return arr;
+}
+
+```
+
+## library 库相关
+除了正常的作为工具库方法，使代码可以复用以外，还可以增强数据类型，使其包含library中定义的方法
+
+#### 用法
+```
+Math.min   Math.max 等直接 库.方法
+
+using ArrayLib for uint[]  增强型用法
+```
+#### 实际案例
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+library MathLib{
+    function min(uint x, uint y) external pure returns(uint){
+        return x < y ? x:y;
+    }
+}
+
+library ArrayUtils{
+    function sum(uint[] memory array) external pure returns(uint){
+        uint tmp;
+        for (uint i =0; i< array.length; i++){
+            tmp += array[i];
+        }
+        return tmp;
+    }
+}
+
+contract TestLibrarys{
+    // using MathLib for uint;
+    using ArrayUtils for uint[];
+    uint[] public arr = [1,2,3,4,5,6,7,8,9];
+    function getMin(uint x, uint y) public pure returns(uint){
+        return MathLib.min(x, y);
+    }
+    function getSum() public view returns(uint){
+        return arr.sum();
+    }
+}
+```
