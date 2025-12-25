@@ -1,6 +1,30 @@
 # 基本使用
-## mocha
-这是js中的测试框架 https://mochajs.org/next/features/hooks/#_top
+
+### 常用命令
+```
+npx hardhat init
+npx hardhat --version
+npm install --save-dev hardhat
+npm i hardhat@2.26.0  // 安装指定版本
+npm install --save-dev @nomicfoundation/hardhat-toolbox // 这个才会安装对应的chai，ethers等依赖
+
+npm list ethers // 查看包信息
+
+npx hardhat compile
+npx hardhat test  
+
+// 启动节点
+npx hardhat node
+npx hardhat node --hostname 127.0.0.1 --port 8545
+```
+
+### 配置文件
+```
+在hardhat.config.js中导入插件包
+require("@nomicfoundation/hardhat-toolbox");
+```
+
+
 
 ### beforeEach  https://mochajs.org/next/features/hooks/#_top
 在每个it模块开始时，都执行一遍
@@ -143,3 +167,6 @@ await routerContract.addLiquidityETH(
   { value: ethLiquidityAmount }  // 🔥 关键：ETH 金额通过 value 传递
 );
 ```
+
+
+
