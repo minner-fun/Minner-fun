@@ -36,6 +36,26 @@ msg.value (uint)： 随消息发送的 wei 的数量
 用给定的数据发出低级别的 STATICCALL，返回是否成功的结果和数据，发送所有可用燃料，可调节。
 ```
 
+### tx.origin
+https://docs.soliditylang.org/zh-cn/v0.8.24/units-and-global-variables.html#index-3
+是一个全局变量，类似与msg.sender，msg....等等一系列的全局变量  
+```solidity
+msg.sender  上一层的调用者，可能是合约，也可能是一个外部账户
+tx.origin  是最初的那个外部用户
+```
+
+#### ⚠️ 安全提醒
+https://chatgpt.com/s/t_68dcb1734f7c819196f1e07050850866
+在安全实践里，一般不推荐依赖 tx.origin 来做权限控制，因为：
+tx.origin 会让合约更容易受到 钓鱼攻击 (phishing attack)。
+比如攻击者合约诱导你调用它，然后在内部再调用目标合约，此时 tx.origin 仍然是你，但 msg.sender 已经是攻击者合约。
+
+所以现在主流建议是：
+
+使用 msg.sender 做权限校验。避免依赖 tx.origin。
+
+
+
 # 合约转账
 
 要使一个合约能接受eth
@@ -534,92 +554,6 @@ contract HashFunc {
 
 ```
 
-### 验证签名
-课程第47课，先这样吧，就是有几个签名。等回头再来研究
-https://chatgpt.com/s/t_689c00447bdc819195098a93657f161c
-https://chatgpt.com/s/t_689c0051c530819194efea9be5117d2e
-https://docs.soliditylang.org/zh-cn/v0.8.24/units-and-global-variables.html#mathematical-and-cryptographic-functions
-https://docs.soliditylang.org/zh-cn/v0.8.24/assembly.html#inline-assembly
-```
-ethereum.enable()
-ethereum.request({method: "personal_sign", params:['0xb314a242aa628F1FF3A04590edD63C8F036Df51f', hash]})  // 这里的account是小狐狸的地址，要不然拉不出来小狐狸
-```
-示例代码
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.3;
-
-/*
- 签名过程
- 0. message
- 1. 第一次hash(message)
- 2. 再次生成eth hash
- 2. sign(hash(message), private key) 浏览器中调小狐狸生成，本代码不包含sign过程
-
-翻解过程
- 0. message
- 1. 第一次hash(message)
- 2. 再次生成eth hash
- 3. ecrecover(hash(message), signature) == signer 翻解
-
- */
-
-contract VerifySig {
-    function verify(
-        address _signer,
-        string memory _message,
-        bytes memory _sig
-    ) external pure returns (bool) {
-        bytes32 messageHash = getMessageHash(_message);
-        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
-
-        return recover(ethSignedMessageHash, _sig) == _signer; // 跟具签名和被签内容，推断签名账户的公钥
-    }
-
-    function getMessageHash(string memory _message)// 一次普通keccak256 hash
-        public
-        pure
-        returns (bytes32)
-    {return keccak256(abi.encodePacked(_message));}
-
-    function getEthSignedMessageHash(bytes32 _messageHash) // 生成用于签名的hash
-        public
-        pure
-        returns (bytes32)
-    {
-        return
-            keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32",_messageHash));
-    }
-
-    function recover(bytes32 _ethSignedMessageHash, bytes memory _sig)
-        public
-        pure
-        returns (address)
-    {
-        (bytes32 r, bytes32 s, uint8 v) = _split(_sig);
-        return ecrecover(_ethSignedMessageHash, v, r, s); // ecrecover的功能就是反推初公钥
-    }
-
-    function _split(bytes memory _sig)
-        internal
-        pure
-        returns (
-            bytes32 r,
-            bytes32 s,
-            uint8 v
-        )
-    {
-        require(_sig.length == 65, "invalid signature length");
-        // 是一种汇编，https://docs.soliditylang.org/zh-cn/v0.8.24/assembly.html#inline-assembly
-        assembly {
-            r := mload(add(_sig, 32))
-            s := mload(add(_sig, 64))
-            v := byte(0, mload(add(_sig, 96)))
-        }
-    }
-}
-
-```
 
 
 
