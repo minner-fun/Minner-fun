@@ -91,3 +91,32 @@ contract SimpleOwnable is Ownable {
     }
 }
 ```
+
+## OwnableUpgradeable
+Ownable的可升级版
+```solidity
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+```
+
+使用案例
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+contract SimpleOwnableUpgradeable is OwnableUpgradeable {
+
+    uint256 public value;
+
+    // 代替 constructor 的初始化函数
+    function initialize(address initialOwner) external initializer {
+        __Ownable_init(initialOwner);
+    }
+
+    // 只有 owner 才能调用
+    function setValue(uint256 _value) external onlyOwner {
+        value = _value;
+    }
+}
+```
