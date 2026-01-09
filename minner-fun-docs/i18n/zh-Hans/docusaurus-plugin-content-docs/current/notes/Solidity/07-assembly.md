@@ -1,4 +1,79 @@
 # Assembly
+官方文档：https://docs.soliditylang.org/zh-cn/v0.8.24/yul.html#yul
+
+
+## 加减乘除
+### add(x, y)
+> x + y
+
+### sub(x, y)
+> x - y
+
+### mul(x, y)
+> x * y
+
+### div(x, y)
+> x / y
+
+
+## memory
+其实solidity中的对memory类型的数据侧操作，其实背后都会被翻译成这些操作   
+memeory类型的数据的存储结构是这样的，前32是表示长度，然后才是真实的数据。
+```perl
+| offset → | 0x00 ... 0x1f | 0x20 ...     |
+| 内容     | length (n)    | 实际字节数据   |
+```
+
+```solidity
+bytes memory b = abi.encodePacked(...);
+// 底层实际上是
+mstore(b, length)
+mstore(b+32, data[0..31])
+mstore(b+64, data[32..63])
+...
+
+
+
+```
+
+### mload(p)
+> mem[p…(p+32))
+
+### mstore(p,v)
+> mem[p…(p+32)) := v
+
+### mstore8(p, v)
+> mem[p] := v & 0xff （只修改一个字节）
+
+
+## storage transient
+### sload(p)
+> storage[p]
+
+### sstore(p, v)
+> storage[p] := v
+
+### tload(p)
+> transientStorage[p]
+
+### tstore(p, v)
+> transientStorage[p] := v
+
+
+### create(v, p, n)
+
+> 创建新合约，其代码为内存中位置p到(p+n)的内容，发送v数量的wei 并返回新地址；错误时返回0
+
+### create2(v, p, n, s)
+> 创建新合约，其代码为内存中位置p到(p+n)的内容 合约地址为 keccak256(0xff . this . s . keccak256(mem[p…(p+n))) 并发送v数量wei然后返回新地址， 其中 0xff 是一个1字节的值， this 是当前合约的地址， 是一个20字节的值， s 是一个大端序的256位值； 错误时返回0
+
+
+
+
+
+
+
+
 
 
 这段 `assembly`（内联汇编）正是 Solidity 底层操作的经典例子。
