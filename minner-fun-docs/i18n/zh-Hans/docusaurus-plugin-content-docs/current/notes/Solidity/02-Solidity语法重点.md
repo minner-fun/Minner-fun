@@ -173,10 +173,20 @@ https://docs.soliditylang.org/zh-cn/v0.8.24/units-and-global-variables.html#addr
 
 <address>.call(bytes memory) returns (bool, bytes memory)
 用给定的数据发出低级别的 CALL，返回是否成功的结果和数据，发送所有可用燃料，可调节。
+
+// transfer send的返回值不一样，transfer没有返回
+payable(msg.sender).transfer(amount); // the current contract sends the Ether amount to the msg.sender
+
+bool success = payable(msg.sender).send(address(this).balance);
+require(success, "Send failed");
+
+(bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
+require(success, "Call failed");
+
 ```
 
 transfer/send 与 call背后的逻辑,相当于把gas参数写死为2300后再调用call。\
-所以由于transfer/send对gas的现在，就存在gas不够时的诸多隐患。
+所以由于transfer/send对gas的限制，就存在gas不够时的诸多隐患。
 ```solidity
 // transfer
 (bool ok, ) = _to.call{value: amount, gas: 2300}("");
@@ -200,7 +210,7 @@ contract MyToken{
 
     receive() external payable{}
     function sendViaTransfer(address payable _to, uint amount) external {
-        _to.transfer(amount);
+        _to.transfer(amount);  // 这里是eth从合约中转给_to地址。
     }
     function sendViaSend(address payable _to, uint amount) external{
         bool sended = _to.send(amount);  // 返回一个布尔类型
