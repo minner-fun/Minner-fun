@@ -68,6 +68,9 @@ cd my-project
 
 # 创建项目（使用模板）
 forge init --template https://github.com/foundry-rs/forge-template my-project
+
+# 强制在一个文件内初始化
+forge init --force
 ```
 
 ## 基本配置
@@ -298,6 +301,10 @@ forge tree
 - [Forge Std](https://github.com/foundry-rs/forge-std) - 标准测试库
 
 
+# 启动wsl
+win键，然后terminal
+wsl.exe-d Ubuntu
+
 # 常用语句
 ```solidity
 vm.assume(_caller != flaunch.owner());  模糊测试中的限定条件，不符合的直接跳过，这个语句中要求 caller不能是owner
@@ -321,3 +328,35 @@ call contract          // 真正触发事件
 --mt  匹配测试
 
 ```
+
+# updraft
+anvil  开启本地虚拟环境
+部署 目前看就是需要用--broadcast
+$ forge create SimpleStorage --private-key ac0974bec39a17e36ba4a6b4d238fcbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545 --broadcast
+不提供私钥，就要知道unlocked和from的地址
+$ forge create SimpleStorage --unlocked --from 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --rpc-url http://127.0.0.1:8545 --broadcast
+
+通script部署
+forge script script/SimpleStorage.s.sol --private-key ac0974bec39a17e3478cbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545 --broadcast
+
+转换16进展，另外cast --help看用法
+cast --to-base 0x714e1 dec
+
+source .env  .env文件里，=两边不能有空格
+echo $PRIVATE_KEY
+
+用cast wallet 来管理私钥
+cast wallet import key-name --interactive
+最安全的做法是另起一个终端，然后输入这个命令，然后输入完密码与私钥后，清除掉历史 history -c
+加密后的数据在根目录的.foundry/keystores文件夹中
+
+forge script script/SimpleStorage.s.sol --rpc-url $RPC_KEY --broadcast --account minner-key --sender 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+
+
+admin@Minner-PC MINGW64 ~/Codes/foundry-f23/foundry-simple-storage-f23 (main)
+$ cast send 0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6 "store(uint256)" 1337 --rpc-url $RPC_URL --account minner-key
+
+部署
+forge script script/SimpleStorage.s.sol --rpc-url $RPC_URL_SEPOLIA --broadcast --account sepolia-01 --with-gas-price 2gwei -vvvv
+
+forge fmt
