@@ -359,4 +359,6 @@ $ cast send 0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6 "store(uint256)" 1337 --r
 部署
 forge script script/SimpleStorage.s.sol --rpc-url $RPC_URL_SEPOLIA --broadcast --account sepolia-01 --with-gas-price 2gwei -vvvv
 
-forge fmt
+forge fmt 格式化文档
+
+forge script script/DeployFundMe.s.sol:DeployFundMe --rpc-url $(SEPOLIA_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
