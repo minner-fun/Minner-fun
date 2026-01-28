@@ -368,6 +368,8 @@ github项目地址为https://github.com/smartcontractkit/chainlink-brownie-contr
 安装命令为：forge install smartcontractkit/chainlink-brownie-contracts@0.6.1
 
 
+chainlink的vrf2.5的安装地址：forge install /smartcontractkit/chainlink-brownie-contracts
+
 -v的个数的含义
 ```
 Verbosity levels:
