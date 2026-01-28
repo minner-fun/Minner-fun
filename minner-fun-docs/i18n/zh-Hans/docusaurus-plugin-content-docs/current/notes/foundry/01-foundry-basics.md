@@ -369,6 +369,7 @@ github项目地址为https://github.com/smartcontractkit/chainlink-brownie-contr
 
 
 chainlink的vrf2.5的安装地址：forge install /smartcontractkit/chainlink-brownie-contracts
+项目链接为：https://github.com/smartcontractkit/chainlink-brownie-contracts
 
 -v的个数的含义
 ```
