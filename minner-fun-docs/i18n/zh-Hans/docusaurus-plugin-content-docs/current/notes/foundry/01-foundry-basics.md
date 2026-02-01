@@ -387,7 +387,8 @@ forge coverage --fork-url $SEPOLIA_RPC_URL
 
 部署合约时，如果直接在测试合约中new xx(),那么msg.sender就为测试合约。如果是用了vm.startBroadcast();其实msg.sender就是我们的默认外部账号的地址。这个地址和anvil链上没有关系。这是测试内置的账号。
 
-vm.deal(alice, BALANCE)
+address alice = makeAddr("alice"); 创造alice用户
+vm.deal(alice, BALANCE) 给alice加钱
 vm.prank(alice) 下一行是alice执行
 
 vm.startPrank(alice)
