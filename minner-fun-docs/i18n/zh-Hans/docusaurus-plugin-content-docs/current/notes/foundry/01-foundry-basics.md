@@ -418,3 +418,49 @@ cast storage 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 2  通过合约地址查
 $ forge script DeployFundMe --rpc-url $ANVIL_RPC_URL --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast
 
 forge install Cyfrin/foundry-devops 安装包
+
+
+
+```solidity
+// Layout of the contract file:
+// version
+// imports
+// errors
+// interfaces, libraries, contract
+​
+// Inside Contract:
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
+​
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// view & pure functions
+```
+
+状态变量加上 s_的前缀，event不是随便用的，用着状态变量改变的时候
+
+
+CEI模式，先检查，再改装，最后进行交互
+```solidity
+function coolFunction() public {
+    // Checks
+    checkX();
+    checkY();
+​
+    // Effects
+    updateStateM();
+​
+    // Interactions
+    sendA();
+    callB();
+}
+```
