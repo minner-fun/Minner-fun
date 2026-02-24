@@ -464,3 +464,10 @@ function coolFunction() public {
     callB();
 }
 ```
+
+--fork-url  把某条链的相关状态fork到本地，来测试
+--rpc-url   指定要在某条链上做事，只能是部署的时候，script有效，test无效
+
+--broadcast 进行广播，把交易发送到链上， 执行脚本的时候如果不加这个，就只是模拟执行
+
+vm.startBroadcast(), vm.stopBroadcast() 凡是修改链上数据的操作，都需要用这个包裹。
