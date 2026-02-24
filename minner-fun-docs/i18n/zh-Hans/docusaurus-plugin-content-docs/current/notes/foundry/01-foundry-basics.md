@@ -487,3 +487,9 @@ function testEmitsEventOnEntrance() public {
 ```
 
 vm.warp(block.timestamp + interval + 1); 改变时间戳
+
+一个库，用来提供erc20了。
+```
+forge install transmissions11/solmate --no-commit
+@solmate/=lib/solmate/src
+```
