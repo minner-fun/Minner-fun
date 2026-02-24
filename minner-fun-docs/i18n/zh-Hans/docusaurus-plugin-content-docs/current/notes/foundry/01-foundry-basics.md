@@ -464,3 +464,19 @@ function coolFunction() public {
     callB();
 }
 ```
+
+测试事件
+要现在测试文件中再次定义出来这个错误，然后
+```solidity
+function testEmitsEventOnEntrance() public {
+    vm.prank(alice);
+    // 期待抛出的错误
+    vm.expectEmit(true, false, false, false, address(raffle));
+    // 在测试文件中主动触发一次
+    emit EnteredRaffle(alice);
+    // 调用实际的代码
+    raffle.enterRaffle{value: 0.5 ether}();
+}
+```
+
+vm.warp(block.timestamp + interval + 1); 改变时间戳
