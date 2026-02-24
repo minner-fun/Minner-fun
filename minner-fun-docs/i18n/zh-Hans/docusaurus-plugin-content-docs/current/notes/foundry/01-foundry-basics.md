@@ -493,3 +493,6 @@ vm.warp(block.timestamp + interval + 1); 改变时间戳
 forge install transmissions11/solmate --no-commit
 @solmate/=lib/solmate/src
 ```
+
+git 忽略子模块
+git config submodule.lib/chainlink-brownie-contracts.ignore all
