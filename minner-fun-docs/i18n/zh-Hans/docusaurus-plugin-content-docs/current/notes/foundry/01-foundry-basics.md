@@ -499,3 +499,13 @@ git config submodule.lib/chainlink-brownie-contracts.ignore all
 
 forge install Cyfrin/foundry-devops --no-commit
 
+-f强制卸载掉某个包 
+forge remove smartcontractkit/chainlink-brownie-contracts -f
+
+github拉下来一个新仓库，通过这个命令初始化安装依赖
+git submodule update --init --recursive
+
+--report xxx后面有一个选项，debug还能看，summary其实就是和forge coverage效果一样
+forge coverage --report debug > coverage.txt
+
+foundry 测试方法有形参，那么就形成模糊测试，foundry会自动给这个方法随机值
