@@ -496,3 +496,6 @@ forge install transmissions11/solmate --no-commit
 
 git 忽略子模块
 git config submodule.lib/chainlink-brownie-contracts.ignore all
+
+forge install Cyfrin/foundry-devops --no-commit
+
