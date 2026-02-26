@@ -509,3 +509,15 @@ git submodule update --init --recursive
 forge coverage --report debug > coverage.txt
 
 foundry 测试方法有形参，那么就形成模糊测试，foundry会自动给这个方法随机值
+模糊测试使用bound设置参数的取数范围
+```solidity
+uint256 additionalEntrants = bound(additionalEntrantsNum, 1, 10000);
+```
+gas消耗问题：定义一个数组，然后重新赋值新数组。其实这会消耗大量gas，随着元素的增多而增多。改用mapping与count的组合，将地址放入mapping中，用count计数，当需要清空时，直接把count置为0，从头开始覆盖。
+```
+address payable[] s_players
+s_players = new address payable[](0)
+
+mapping(uint256 => address payable) s_players;
+uint256 s_players = 0;
+```
