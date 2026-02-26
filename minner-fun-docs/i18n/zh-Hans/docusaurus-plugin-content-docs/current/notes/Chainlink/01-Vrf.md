@@ -37,3 +37,4 @@ function fulfillRandomWords(
     s_recentWinner = winner;
 }
 ```
+界面的操作步骤截图说明，领水的地址，安装依赖库，mock的使用，如何创建订阅，添加消费者，给账号充值等
