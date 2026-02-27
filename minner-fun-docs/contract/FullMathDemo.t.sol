@@ -269,9 +269,56 @@ library PracticalMath {
         uint256 weight2
     ) internal pure returns (uint256) {
         uint256 totalWeight = weight1 + weight2;
-        uint256 weighted1 = FullMath.mulDiv(value1, weight1, totalWeight);
-        uint256 weighted2 = FullMath.mulDiv(value2, weight2, totalWeight);
-        return weighted1 + weighted2;
+        
+        // Compute (value1 * weight1 + value2 * weight2) / totalWeight
+        // with single division to avoid double truncation
+        
+        assembly {
+            // Compute value1 * weight1 in 512-bit
+            let mm1 := mulmod(value1, weight1, not(0))
+            let prod1Low := mul(value1, weight1)
+            let prod1High := sub(sub(mm1, prod1Low), lt(mm1, prod1Low))
+            
+            // Compute value2 * weight2 in 512-bit
+            let mm2 := mulmod(value2, weight2, not(0))
+            let prod2Low := mul(value2, weight2)
+            let prod2High := sub(sub(mm2, prod2Low), lt(mm2, prod2Low))
+            
+            // Add the two 512-bit products
+            let sumLow := add(prod1Low, prod2Low)
+            let sumHigh := add(add(prod1High, prod2High), lt(sumLow, prod1Low))
+            
+            // Divide the 512-bit sum by totalWeight
+            // Ensure result fits in 256 bits
+            if iszero(lt(sumHigh, totalWeight)) {
+                if sumHigh {
+                    revert(0, 0)
+                }
+            }
+            
+            let result := 0
+            if iszero(sumHigh) {
+                // Simple case: high part is zero
+                result := div(sumLow, totalWeight)
+            }
+            if sumHigh {
+                // Full 512-bit division: (sumHigh * 2^256 + sumLow) / totalWeight
+                // Formula: sumHigh * (2^256 / totalWeight) + (sumHigh * (2^256 % totalWeight) + sumLow) / totalWeight
+                
+                // Calculate 2^256 / totalWeight
+                // Note: 2^256 = type(uint256).max + 1, so 2^256 / d = floor((2^256-1) / d) + 1
+                let quot256 := add(div(not(0), totalWeight), 1)
+                
+                // Calculate 2^256 % totalWeight = (type(uint256).max % totalWeight + 1) % totalWeight
+                let rem256 := mod(add(mod(not(0), totalWeight), 1), totalWeight)
+                
+                // Result = sumHigh * quot256 + (sumHigh * rem256 + sumLow) / totalWeight
+                result := add(mul(sumHigh, quot256), div(add(mul(sumHigh, rem256), sumLow), totalWeight))
+            }
+            
+            mstore(0, result)
+            return(0, 32)
+        }
     }
 }
 
