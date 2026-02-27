@@ -1,5 +1,9 @@
 
 # updraft
+forge init   初始化项目
+forge init --force
+
+
 anvil  开启本地虚拟环境
 部署 目前看就是需要用--broadcast
 $ forge create SimpleStorage --private-key ac0974bec39a17e36ba4a6b4d238fcbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545 --broadcast
