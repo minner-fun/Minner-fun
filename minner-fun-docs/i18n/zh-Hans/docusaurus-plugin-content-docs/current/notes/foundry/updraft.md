@@ -3,15 +3,35 @@
 forge init   初始化项目
 forge init --force
 
+forge fmt 格式化，把自动保存改用光标转移保存，不设置自动保存。手动firge fmt格式化
 
 anvil  开启本地虚拟环境
-部署 目前看就是需要用--broadcast
+部署 目前看就是需要用--broadcast 意思是进行广播，进行实际部署，如果不加表示模拟部署
 $ forge create SimpleStorage --private-key ac0974bec39a17e36ba4a6b4d238fcbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545 --broadcast
 不提供私钥，就要知道unlocked和from的地址
 $ forge create SimpleStorage --unlocked --from 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --rpc-url http://127.0.0.1:8545 --broadcast
 
 通script部署
 forge script script/SimpleStorage.s.sol --private-key ac0974bec39a17e3478cbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545 --broadcast
+
+forge create SimpleStorage --interactive 表示交互式输入私钥
+不写--rpc-url 默认使用Anvil的网络
+
+foundry的最佳实践https://www.getfoundry.sh/best-practices#scripts
+forge-std称为Forge标准库，旨在简化和增强foundry开发框架内的脚本编写和测试能力
+
+关于script，运行script 会参数broadcast文件夹，里面是运行记录。
+每一个script都要继承Script，并且实现run方法，可见性为external类型
+脚本都用.s.sol结尾
+
+source .env
+echo $PRIVATE_KEY
+
+开发可以使用.env, 生产环境要用 cast wallet import
+```
+cast wallet import nameOfAccountGoesHere --interactive
+cast wallet list
+```
 
 转换16进展，另外cast --help看用法
 cast --to-base 0x714e1 dec
@@ -144,7 +164,7 @@ function coolFunction() public {
 
 --broadcast 进行广播，把交易发送到链上， 执行脚本的时候如果不加这个，就只是模拟执行
 
-vm.startBroadcast(), vm.stopBroadcast() 凡是修改链上数据的操作，都需要用这个包裹。
+vm.startBroadcast(), vm.stopBroadcast() 表示这之间的代码是要发送的交易，交易就是要修改区块链状态的行为
 
 测试事件
 要现在测试文件中再次定义出来这个错误，然后
