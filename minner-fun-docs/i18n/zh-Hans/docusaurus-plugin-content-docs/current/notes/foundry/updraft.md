@@ -12,6 +12,11 @@ cast --to-base 0x714e1 dec
 cast send 0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6 "store(uint256)" 1337 --rpc-url $RPC_URL --account minner-key
 ```
 
+### call
+```shell
+cast call 0x5FbDB2315678afecb367f032d93F642f64180aa3 "retrieve()"
+```
+
 ## cast wallet
 [官方文档](https://www.getfoundry.sh/reference/cast/wallet)另外还有几个命令是关于助记词的，还有签名用的  
 加密后的数据在根目录的.foundry/keystores文件夹中
