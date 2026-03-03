@@ -247,7 +247,12 @@ function testWithdrawFromASingleFunder() public funded {
     assertEq(startingOwnerBalance + startingFundMeBalance, endingOwnerBalance);
 }
 ```
+## 通过存储分析gaa
+fundme的21课从存储结构的角度，解读如何节省gas
 
+vm.load();  加载存储数据
+forge inspect FundMe storageLayout 查看存储超结构
+cast storage 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 2  通过合约地址查看存储情况
 
 
 ## 其他
@@ -294,10 +299,6 @@ uint160 是可以直接转为 address类型， uint256不行
 
 chisel 是一个交互环境
 
-
-vm.load();  加载存储数据
-forge inspect FundMe storageLayout 查看存储超结构
-cast storage 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 2  通过合约地址查看存储情况
 
 
 部署
