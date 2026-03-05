@@ -307,7 +307,46 @@ $ forge script DeployFundMe --rpc-url $ANVIL_RPC_URL --private-key 0xac0974bec39
 forge install Cyfrin/foundry-devops 安装包
 
 
+## 代码风格
+### NATSPEC 注释
+官方文档：https://docs.soliditylang.org/zh-cn/v0.8.24/natspec-format.html#natspec
 
+```
+@title
+A title that should describe the contract/interface
+contract, library, interface, struct, enum, enum values
+
+@author
+The name of the author
+contract, library, interface, struct, enum, enum values
+
+@notice
+Explain to an end user what this does
+contract, library, interface, function, public state variable, event, struct, enum, enum values error
+
+@dev
+Explain to a developer any extra details
+contract, library, interface, function, state variable, event, struct, enum, enum values, error
+
+@param
+Documents a parameter just like in Doxygen (must be followed by parameter name)
+function, event, enum values, error
+
+@return
+Documents the return variables of a contract’s function
+function, enum, enum values, public state variable
+
+@inheritdoc
+Copies all missing tags from the base function (must be followed by the contract name)
+function, enum, enum values, public state variable
+
+@custom:...
+Custom tag, semantics is application-defined
+everywhere
+```
+
+### 代码布局排序
+https://docs.soliditylang.org/en/latest/style-guide.html#order-of-layout
 ```solidity
 // Layout of the contract file:
 // version
@@ -333,10 +372,14 @@ forge install Cyfrin/foundry-devops 安装包
 // view & pure functions
 ```
 
-状态变量加上 s_的前缀，event不是随便用的，用着状态变量改变的时候
+### 变量命名风格
+状态变量加上 s_的前缀
+immutable 变量前加i_
+自定义错误前 加上合约名字 error Raffle_NotEnoughEthSend();
 
+，event不是随便用的，用着状态变量改变的时候
 
-CEI模式，先检查，再改装，最后进行交互
+### CEI模式，先检查，再改装，最后进行交互
 ```solidity
 function coolFunction() public {
     // Checks
