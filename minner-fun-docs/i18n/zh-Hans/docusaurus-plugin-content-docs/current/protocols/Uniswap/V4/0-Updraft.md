@@ -47,3 +47,10 @@ PoolId p = PoolId.wrap(i);  // 转回自定义类型用于其他逻辑
 lock 与 unlock是把状态做了瞬态存储
 
 _accountDelta 负数 表示用户从PoolManager提取了代币，，正，表示用户向PoolManager发送了代币
+
+也就是说router合约就要实现unlockCallback方法？ 流动性的添加前的hook调用
+
+限价单hook 原理是把很多个订单放到一个buckets 里面，然后存入solt中，根据solt的排序，要么一批都成功，要么不成功。
+
+hook合约的权限是通过create2把权限写到hook合约地址的后几位上，所以就需要找合适的solt来使合约地址恰好能表达hook的函数的开通权限
+在hook中调用到初始的发送交易的地址。通过在router中建立 getMsgSender方法，来返回调用者地址
