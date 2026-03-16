@@ -1,9 +1,11 @@
 Currency 保存的0地址表示的是该链的原生代币，非零的即为ERC-20代币
 
 Currency类型 把原生代币与erc20代币，的转账，查询余额等操作统一了。在外部统一用Currency，在Curreny内部再判断代币类型，执行对应的转账，查余额等方法。典型应用就是用着PoolKey结构中。
+对于转账都使用了汇编语言，可以再看下transfer方法如何使用的。一个问题，创建代币池的时候如何把eth转成Currency的
 
-PoolKey结构来定义交易对的唯一性，代币对，加上费率，价格变动的力度，加上hook的情况，共同标记了一个流动性池的唯一性   
-PoolId：把PoolKey进行keccak256哈希的结果。是bytes32类型，在univ4，作为查询某个流动性池的主键
+
+PoolKey：是人类友好的结构，定义交易对的唯一性，代币对，加上费率，价格变动的颗粒度，加上hook的用户自定义逻辑，这5个元素，共同标记了一个流动性池的唯一性   
+PoolId：机器友好，把PoolKey进行keccak256哈希的结果。是bytes32类型，在univ4，作为查询某个流动性池的主键
 ```solidity
 struct PoolKey {
     /// @notice The lower currency of the pool, sorted numerically
@@ -11,14 +13,14 @@ struct PoolKey {
     /// @notice The higher currency of the pool, sorted numerically
     Currency currency1;
     /// @notice The pool LP fee
-    uint24 fee;
+    uint24 fee;          // 1/1,000,000,, 3000 表示 0.3%   3000/1,000,000 = 3/1,000 = 即千分之3 百分之0.3
     /// @notice The tick spacing for the pool
-    int24 tickSpacing;
+    int24 tickSpacing;     // 费用等级和 刻度间隔是对应关系，0.3% 对应60
     /// @notice The hooks contract for the pool
-    IHooks hooks;
+    IHooks hooks;          // 默认为address(0) 
 }
 ```
-
+User Defined Value Types (UDVTs)
 UDVTs 用户自定义类型
 ```solidity
 type Currency is address;
@@ -29,7 +31,7 @@ type PoolId is bytes32;
 unwrap() 把用户自定义类型转回原始的类型
 wrap() 把原始类型转回自定义类型
 ```
-在log的时候比较有用
+在log中，需要现将自定义类型转换原始类型，才能在log中输出
 ```solidity
 
 // To log it, we must convert it back to bytes32
@@ -39,6 +41,12 @@ console.logBytes32(i);   // 转成原始类型打印
 // To convert a bytes32 back to a PoolId, we use wrap()
 PoolId p = PoolId.wrap(i);  // 转回自定义类型用于其他逻辑
 ```
+根据Poolid 查询Poolkey的信息，可以去dune上的表里查询
+```sql
+select * from uniswap_v4_ethereum.poolmanager_evt_initialize where id = 0x3ea74c37fbb79dfcd6d760870f0f4e00cf4c3960b3259d0d43f211c0547394c1
+```
+
+
 
 调用swap的流程：要先调用unlock方法，然后unlock方法会回调，该合约的的unlockCallback方法。所以只能是合约才能调用unlock方法，并且这个合约要实现了unlockCallback方法，也就是要实现IUnlockCallback接口
 
