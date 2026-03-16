@@ -48,20 +48,40 @@ select * from uniswap_v4_ethereum.poolmanager_evt_initialize where id = 0x3ea74c
 
 
 
-调用swap的流程：要先调用unlock方法，然后unlock方法会回调，该合约的的unlockCallback方法。所以只能是合约才能调用unlock方法，并且这个合约要实现了unlockCallback方法，也就是要实现IUnlockCallback接口
+调用swap的流程：要先调用unlock方法，然后unlock方法会回调，该合约的的unlockCallback方法。所以只能是合约才能调用unlock方法，并且这个合约要实现了unlockCallback方法，也就是要实现IUnlockCallback接口。在这个过程中使用了两相技术，瞬态存储transient storage，和结算检查（Settlement Check）
 
 检查NonzeroDeltaCount，进行结算检查
 
 lock 与 unlock是把状态做了瞬态存储
 
-_accountDelta 负数 表示用户从PoolManager提取了代币，，正，表示用户向PoolManager发送了代币
+Transient vs State storage 两点主要的不同：1、生命周期，T只在一个交易内。S永久保存在链上。所以就有了2. Gas消耗的不同T消耗的少，S消耗的多。
+T的两个典型应用：Re-entrancy Locks重入锁。数据只在一个调用周期有用，调用结束，数据即用不到了，完美契合T。如果用S反而还要主动清除，并且gas消耗高，没有必要。另外一个应用是，可以传递上下文参数，在多个外部调用直接共享数据。PM合约中的sync方法，与_settle方法中的erc20代币的分支就是用到了CurrencyReserves.sol中的方法，实现了传递数据
+在EIP-1153中引入，solidity>=0.8.24可用
+```solidity
+tstore(slot, value) 把数据存储在给的slot位置。 slot是bytes32类型。
+tload(slot)
+```
+
+
+NonzeroDeltaCount 故名思意，就是非零的Delta的个数，Delta通常表示变化的量。所以这里表示的是没有被平掉的账单的个数。只是记录的个数。
+```solidity
+(int256 previous, int256 next) = currency.applyDelta(target, delta);
+// previous:表示原本值，如果原本的值是0，表示是新加了账单，所以要NonzeroDeltaCount 要加一
+// next：表示applyDelta后的值，如果是0表示某个账单被平了，所以要减一
+```
+
+_accountDelta方法中的delta参数 的正负是从PoolManager的角度来评判的： 负数 表示PM的余额少了，即为表示用户从PoolManager提取了代币，所以后续用户要还上，正，表示PM的余额多了，表示用户向PoolManager发送了代币，后续用户可以提取其他代币。
 
 也就是说router合约就要实现unlockCallback方法？ 流动性的添加前的hook调用
+
+
 
 限价单hook 原理是把很多个订单放到一个buckets 里面，然后存入solt中，根据solt的排序，要么一批都成功，要么不成功。
 
 hook合约的权限是通过create2把权限写到hook合约地址的后几位上，所以就需要找合适的solt来使合约地址恰好能表达hook的函数的开通权限
 在hook中调用到初始的发送交易的地址。通过在router中建立 getMsgSender方法，来返回调用者地址
+
+
 
 
 
