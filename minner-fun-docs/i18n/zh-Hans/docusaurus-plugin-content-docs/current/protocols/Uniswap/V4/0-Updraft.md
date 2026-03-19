@@ -78,11 +78,11 @@ swap的流程
 ```
 router合约调用MP的unlock
 
-回调router中的unlockCallbac
+回调router中的unlockCallback
 
-unlockCallbac中  执行swap，take， sync(), settle()
+unlockCallback中  执行swap，take， sync(), settle()
 
-最后，unlockCallbac结束
+最后，unlockCallback结束
 unlock执行检测NonzeroDeltaCount是否为0
 ```
 关键点：sync，必须在settle前调用。因为要先把转账之前的余额暂存好，才能取出来用
@@ -112,12 +112,23 @@ v4-periphery/src/base/DeltaResolver.sol
 
 
 
-限价单hook 原理是把很多个订单放到一个buckets 里面，然后存入solt中，根据solt的排序，要么一批都成功，要么不成功。
 
 hook合约的权限是通过create2把权限写到hook合约地址的后几位上，所以就需要找合适的solt来使合约地址恰好能表达hook的函数的开通权限
-在hook中调用到初始的发送交易的地址。通过在router中建立 getMsgSender方法，来返回调用者地址
+
+在hook中调用到初始的发送交易的地址。通过在router中建立 getMsgSender方法，然后PoolManager把router以sender参数，传递给hook合约中的方法总，然后在hook中在回调router中的getMseSender方法。从而就拿到了
+最初的外部调用地址
 
 
+市价单：立即成交，但是会有价格变动，滑点的风险
+限价单：指定价格，但是不一定能成交
+
+限价单是在最小单位的tick上提供流动性，在交易完成后，通过hook撤回流动性，v3也能实现，但是v3没有hook，依赖外部合约或者链下触发
+
+限价单hook 原理是把很多个订单放到一个buckets 里面，每个价格对应的tick作为一个buckets。然后存入solt中，根据solt的排序
+
+bucket_id: 表示是的 某个池子，某个tick，某个交易方向，是由这三个参数hash生成的，bucket_id并不是具体某个bucket生成的。而是代表着一类bucket。
+slots： 在bucket_id所表示的某个池子中，的某个tick上的某个方向的交易的这一类的bucket中，某个bucket的编号。
+bucket：把（某个池子中，tick相同，交易方向相同的用户发出的限价单）合并后，创建一个单独的头寸。
 
 
 

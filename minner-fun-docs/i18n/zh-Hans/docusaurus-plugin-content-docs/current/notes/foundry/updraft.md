@@ -115,6 +115,8 @@ vm.roll(block.number + 1);    // 区块加一
 
 vm.txGasPrice(GAS_PRICE); foundry的作弊码，用来改变tx.gasprice
 
+vm.envBytes32() 从环境变量中读取bytes32类型的数据
+vm.envUint() 从环境变量中读取uint256类型的数据
 ```
 
 ### 测试事件 是否被触发
