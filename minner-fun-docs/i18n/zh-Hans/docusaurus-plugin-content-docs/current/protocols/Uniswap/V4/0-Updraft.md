@@ -157,6 +157,24 @@ positionManager.modifyLiquidities ->BaseActionsRouter._executeActions -> poolMan
 -> BaseActionsRouter._executeActionsWithoutUnlock -> positionManager._handleAction
 ```
 
+具体例子mint 一个pusition：1、Actions.MINT_POSITION创建仓位，和账单。1、Actions.SETTLE_PAIR付账单
+_settlePair 里面分别是currency0和currency1的_settle，因为是添加流动性，两个代币都需要提供
+特殊情况，如果创建仓位，其中1个是eth，这就需要我们在最初调用modifyLiquidities的时候就要把eth转给PositionManager。所以最后需要额外执行一步 SWEEP,用来回收没有用完的eth。因为在用户创建的时候是不清楚具体需要多少eth的，首先要支付多一些eth，然后实际创建的时候，可能有剩余
+
+
+v4中提取fee：Zero-Liquidity Decrease，用减少流动性的动作出发，但是减少的量为0。因为每次多流动性的变动，都会从新计算费用。
+```solidity
+Actions.DECREASE_LIQUIDITY # 减少的量为0
+Actions.TAKE_PAIR
+```
+
+三个其他的操作
+```solidity
+CLOSE_CURRENCY  # 当你进行了一系列操作，你也不知道最后是欠还是被欠，直接调用这个动作，会自动调用poolManager.currencyDelta来进行判断，如果是负的，表示欠钱，就调_settle，否则就调_take
+CLEAR_OR_TAKE # 如果金额太小不值当的提取，那么就直接清除掉。需要提供一个阈值，小于这个值就清除，大于这个值正常_take提取
+SWEEP   # 把用户提供的多与eth返回给用户
+```
+
 v3 的pool 有token0， token1，fee，tickSpacing 4个元素构成
 price = \left(\frac{\sqrt{P_{X96}}}{2^{96}}\right)^2
 关键指标
