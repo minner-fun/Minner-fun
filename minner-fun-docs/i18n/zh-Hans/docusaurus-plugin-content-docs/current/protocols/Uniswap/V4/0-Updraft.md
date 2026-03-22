@@ -184,6 +184,20 @@ burn：BURN_POSITION, TAKE_PAIR  和decreaseLiquidity一样
 
 Subscriber: v4首创的订阅者模式，就相当于创建一个观察者合约，来接受某个position的变化信息，这个观察者只能是当前position的所有者可以创建。Subscriber合约要实现4个方法，添加订阅，取消订阅，流通性销毁，流动性变换。这些方法都是PositionManager在相应动作触发的时候来回调到Subscriber合约的。
 
+添加订阅的原理，与解除订阅时候的gas限制，再研究一下
+
+Reposition重新调整仓位，调用动作：BURN_POSITION， MINT_POSITION_FROM_DELTAS， TAKE_PAIR
+
+
+Universal Router:UniversalRouter.sol合约中的execute() public方法为入口点，循环执行命令，还有对应的参数。然后调用Dispatch.sol中的dispatch方法来做具体的命令的识别,在整个调用过程中，与调用v4的PositiomManager.sol有点类似。就是把命令与参数打包起来。但是不同的是，这里多了一层，commond参数，表示选v2，v3,v4的某个操作，然后执行的命令名字有所不同。从UniversalRouter.sol触发的调用，是调用的V4Route.sol。
+
+
+每个指令的最高位用来控制其成功与否的行为：默认0，表示此命令失败，整个交易都失败。1，此命令失败将被忽略，然后继续执行。关键判断代码如下，在UniversalRouter.sol的execute中。
+```solidity
+if (!success && successRequired(command)) {
+    revert ExecutionFailed({commandIndex: commandIndex, message: output});
+}
+```
 
 v3 的pool 有token0， token1，fee，tickSpacing 4个元素构成
 price = \left(\frac{\sqrt{P_{X96}}}{2^{96}}\right)^2
