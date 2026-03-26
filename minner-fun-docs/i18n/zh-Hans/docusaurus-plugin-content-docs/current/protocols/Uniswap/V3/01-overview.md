@@ -74,11 +74,11 @@ struct Slot0 {
 **Tick Spacing**（见 `UniswapV3Factory.sol:26-31`）：
 ```solidity
 // 不同手续费等级对应不同的 tickSpacing
-feeAmountTickSpacing[500] = 10;    // 0.05% 手续费 对应间隔10，价格也就标成了 0.1%
+feeAmountTickSpacing[500] = 10;    // 0.05% 手续费 对应间隔10，价格也就变成了 0.1%
 feeAmountTickSpacing[3000] = 60;   // 0.3% 手续费
 feeAmountTickSpacing[10000] = 200; // 1% 手续费
 ```
-
+并没有严格的计算关系，只是类似 fee/rate = 5。
 **为什么需要 Tick Spacing？**
 - 减少可用的 tick 数量，降低 gas 成本
 - 防止流动性过于分散
