@@ -68,6 +68,9 @@ cd my-project
 
 # 创建项目（使用模板）
 forge init --template https://github.com/foundry-rs/forge-template my-project
+
+# 强制在一个文件内初始化
+forge init --force
 ```
 
 ## 基本配置
@@ -296,3 +299,32 @@ forge tree
 - [Foundry Book](https://book.getfoundry.sh/) - 官方文档
 - [Foundry GitHub](https://github.com/foundry-rs/foundry) - 源代码和问题跟踪
 - [Forge Std](https://github.com/foundry-rs/forge-std) - 标准测试库
+
+
+# 启动wsl
+win键，然后terminal
+wsl.exe-d Ubuntu
+
+# 常用语句
+```solidity
+vm.assume(_caller != flaunch.owner());  模糊测试中的限定条件，不符合的直接跳过，这个语句中要求 caller不能是owner
+amount = bound(amount, min, max); 也是模糊测试中，限制条件。要求amount的范围在 min，max直接
+
+vm.prank(_caller);  prank 直接切换用户
+
+
+事件监听模式
+vm.expectEmit()        // 开始“监听期望”
+emit ExpectedEvent(...)// 定义“我期望看到什么”  这是测试合约里的emit，表示期望被测合约发出这样的emit，自身并不会真的emit出来
+call contract          // 真正触发事件
+                       // Foundry 自动比对
+
+```
+无论加多少vvv，模糊测试中的log不打印
+
+
+```
+--mp  指定路径
+--mt  匹配测试
+
+```

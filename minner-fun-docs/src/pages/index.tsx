@@ -25,7 +25,7 @@ function HomepageHeader() {
           </Link>
           <Link
             className="button button--primary button--lg"
-            to="/docs/protocols/uniswap-v2/overview">
+            to="/docs/protocols/Uniswap/V2/overview">
             🔬 Protocols
           </Link>
           <Link

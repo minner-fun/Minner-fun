@@ -104,7 +104,7 @@ const config: Config = {
             },
             {
               label: 'Protocols',
-              to: '/docs/protocols/uniswap-v2/overview',
+              to: '/docs/protocols/Uniswap/V2/overview',
             },
             {
               label: 'Projects',
