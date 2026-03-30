@@ -422,5 +422,33 @@ git submodule update --init --recursive
 
 
 
+当安装了某个库，然后有卸载又安装反复折腾后
+```shell
+git submodule deinit -f -- lib/openzeppelin-contracts-upgradeable
+git rm -f lib/openzeppelin-contracts-upgradeable
+rm -rf .git/modules/lib/openzeppelin-contracts-upgradeable
+rm -rf lib/openzeppelin-contracts-upgradeable
+forge install OpenZeppelin/openzeppelin-contracts-upgradeable@release-v4.9  # 指定release-v4.9分支
+forge build
+```
+
+MLaunch
+onlyOwner initializer 的问题
+```solidity
+    function initialize(
+        PositionManager _positionManager,
+        address _memecoinTreasuryImplementation
+    ) external onlyOwner initializer {
+        positionManager = _positionManager;
+        memecoinTreasuryImplementation = _memecoinTreasuryImplementation;
+    }
 
 
+    constructor(address _memecoinImplementation, string memory _baseURI) {
+        s_memecoinImplementation = _memecoinImplementation;
+        s_baseURI = _baseURI;      ??????????
+        _initializeOwner(msg.sender);      ?????????????
+    }
+
+```
+erc 721 三个抽象方法，baseURI是啥意思
