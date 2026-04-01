@@ -127,7 +127,15 @@ v4-periphery/src/base/DeltaResolver.sol
 
 
  流动性的添加前的hook调用
+流动性的相关计算，参考这个库 D:\qifumin\flaunchgg-contracts\lib\v4-core\test\utils\LiquidityAmounts.sol
+根据代币，和上下tick范围，计算能添加出来的流动性
+根据流动性，和上下范围，计算需要提供多少代币
 
+
+tick 和 sqrtPriceX96的换算工具D:\qifumin\cyfrin\SafeLaunch\lib\v4-core\src\libraries\TickMath.sol
+查询所有可用的tick
+更具价格算tick
+根据tick算价格
 
 
 hook合约的权限是通过create2把权限写到hook合约地址的后几位上，所以就需要找合适的solt来使合约地址恰好能表达hook的函数的开通权限
