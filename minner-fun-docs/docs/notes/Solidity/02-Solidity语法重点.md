@@ -65,7 +65,7 @@ tx.origin 会让合约更容易受到 钓鱼攻击 (phishing attack)。
 ## payable
 *一句话：你想让那个方法在调用时可以接受eth，就给那个函数加payable修饰符*
 
-构造函数写成 constructor() payable { ... } 才是正确的。  
+构造函数写成 `constructor() payable { ... }` 才是正确的。  
 你是否需要构造函数 payable，取决于要不要在部署时就存钱进去。 如果要让合约在运行中收钱，记得给收款函数加 payable 或写 receive()。
 
 payable是类似于external，view之类的修饰，所以要写在函数()之后。另外给构造函数constructor()添加payable，只能使函数在部署时，可以接受eth。并不是任何时候都可以接受了。因为只有部署时，构造函数才被调用。让合约可以在运行中收钱，就是设置通用的receive(),callback()方法。或者指定某个函数是payable
@@ -435,7 +435,7 @@ delegatecall 的目的是为了使用存储在另一个合约中的库代码。 
 delegatecall 使变量是存储到自身合约中的。调用合约与被调用合约的状态变量顺序要对应。
 https://docs.soliditylang.org/zh-cn/v0.8.24/introduction-to-smart-contracts.html#index-13
 
-#### 特别注意：delegatecall不能传{value:xxx,gas:xxx}
+#### 特别注意：delegatecall不能传`{value:xxx,gas:xxx}`
 ```solidity
 // 传参方法与call完全一致
 (bool success, bytes memory _data) = target.delegatecall(abi.encodeWithSelector(Callee.set.selector, _num));
@@ -448,7 +448,7 @@ https://docs.soliditylang.org/zh-cn/v0.8.24/introduction-to-smart-contracts.html
 也就是说staticcall只能查询第三合约的数据，主要是查询，没有权限修改
 https://chatgpt.com/s/t_68a04cc99eac8191ade24b3175a639de
 
-#### 特别注意：staticcall也不能传{value:xxx,gas:xxx}
+#### 特别注意：staticcall也不能传`{value:xxx,gas:xxx}`
 
 
 ## delegatecall 与 staticcall案例

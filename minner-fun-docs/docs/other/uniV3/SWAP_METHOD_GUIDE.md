@@ -44,8 +44,8 @@ function swap(
 | 参数 | 类型 | 说明 |
 |------|------|------|
 | `recipient` | address | 接收输出代币的地址 |
-| `zeroForOne` | bool | `true` = 用 token0 换 token1（价格下降）<br>`false` = 用 token1 换 token0（价格上升） |
-| `amountSpecified` | int256 | 正数 = 精确输入模式（指定输入数量）<br>负数 = 精确输出模式（指定输出数量） |
+| `zeroForOne` | bool | `true` = 用 token0 换 token1（价格下降）<br/>`false` = 用 token1 换 token0（价格上升） |
+| `amountSpecified` | int256 | 正数 = 精确输入模式（指定输入数量）<br/>负数 = 精确输出模式（指定输出数量） |
 | `sqrtPriceLimitX96` | uint160 | 价格下限/上限，防止滑点过大 |
 | `data` | bytes | 传递给回调函数的数据 |
 

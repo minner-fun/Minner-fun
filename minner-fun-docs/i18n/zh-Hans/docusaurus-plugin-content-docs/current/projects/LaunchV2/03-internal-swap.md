@@ -1,9 +1,0 @@
-# 3、internal swap
-只选择用eth购买其他代币的交易
-
-出售的token从当前的poolKey的fee池中出
-
-关于具体兑换多少代币调用SwapMath.computeSwapStep来计算
-注意 params.amountSpecified 的符号的正负，表示精确输入还是精确输出，然后配合zeroForOne就能确定到底是谁兑换谁
-internal swap 完后，里面就take settle了，然后增减掉fee池中对应的额度。
-beforeSwapDelta_.getSpecifiedDelta() 就是返回上128位，beforeSwapDelta_.getUnspecifiedDelta，获取低128位对应相加，凑出来一个完整的amount0和amount1的数据
