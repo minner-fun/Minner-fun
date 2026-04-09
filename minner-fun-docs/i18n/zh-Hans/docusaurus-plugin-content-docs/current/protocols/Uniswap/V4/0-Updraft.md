@@ -127,7 +127,15 @@ v4-periphery/src/base/DeltaResolver.sol
 
 
  流动性的添加前的hook调用
+流动性的相关计算，参考这个库 D:\qifumin\flaunchgg-contracts\lib\v4-core\test\utils\LiquidityAmounts.sol
+根据代币，和上下tick范围，计算能添加出来的流动性
+根据流动性，和上下范围，计算需要提供多少代币
 
+
+tick 和 sqrtPriceX96的换算工具D:\qifumin\cyfrin\SafeLaunch\lib\v4-core\src\libraries\TickMath.sol
+查询所有可用的tick
+更具价格算tick
+根据tick算价格
 
 
 hook合约的权限是通过create2把权限写到hook合约地址的后几位上，所以就需要找合适的solt来使合约地址恰好能表达hook的函数的开通权限
@@ -257,23 +265,3 @@ if (!success && successRequired(command)) {
 }
 ```
 
-v3 的pool 有token0， token1，fee，tickSpacing 4个元素构成
-price = \left(\frac{\sqrt{P_{X96}}}{2^{96}}\right)^2
-关键指标
-TVL:总锁仓量，也就是这个池子里两种代币的总的价值，所以是数量*价格。amount0 * price0 + amount1 * price1. 数量，直接拿着池子的地址去对应token的balance方法去查。price 更具squtPriceX96来计算。这个当前只能获取到当前的amount，所以只能算当前的TVL。
-Volume_24H: 24小时交易量。根据某一个代币的转入转出量的绝对值，求和。只需要盯着一个算。
-Volume/TVL: 资金利用率。衡量资金活跃度。活跃度越高越好。
-Fee APR: 年化收益率。 fee = volume * fee_rate。    APR = daily_fee × 365 / TVL
-Volatility: 波动率。价格的标准差
-LP Score：综合打分
-```
-score =
-0.4 × volume_tvl
-+
-0.3 × fee_apr
--
-0.2 × volatility
--
-0.1 × liquidity_density
-```
-还是先整好自动调整的动作，这个简单，难的是策略，和回撤计算。
