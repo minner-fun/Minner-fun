@@ -27,7 +27,7 @@ const config: Config = {
   organizationName: 'facebook', // Usually your GitHub org/user name.
   projectName: 'docusaurus', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
 
   stylesheets: [
     {
@@ -112,16 +112,16 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Notes',
-              to: '/docs/notes/foundry/intro',
+              label: '笔记',
+              to: '/docs/notes/Foundry/updraft',
             },
             {
-              label: 'Protocols',
+              label: '协议',
               to: '/docs/protocols/Uniswap/V2/overview',
             },
             {
-              label: 'Projects',
-              to: '/docs/projects/fuzzing-template',
+              label: '项目',
+              to: '/docs/projects/LpManager/data-crawl',
             },
           ],
         },
