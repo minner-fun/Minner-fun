@@ -1,30 +1,30 @@
-# Uniswap V2 Overview
+# Uniswap V2 概览
 
-Uniswap V2 is an automated market maker (AMM) protocol that enables decentralized token swaps on Ethereum.
+Uniswap V2 是一个自动化做市商（AMM）协议，可在以太坊上实现去中心化代币交换。
 
-## Core Concepts
+## 核心概念
 
-### Constant Product Formula
+### 恒定乘积公式
 
-Uniswap V2 uses the constant product formula:
+Uniswap V2 使用恒定乘积公式：
 
 ```
 x * y = k
 ```
 
-Where:
-- `x` = reserve of token A
-- `y` = reserve of token B
-- `k` = constant product
+其中：
+- `x` = 代币 A 的储备量
+- `y` = 代币 B 的储备量
+- `k` = 恒定乘积
 
-When you trade, the product `k` remains constant (minus fees).
+当您交易时，乘积 `k` 保持不变（扣除手续费）。
 
-## Architecture
+## 架构
 
-### Core Contracts
+### 核心合约
 
 #### UniswapV2Pair
-The pair contract holds the reserves for two tokens and implements the core swap logic.
+配对合约持有两个代币的储备并实现核心交换逻辑。
 
 ```solidity
 interface IUniswapV2Pair {
@@ -47,7 +47,7 @@ interface IUniswapV2Pair {
 ```
 
 #### UniswapV2Factory
-Creates and tracks all pairs.
+创建并跟踪所有配对。
 
 ```solidity
 interface IUniswapV2Factory {
@@ -60,7 +60,7 @@ interface IUniswapV2Factory {
 ```
 
 #### UniswapV2Router02
-Helper contract that makes it easier to interact with pairs.
+辅助合约，使与配对的交互更容易。
 
 ```solidity
 interface IUniswapV2Router02 {
@@ -85,72 +85,72 @@ interface IUniswapV2Router02 {
 }
 ```
 
-## Key Features
+## 主要特性
 
-### 1. ERC-20 Pairs
-Any ERC-20 token can be paired with any other ERC-20 token.
+### 1. ERC-20 配对
+任何 ERC-20 代币都可以与任何其他 ERC-20 代币配对。
 
-### 2. Price Oracle
-Time-weighted average price (TWAP) oracle built into every pair:
+### 2. 价格预言机
+每个配对都内置了时间加权平均价格（TWAP）预言机：
 
 ```solidity
 uint public price0CumulativeLast;
 uint public price1CumulativeLast;
 ```
 
-### 3. Flash Swaps
-Borrow tokens, use them, and pay them back in the same transaction.
+### 3. 闪电交换
+在同一笔交易中借用代币、使用它们并偿还。
 
-### 4. Protocol Fee
-Optional 0.05% fee that can be turned on by governance (currently off).
+### 4. 协议费用
+可由治理开启的可选 0.05% 费用（目前关闭）。
 
-## Trading Fees
+## 交易手续费
 
-- **0.30%** fee on all trades
-- Paid by traders
-- Distributed to liquidity providers
+- 所有交易收取 **0.30%** 手续费
+- 由交易者支付
+- 分配给流动性提供者
 
-## Liquidity Provision
+## 流动性提供
 
-### Adding Liquidity
+### 添加流动性
 
-1. Approve tokens for router
-2. Call `addLiquidity()` with desired amounts
-3. Receive LP tokens representing your share
+1. 为路由器批准代币
+2. 使用所需数量调用 `addLiquidity()`
+3. 接收代表您份额的 LP 代币
 
-### Removing Liquidity
+### 移除流动性
 
-1. Approve LP tokens for router
-2. Call `removeLiquidity()`
-3. Receive proportional share of pool reserves
+1. 为路由器批准 LP 代币
+2. 调用 `removeLiquidity()`
+3. 接收池储备的按比例份额
 
-## Price Impact
+## 价格影响
 
-The larger your trade relative to pool reserves, the more price impact:
+相对于池储备，您的交易越大，价格影响就越大：
 
 ```
 price_impact = (amount_in / reserve_in) * 100%
 ```
 
-## Impermanent Loss
+## 无常损失
 
-When you provide liquidity, you're exposed to impermanent loss if the price ratio changes.
+当您提供流动性时，如果价格比率发生变化，您将面临无常损失。
 
-Formula for impermanent loss:
+无常损失公式：
 ```
 IL = 2 * sqrt(price_ratio) / (1 + price_ratio) - 1
 ```
 
-## Security Considerations
+## 安全考虑
 
-1. **Reentrancy Protection**: All state changes before external calls
-2. **Balance Checks**: Verify balances changed as expected
-3. **Deadline Parameters**: Prevent transactions from executing at unfavorable prices
-4. **Slippage Protection**: `amountOutMin` parameters
+1. **重入保护**：在外部调用之前进行所有状态更改
+2. **余额检查**：验证余额是否按预期更改
+3. **截止时间参数**：防止交易以不利价格执行
+4. **滑点保护**：`amountOutMin` 参数
 
-## Resources
+## 资源
 
-- [Uniswap V2 Documentation](https://docs.uniswap.org/protocol/V2/introduction)
-- [Smart Contracts](https://github.com/Uniswap/v2-core)
-- [Whitepaper](https://uniswap.org/whitepaper.pdf)
+- [Uniswap V2 文档](https://docs.uniswap.org/protocol/V2/introduction)
+- [智能合约](https://github.com/Uniswap/v2-core)
+- [白皮书](https://uniswap.org/whitepaper.pdf)
 

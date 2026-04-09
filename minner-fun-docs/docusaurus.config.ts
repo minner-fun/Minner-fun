@@ -1,6 +1,8 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -25,14 +27,23 @@ const config: Config = {
   organizationName: 'facebook', // Usually your GitHub org/user name.
   projectName: 'docusaurus', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
+
+  stylesheets: [
+    {
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+      type: 'text/css',
+      integrity: 'sha384-odtC+0UnitXhyN9sj2JKfAMrBGdTsNSFqRPqFiXxI94yt6mzAiJCb/qRcjPAIAz',
+      crossorigin: 'anonymous',
+    },
+  ],
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'zh-Hans'],
+    defaultLocale: 'zh-Hans',
+    locales: ['zh-Hans', 'en'],
   },
 
   presets: [
@@ -41,6 +52,8 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
         },
         blog: false,
         theme: {
@@ -67,19 +80,19 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'notesSidebar',
           position: 'left',
-          label: 'Notes',
+          label: '笔记',
         },
         {
           type: 'docSidebar',
           sidebarId: 'protocolsSidebar',
           position: 'left',
-          label: 'Protocols',
+          label: '协议',
         },
         {
           type: 'docSidebar',
           sidebarId: 'projectsSidebar',
           position: 'left',
-          label: 'Projects',
+          label: '项目',
         },
         {
           type: 'localeDropdown',
@@ -99,16 +112,16 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Notes',
-              to: '/docs/notes/foundry/intro',
+              label: '笔记',
+              to: '/docs/notes/Foundry/updraft',
             },
             {
-              label: 'Protocols',
+              label: '协议',
               to: '/docs/protocols/Uniswap/V2/overview',
             },
             {
-              label: 'Projects',
-              to: '/docs/projects/fuzzing-template',
+              label: '项目',
+              to: '/docs/projects/LpManager/data-crawl',
             },
           ],
         },

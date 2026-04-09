@@ -1,0 +1,14 @@
+{
+  "item.label.笔记": {
+    "message": "Notes",
+    "description": "Navbar item with label 笔记"
+  },
+  "item.label.协议": {
+    "message": "Protocols",
+    "description": "Navbar item with label 协议"
+  },
+  "item.label.项目": {
+    "message": "Projects",
+    "description": "Navbar item with label 项目"
+  }
+}
