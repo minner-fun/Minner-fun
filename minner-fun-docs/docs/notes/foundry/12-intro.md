@@ -1,43 +1,43 @@
-# 12、Introduction to Foundry
+# 12、Foundry 介绍
 
-Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.
+Foundry 是一个用 Rust 编写的快速、便携和模块化的以太坊应用开发工具包。
 
-## What is Foundry?
+## 什么是 Foundry？
 
-Foundry consists of:
+Foundry 包含以下工具：
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- **Forge**: 以太坊测试框架（类似于 Truffle、Hardhat 和 DappTools）
+- **Cast**: 与 EVM 智能合约交互、发送交易和获取链数据的瑞士军刀
+- **Anvil**: 本地以太坊节点，类似于 Ganache、Hardhat Network
+- **Chisel**: 快速、实用且详细的 Solidity REPL
 
-## Why Foundry?
+## 为什么选择 Foundry？
 
-### Speed
-Foundry is written in Rust and runs tests significantly faster than JavaScript-based frameworks.
+### 速度
+Foundry 用 Rust 编写，运行测试的速度明显快于基于 JavaScript 的框架。
 
-### Testing in Solidity
-Write your tests in Solidity instead of JavaScript. This allows you to:
-- Test your contracts in the same language they're written in
-- Get better type safety
-- Avoid context switching between languages
+### 用 Solidity 测试
+用 Solidity 而不是 JavaScript 编写测试。这样可以：
+- 用相同的语言测试合约
+- 获得更好的类型安全
+- 避免在语言之间切换上下文
 
-### Advanced Features
-- Fuzzing
-- Symbolic execution
-- Gas snapshots
-- Coverage reports
+### 高级功能
+- 模糊测试（Fuzzing）
+- 符号执行
+- Gas 快照
+- 覆盖率报告
 
-## Installation
+## 安装
 
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
 ```
 
-## Quick Start
+## 快速开始
 
-Create a new project:
+创建新项目：
 
 ```bash
 forge init my-project
@@ -46,9 +46,9 @@ forge build
 forge test
 ```
 
-## Resources
+## 资源
 
-- [Official Documentation](https://book.getfoundry.sh/)
-- [GitHub Repository](https://github.com/foundry-rs/foundry)
-- [Community Discord](https://discord.gg/foundry)
+- [官方文档](https://book.getfoundry.sh/)
+- [GitHub 仓库](https://github.com/foundry-rs/foundry)
+- [社区 Discord](https://discord.gg/foundry)
 

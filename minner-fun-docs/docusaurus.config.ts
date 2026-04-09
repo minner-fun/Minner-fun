@@ -31,8 +31,8 @@ const config: Config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'zh-Hans'],
+    defaultLocale: 'zh-Hans',
+    locales: ['zh-Hans', 'en'],
   },
 
   presets: [
@@ -67,19 +67,19 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'notesSidebar',
           position: 'left',
-          label: 'Notes',
+          label: '笔记',
         },
         {
           type: 'docSidebar',
           sidebarId: 'protocolsSidebar',
           position: 'left',
-          label: 'Protocols',
+          label: '协议',
         },
         {
           type: 'docSidebar',
           sidebarId: 'projectsSidebar',
           position: 'left',
-          label: 'Projects',
+          label: '项目',
         },
         {
           type: 'localeDropdown',

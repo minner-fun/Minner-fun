@@ -1,478 +1,679 @@
-# 10、Troubleshooting
+# 10、故障排除指南
 
-Common issues and their solutions when working with Foundry.
+本指南帮助你解决在使用 Foundry 进行智能合约测试时遇到的常见问题。
 
-## Compilation Issues
+## 编译问题
 
-### Issue: "Compiler version not found"
+### 1. Solidity 版本不匹配
 
-**Problem:**
-```bash
-Error: Compiler version 0.8.20 not found
+**问题**: 
+```
+Error: Source file requires different compiler version
 ```
 
-**Solution:**
-```bash
-# Update Foundry
-foundryup
-
-# Or specify a different version in foundry.toml
-[profile.default]
-solc = "0.8.19"
-```
-
-### Issue: "Stack too deep"
-
-**Problem:**
-```solidity
-CompilerError: Stack too deep
-```
-
-**Solutions:**
-```solidity
-// Solution 1: Use fewer local variables
-function problematic() public {
-    uint a = 1;
-    uint b = 2;
-    // ... many more variables
-}
-
-// Better: Use structs
-struct Params {
-    uint a;
-    uint b;
-    // ...
-}
-
-function better() public {
-    Params memory params;
-    params.a = 1;
-    params.b = 2;
-}
-
-// Solution 2: Enable via-ir in foundry.toml
-[profile.default]
-via_ir = true
-```
-
-### Issue: "Out of memory during compilation"
-
-**Problem:**
-```bash
-Error: Out of memory
-```
-
-**Solution:**
+**解决方案**:
 ```toml
 # foundry.toml
 [profile.default]
-optimizer_runs = 200  # Reduce from higher value
-via_ir = false
+solc = "0.8.19"  # 指定具体版本
+auto_detect_solc = false  # 禁用自动检测
 ```
 
-## Test Execution Issues
-
-### Issue: "Test passes locally but fails in CI"
-
-**Problem:**
-Tests pass on your machine but fail in CI.
-
-**Solutions:**
-```bash
-# 1. Use consistent random seed
-forge test --seed 12345
-
-# 2. Check for timestamp dependencies
-# Use vm.warp() to set consistent timestamps
-
-# 3. Check for network dependencies
-# Use forge test --fork-url instead of relying on local state
-```
-
-### Issue: "Expected revert not triggered"
-
-**Problem:**
+**或者使用版本范围**:
 ```solidity
-function test_ShouldRevert() public {
-    vm.expectRevert("Error message");
-    myContract.someFunction();  // Doesn't revert
+pragma solidity ^0.8.19;  // 确保合约和配置一致
+```
+
+### 2. 依赖库路径问题
+
+**问题**:
+```
+Error: Source "lib/forge-std/src/Test.sol" not found
+```
+
+**解决方案**:
+```bash
+# 重新安装依赖
+forge install foundry-rs/forge-std
+
+# 或者更新子模块
+git submodule update --init --recursive
+
+# 检查 foundry.toml 配置
+```
+
+```toml
+[profile.default]
+libs = ["lib"]  # 确保库路径正确
+```
+
+### 3. 导入路径错误
+
+**问题**:
+```
+Error: Source "contracts/MyContract.sol" not found
+```
+
+**解决方案**:
+```solidity
+// ❌ 错误的导入
+import "contracts/MyContract.sol";
+
+// ✅ 正确的导入
+import "../src/MyContract.sol";
+import {MyContract} from "../src/MyContract.sol";
+```
+
+### 4. 编译器内存不足
+
+**问题**:
+```
+Error: Compiler run out of memory
+```
+
+**解决方案**:
+```toml
+# foundry.toml
+[profile.default]
+optimizer = false  # 暂时禁用优化
+via_ir = false     # 禁用 IR 编译
+```
+
+或者增加系统内存，使用更强大的机器编译。
+
+## 测试执行问题
+
+### 1. 测试函数未被识别
+
+**问题**: 测试函数不执行
+
+**解决方案**:
+```solidity
+// ❌ 错误的命名
+function testcase_deposit() public { }
+
+// ✅ 正确的命名
+function test_Deposit() public { }
+function testFuzz_Deposit(uint256 amount) public { }
+```
+
+### 2. setUp 函数问题
+
+**问题**: setUp 不执行或执行多次
+
+**解决方案**:
+```solidity
+contract MyTest is Test {
+    // ✅ 正确的 setUp
+    function setUp() public {
+        // 初始化代码
+    }
+    
+    // ❌ 错误的命名
+    function setup() public { }  // 小写s
+    function SetUp() public { }  // 大写S
 }
 ```
 
-**Solutions:**
-```solidity
-// Solution 1: Check the exact error message
-vm.expectRevert("Exact error message");
+### 3. Gas 限制问题
 
-// Solution 2: Use custom error selector
-vm.expectRevert(MyContract.CustomError.selector);
-
-// Solution 3: Check if condition is met
-vm.expectRevert();  // Any revert
+**问题**:
+```
+Error: Transaction ran out of gas
 ```
 
-### Issue: "Gas estimation failed"
-
-**Problem:**
+**解决方案**:
 ```bash
-Error: Gas estimation failed
-```
-
-**Solutions:**
-```bash
-# 1. Increase gas limit
+# 增加 gas 限制
 forge test --gas-limit 30000000
 
-# 2. Check for infinite loops
-forge test -vvvv  # See trace
-
-# 3. Check for reverts in constructor
+# 或在 foundry.toml 中设置
 ```
 
-## Fuzzing Issues
-
-### Issue: "Too many rejects in fuzzing"
-
-**Problem:**
-```bash
-Warning: Fuzzing test rejected too many inputs
+```toml
+[profile.default]
+gas_limit = 30000000
 ```
 
-**Solutions:**
+### 4. 时间相关测试失败
+
+**问题**: 时间戳测试不稳定
+
+**解决方案**:
 ```solidity
-// ❌ Bad: Uses vm.assume() too much
-function testFuzz_Bad(uint256 x) public {
-    vm.assume(x > 100);
-    vm.assume(x < 1000);
-    vm.assume(x % 2 == 0);
-}
-
-// ✅ Good: Use bound()
-function testFuzz_Good(uint256 x) public {
-    x = bound(x, 100, 1000);
-    if (x % 2 != 0) x++;  // Adjust instead of reject
+function test_TimeBasedFunction() public {
+    // ❌ 不稳定的时间测试
+    uint256 startTime = block.timestamp;
+    
+    // ✅ 使用 vm.warp 控制时间
+    vm.warp(1641070800); // 固定时间戳
+    
+    // 执行测试逻辑
+    
+    vm.warp(block.timestamp + 1 days); // 推进时间
 }
 ```
 
-### Issue: "Invariant test fails inconsistently"
+## 作弊码 (Cheatcode) 问题
 
-**Problem:**
-Invariant tests pass sometimes, fail other times.
+### 1. vm.expectRevert 不工作
 
-**Solutions:**
+**问题**: expectRevert 没有捕获到预期的 revert
+
+**解决方案**:
 ```solidity
-// 1. Add better constraints in handler
-function mint(uint256 amount) public {
-    amount = bound(amount, 0, MAX_MINT);
+// ❌ 错误用法
+vm.expectRevert();
+someFunction();
+anotherFunction(); // 这会导致问题
+
+// ✅ 正确用法
+vm.expectRevert();
+someFunction(); // 只能调用一个函数
+
+// 或者使用具体的错误消息
+vm.expectRevert("Specific error message");
+someFunction();
+
+// 对于自定义错误
+vm.expectRevert(abi.encodeWithSelector(CustomError.selector, param1, param2));
+someFunction();
+```
+
+### 2. vm.prank 作用域问题
+
+**问题**: prank 影响了多个调用
+
+**解决方案**:
+```solidity
+// ❌ 可能出现问题
+vm.prank(user);
+contract1.function1();
+contract2.function2(); // 这个调用可能不是以 user 身份
+
+// ✅ 明确控制作用域
+vm.startPrank(user);
+contract1.function1();
+contract2.function2();
+vm.stopPrank();
+
+// 或者每次单独使用
+vm.prank(user);
+contract1.function1();
+
+vm.prank(user);
+contract2.function2();
+```
+
+### 3. 存储操作问题
+
+**问题**: vm.store 或 vm.load 不工作
+
+**解决方案**:
+```solidity
+// 确保使用正确的存储槽
+function test_StorageManipulation() public {
+    // 获取正确的存储槽
+    bytes32 slot = keccak256(abi.encode(user, 0)); // mapping(address => uint256) 在槽 0
+    
+    // 设置存储值
+    vm.store(address(token), slot, bytes32(uint256(1000)));
+    
+    // 验证
+    assertEq(token.balanceOf(user), 1000);
+}
+```
+
+## 模糊测试问题
+
+### 1. 过多的假设导致测试跳过
+
+**问题**:
+```
+[PASS] testFuzz_Function(uint256) (runs: 0, μ: 0, ~: 0)
+```
+
+**解决方案**:
+```solidity
+// ❌ 过于严格的假设
+function testFuzz_BadAssumptions(uint256 x) public {
+    vm.assume(x > 1000);
+    vm.assume(x < 1001);  // 几乎不可能满足
+    vm.assume(x % 7 == 0);
     // ...
 }
 
-// 2. Increase runs for consistency
-// foundry.toml
-[invariant]
-runs = 1000
-depth = 50
-
-// 3. Track ghost variables
-uint256 public ghost_sumOfBalances;
+// ✅ 使用 bound 代替过多 assume
+function testFuzz_GoodBounding(uint256 x) public {
+    x = bound(x, 1000, 10000);
+    vm.assume(x % 7 == 0);  // 只保留必要的假设
+    // ...
+}
 ```
 
-## Fork Testing Issues
+### 2. 模糊测试输入导致意外错误
 
-### Issue: "RPC rate limit exceeded"
+**问题**: 模糊测试因为意外的输入失败
 
-**Problem:**
-```bash
-Error: Rate limit exceeded
+**解决方案**:
+```solidity
+function testFuzz_SafeInputHandling(address user, uint256 amount) public {
+    // 过滤无效输入
+    vm.assume(user != address(0));
+    vm.assume(user != address(this));
+    amount = bound(amount, 1, type(uint128).max); // 避免溢出
+    
+    // 处理可能的异常
+    try token.transfer(user, amount) returns (bool success) {
+        assertTrue(success);
+    } catch {
+        // 记录但不失败
+        console.log("Transfer failed for:", user, amount);
+    }
+}
 ```
 
-**Solutions:**
-```bash
-# 1. Use archive node or paid RPC
-export MAINNET_RPC_URL="https://eth-mainnet.g.alchemy.com/v2/YOUR-KEY"
+### 3. 模糊测试性能问题
 
-# 2. Cache fork state
-# Anvil will cache requests
+**问题**: 模糊测试运行太慢
 
-# 3. Fork at specific block
-forge test --fork-url $RPC --fork-block-number 18000000
+**解决方案**:
+```toml
+# foundry.toml
+[profile.ci]
+fuzz = { runs = 100 }  # CI 环境减少运行次数
+
+[profile.default]
+fuzz = { runs = 256 }  # 开发环境适中
+
+[profile.deep]
+fuzz = { runs = 10000 } # 深度测试
 ```
 
-### Issue: "Fork tests are slow"
+## 分叉测试问题
 
-**Problem:**
-Fork tests take a long time to run.
+### 1. RPC 连接问题
 
-**Solutions:**
-```bash
-# 1. Use local Anvil fork
-anvil --fork-url $MAINNET_RPC_URL &
-forge test --fork-url http://localhost:8545
-
-# 2. Run fork tests separately
-forge test --no-match-path "test/fork/**"
-
-# 3. Use specific block number (cached by RPC)
-forge test --fork-block-number 18000000
+**问题**:
+```
+Error: Failed to get account for 0x... from RPC
 ```
 
-## Dependency Issues
-
-### Issue: "Library not found"
-
-**Problem:**
+**解决方案**:
 ```bash
-Error: Library not found
+# 检查 RPC URL 是否正确
+forge test --fork-url https://eth-mainnet.alchemyapi.io/v2/YOUR_KEY
+
+# 使用环境变量
+export MAINNET_RPC_URL="https://eth-mainnet.alchemyapi.io/v2/YOUR_KEY"
+forge test --fork-url $MAINNET_RPC_URL
+
+# 或在 foundry.toml 中配置
 ```
 
-**Solutions:**
-```bash
-# 1. Install the dependency
-forge install OpenZeppelin/openzeppelin-contracts
-
-# 2. Update dependencies
-forge update
-
-# 3. Check remappings
-# remappings.txt
-@openzeppelin/=lib/openzeppelin-contracts/
+```toml
+[rpc_endpoints]
+mainnet = "${MAINNET_RPC_URL}"
 ```
 
-### Issue: "Git submodule issues"
+### 2. 分叉区块号问题
 
-**Problem:**
-```bash
-Error: Submodule not initialized
+**问题**: 分叉的区块太新或太旧
+
+**解决方案**:
+```solidity
+function setUp() public {
+    // 分叉到特定区块
+    vm.createFork("mainnet", 18000000);
+    
+    // 或者分叉到最新区块然后回滚
+    vm.createFork("mainnet");
+    vm.rollFork(18000000);
+}
 ```
 
-**Solutions:**
-```bash
-# Initialize submodules
-git submodule update --init --recursive
+### 3. 分叉状态不一致
 
-# Or clone with submodules
-git clone --recursive <repo-url>
+**问题**: 分叉后状态不符合预期
+
+**解决方案**:
+```solidity
+function test_ForkStateVerification() public {
+    // 验证分叉状态
+    assertEq(block.number, 18000000, "Wrong block number");
+    
+    // 检查关键合约状态
+    IERC20 usdc = IERC20(0xA0b86a33E6F9e7B7c3e5F5C7C5A5a5a5a5a5a5a5);
+    assertGt(usdc.totalSupply(), 0, "USDC should have supply");
+    
+    // 验证账户余额
+    address vitalik = 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045;
+    assertGt(vitalik.balance, 0, "Vitalik should have ETH");
+}
 ```
 
-## Debugging Issues
+## 不变量测试问题
 
-### Issue: "Cannot see console.log output"
+### 1. 不变量测试不运行
 
-**Problem:**
-`console.log()` doesn't show output.
+**问题**: invariant_ 函数不执行
 
-**Solutions:**
-```bash
-# Use correct verbosity
-forge test -vv  # Shows logs for all tests
-
-# Or
-forge test -v  # Shows logs only for failing tests
+**解决方案**:
+```solidity
+contract InvariantTest is Test {
+    function setUp() public {
+        // 必须设置目标合约
+        targetContract(address(myContract));
+        
+        // 或设置目标选择器
+        bytes4[] memory selectors = new bytes4[](2);
+        selectors[0] = MyContract.deposit.selector;
+        selectors[1] = MyContract.withdraw.selector;
+        
+        targetSelector(FuzzSelector({
+            addr: address(myContract),
+            selectors: selectors
+        }));
+    }
+    
+    // 不变量函数必须是 public 或 external
+    function invariant_TotalSupply() public view {
+        // 不变量逻辑
+    }
+}
 ```
 
-### Issue: "Stack trace is unclear"
+### 2. 不变量测试失败难以调试
 
-**Problem:**
-Can't understand the error from stack trace.
+**问题**: 不变量失败但不知道具体原因
 
-**Solutions:**
-```bash
-# 1. Use maximum verbosity
-forge test -vvvvv
-
-# 2. Use debug mode
-forge test --debug test_FunctionName
-
-# 3. Add more console.log statements
-console.log("Checkpoint 1");
-console.log("Value:", value);
+**解决方案**:
+```solidity
+function invariant_DetailedChecking() public {
+    uint256 totalSupply = token.totalSupply();
+    uint256 userSum = 0;
+    
+    // 详细检查每个组件
+    for (uint i = 0; i < users.length; i++) {
+        uint256 balance = token.balanceOf(users[i]);
+        userSum += balance;
+        
+        // 记录详细信息
+        console.log("User", i, "balance:", balance);
+    }
+    
+    console.log("Total supply:", totalSupply);
+    console.log("User sum:", userSum);
+    
+    assertEq(totalSupply, userSum, "Supply mismatch");
+}
 ```
 
-## Coverage Issues
+## 环境和配置问题
 
-### Issue: "Coverage report is inaccurate"
+### 1. 环境变量未加载
 
-**Problem:**
-Coverage report shows incorrect numbers.
+**问题**: 环境变量在测试中为空
 
-**Solutions:**
+**解决方案**:
 ```bash
-# 1. Clean and rebuild
-forge clean
-forge coverage
+# 确保 .env 文件存在且格式正确
+# .env
+MAINNET_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/your_key
+PRIVATE_KEY=0x...
 
-# 2. Exclude test files
-forge coverage --report lcov --no-match-path "test/**"
-
-# 3. Update Foundry
-foundryup
-```
-
-## Performance Issues
-
-### Issue: "Tests are too slow"
-
-**Problem:**
-Test suite takes too long to run.
-
-**Solutions:**
-```bash
-# 1. Run tests in parallel (default)
+# 加载环境变量
+source .env
 forge test
 
-# 2. Run specific tests
-forge test --match-test test_Fast
-
-# 3. Reduce fuzz runs for CI
-# foundry.toml
-[profile.ci.fuzz]
-runs = 100
+# 或使用 --env-file 参数
+forge test --env-file .env
 ```
 
-### Issue: "Out of memory during tests"
-
-**Problem:**
-```bash
-Error: Out of memory
-```
-
-**Solutions:**
 ```solidity
-// 1. Clean up state between tests
-function setUp() public {
-    // Fresh state for each test
+// 在测试中访问环境变量
+function test_EnvironmentVariable() public {
+    string memory rpcUrl = vm.envString("MAINNET_RPC_URL");
+    assertGt(bytes(rpcUrl).length, 0, "RPC URL should be set");
+}
+```
+
+### 2. 配置文件问题
+
+**问题**: foundry.toml 配置不生效
+
+**解决方案**:
+```bash
+# 检查配置文件语法
+forge config
+
+# 验证配置是否正确加载
+forge config --json
+```
+
+```toml
+# 确保配置文件格式正确
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+# 注意：不要使用 tab，使用空格
+```
+
+### 3. 缓存问题
+
+**问题**: 修改后测试结果没有更新
+
+**解决方案**:
+```bash
+# 清除缓存
+forge clean
+
+# 强制重新编译
+forge build --force
+
+# 清除特定缓存
+rm -rf cache/
+rm -rf out/
+```
+
+## 性能问题
+
+### 1. 测试运行太慢
+
+**问题**: 测试执行时间过长
+
+**解决方案**:
+```bash
+# 并行运行测试
+forge test --jobs 4
+
+# 只运行特定测试
+forge test --match-test "test_Fast"
+
+# 跳过慢速测试
+forge test --no-match-path "test/slow/*"
+```
+
+```toml
+# 优化配置
+[profile.default]
+optimizer = true
+optimizer_runs = 200
+
+[profile.ci]
+fuzz = { runs = 100 }  # CI 中减少模糊测试次数
+```
+
+### 2. 内存使用过高
+
+**问题**: 测试消耗过多内存
+
+**解决方案**:
+```solidity
+// 避免创建大型数组
+function test_MemoryEfficient() public {
+    // ❌ 内存密集
+    uint256[] memory largeArray = new uint256[](1000000);
+    
+    // ✅ 分批处理
+    for (uint256 i = 0; i < 1000; i++) {
+        uint256[] memory batch = new uint256[](1000);
+        // 处理批次
+    }
+}
+```
+
+## 调试技巧
+
+### 1. 使用详细输出
+
+```bash
+# 不同详细级别
+forge test -v          # 基本输出
+forge test -vv         # 显示所有日志
+forge test -vvv        # 显示失败测试的跟踪
+forge test -vvvv       # 显示所有测试的跟踪
+```
+
+### 2. 使用断点调试
+
+```solidity
+function test_WithBreakpoints() public {
+    uint256 value = calculateValue();
+    
+    // 设置断点
+    vm.breakpoint("checkpoint1");
+    
+    value = modifyValue(value);
+    
+    vm.breakpoint("checkpoint2");
+    
+    assertEq(value, expectedValue);
+}
+```
+
+### 3. 记录状态信息
+
+```solidity
+function test_WithStateLogging() public {
+    console.log("=== Test Start ===");
+    console.log("Initial state:");
+    logContractState();
+    
+    performOperation();
+    
+    console.log("After operation:");
+    logContractState();
+    
+    console.log("=== Test End ===");
 }
 
-// 2. Don't create too many contracts
-// Reuse contracts when possible
-
-// 3. Reduce fuzz runs
-[fuzz]
-runs = 256  # Instead of 10000
+function logContractState() internal view {
+    console.log("Total supply:", token.totalSupply());
+    console.log("Contract balance:", address(contract).balance);
+}
 ```
 
-## Cheatcode Issues
+## 常见错误信息解析
 
-### Issue: "vm.prank not working"
+### 1. Stack too deep
 
-**Problem:**
+**错误**: `CompilerError: Stack too deep`
+
+**解决方案**:
 ```solidity
-vm.prank(alice);
-// Multiple calls here - only first is pranked!
-myContract.call1();
-myContract.call2();  // Not pranked
+// ❌ 局部变量太多
+function complexFunction() public {
+    uint256 var1 = 1;
+    uint256 var2 = 2;
+    // ... 太多局部变量
+    uint256 var20 = 20;
+}
+
+// ✅ 使用结构体或分解函数
+struct FunctionParams {
+    uint256 var1;
+    uint256 var2;
+    // ...
+}
+
+function complexFunction() public {
+    FunctionParams memory params;
+    _processParams(params);
+}
 ```
 
-**Solutions:**
+### 2. Arithmetic over/underflow
+
+**错误**: `panic: arithmetic underflow or overflow (0x11)`
+
+**解决方案**:
 ```solidity
-// Solution 1: Use startPrank/stopPrank
-vm.startPrank(alice);
-myContract.call1();
-myContract.call2();
-vm.stopPrank();
+// 使用 unchecked 块（如果溢出是预期的）
+function safeOperation(uint256 a, uint256 b) public pure returns (uint256) {
+    unchecked {
+        return a - b; // 允许下溢
+    }
+}
 
-// Solution 2: Multiple pranks
-vm.prank(alice);
-myContract.call1();
-vm.prank(alice);
-myContract.call2();
+// 或添加检查
+function checkedOperation(uint256 a, uint256 b) public pure returns (uint256) {
+    require(a >= b, "Underflow");
+    return a - b;
+}
 ```
 
-### Issue: "vm.expectRevert not catching"
+### 3. Call failed
 
-**Problem:**
+**错误**: `Error: call failed`
+
+**解决方案**:
 ```solidity
-vm.expectRevert("Error");
-myContract.noRevert();  // Doesn't revert but test passes
+// 检查调用是否成功
+(bool success, bytes memory data) = target.call(callData);
+require(success, string(data));
+
+// 或使用 try-catch
+try target.someFunction() {
+    // 成功处理
+} catch Error(string memory reason) {
+    console.log("Call failed:", reason);
+} catch (bytes memory lowLevelData) {
+    console.logBytes(lowLevelData);
+}
 ```
 
-**Solutions:**
-```solidity
-// vm.expectRevert only affects the NEXT call
-vm.expectRevert("Error");
-myContract.willRevert();  // Must be immediately after
+## 获取帮助
 
-// For internal calls, they're not caught
-// Must test external calls only
-```
-
-## Common Error Messages
-
-### "EvmError: Revert"
-
-**Meaning:** Transaction reverted without message.
-
-**Debug:**
-```bash
-forge test -vvvvv  # See full trace
-```
-
-### "EvmError: OutOfGas"
-
-**Meaning:** Transaction ran out of gas.
-
-**Fix:**
-```solidity
-// Check for infinite loops or very expensive operations
-```
-
-### "EvmError: InvalidOpcode"
-
-**Meaning:** Invalid EVM instruction.
-
-**Fix:**
-```bash
-# Usually a compiler issue
-foundryup  # Update Foundry
-forge clean && forge build
-```
-
-## Best Practices to Avoid Issues
-
-1. **Keep Foundry updated**: `foundryup` regularly
-2. **Use consistent versions**: Lock solc version in `foundry.toml`
-3. **Clean build often**: `forge clean` when things act weird
-4. **Use appropriate verbosity**: `-vv` for most debugging
-5. **Bound fuzz inputs**: Use `bound()` instead of `vm.assume()`
-6. **Test in CI**: Catch environment-specific issues
-7. **Use gas snapshots**: Track performance regressions
-8. **Profile slow tests**: Find and optimize bottlenecks
-
-## Getting Help
-
-### Check Documentation
-
-```bash
-# Forge help
-forge --help
-forge test --help
-
-# Foundry Book
-https://book.getfoundry.sh
-```
-
-### Community Support
-
-- [Foundry Telegram](https://t.me/foundry_support)
+### 1. 官方资源
+- [Foundry Book](https://book.getfoundry.sh/)
 - [GitHub Issues](https://github.com/foundry-rs/foundry/issues)
-- [Foundry Discord](https://discord.gg/foundry)
+- [Discord 社区](https://discord.gg/foundry-rs)
 
-### Debug Checklist
+### 2. 社区资源
+- Stack Overflow (标签: foundry, forge)
+- Ethereum Stack Exchange
+- Reddit r/ethdev
 
-- [ ] Updated Foundry to latest version?
-- [ ] Cleaned build artifacts?
-- [ ] Checked test with `-vvvvv`?
-- [ ] Tried on a fresh clone?
-- [ ] Checked for environment differences?
-- [ ] Reviewed recent Foundry changelogs?
+### 3. 诊断命令
+```bash
+# 检查 Foundry 版本
+forge --version
+cast --version
 
-## Next Steps
+# 验证配置
+forge config
 
-- [Cheatcodes Reference](./11-cheatcodes.md) - Complete cheatcodes guide
-- [Foundry Book](https://book.getfoundry.sh) - Official documentation
+# 检查依赖
+forge tree
 
-## References
+# 运行特定测试并获取详细输出
+forge test --match-test "specific_test" -vvvv
+```
 
-- [Foundry Troubleshooting](https://book.getfoundry.sh/faq)
-- [Foundry GitHub Issues](https://github.com/foundry-rs/foundry/issues)
+通过这个故障排除指南，你应该能够解决大多数在使用 Foundry 时遇到的问题。记住，当遇到问题时，首先检查错误消息，然后查看相关的配置和代码，最后寻求社区帮助。
+
+## 下一步
 

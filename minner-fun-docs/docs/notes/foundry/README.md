@@ -1,191 +1,195 @@
-# Complete Foundry Testing Guide
+# Foundry 测试完全指南
 
-Welcome to the comprehensive Foundry testing guide! This is a complete tutorial series designed for Foundry beginners, helping you master all aspects of smart contract testing from scratch.
+欢迎来到 Foundry 测试的完整学习指南！这是一套专为 Foundry 初学者设计的全面教程，将帮助你从零开始掌握智能合约测试的各个方面。
 
-## 📚 Guide Overview
+## 📚 指南概述
 
-This guide covers the complete knowledge system of Foundry testing, from basic concepts to advanced techniques. Through practical cases and best practices, it will help you become a smart contract testing expert.
+本指南涵盖了从基础概念到高级技巧的完整 Foundry 测试知识体系，通过实战案例和最佳实践，帮助你成为智能合约测试专家。
 
-## 🗂️ Table of Contents
+## 🗂️ 目录结构
 
-### Basics
-1. **[Foundry Basics](./01-foundry-basics.md)**
-   - Introduction and installation
-   - Project structure and configuration
-   - Your first test contract
-   - Common commands and tools
+### 基础篇
+1. **[Foundry 基础](./01-foundry-basics.md)**
+   - Foundry 介绍和安装
+   - 项目结构和基本配置
+   - 第一个测试合约
+   - 常用命令和工具
 
-2. **[Writing Tests](./02-writing-tests.md)**
-   - Test contract structure
-   - Assertion functions
-   - Test types and patterns
-   - Error handling and event testing
+2. **[编写测试用例](./02-writing-tests.md)**
+   - 测试合约基础结构
+   - 断言函数使用
+   - 测试类型和模式
+   - 错误处理和事件测试
 
-### Advanced
-3. **[Advanced Testing](./03-advanced-testing.md)**
-   - Fuzz Testing
-   - Invariant Testing
-   - Property testing and state machine testing
-   - Differential testing and model-based testing
+### 进阶篇
+3. **[高级测试技巧](./03-advanced-testing.md)**
+   - 模糊测试 (Fuzz Testing)
+   - 不变量测试 (Invariant Testing)
+   - 属性测试和状态机测试
+   - 差分测试和基于模型的测试
 
-4. **[Debugging Tools](./04-debugging-tools.md)**
-   - Basic debugging methods
-   - Advanced debugging features
-   - Gas analysis and optimization
-   - Fork testing debugging
+4. **[调试技巧和工具](./04-debugging-tools.md)**
+   - 基础调试方法
+   - 高级调试功能
+   - Gas 分析和优化
+   - 分叉测试调试
 
-### Practice
-5. **[Best Practices](./05-best-practices.md)**
-   - Test organization and naming conventions
-   - Data management and helper functions
-   - Fuzzing and invariant testing best practices
-   - Code quality and documentation
+### 实践篇
+5. **[测试最佳实践](./05-best-practices.md)**
+   - 测试组织和命名约定
+   - 数据管理和辅助函数
+   - 模糊测试和不变量测试最佳实践
+   - 代码质量和文档
 
-6. **[Performance Optimization](./06-performance-optimization.md)**
-   - Test execution performance optimization
-   - Gas optimization testing
-   - Memory and storage optimization
-   - CI/CD environment optimization
+6. **[性能优化](./06-performance-optimization.md)**
+   - 测试执行性能优化
+   - Gas 优化测试
+   - 内存和存储优化
+   - CI/CD 环境优化
 
-### Engineering
-7. **[CI/CD Integration](./07-cicd-integration.md)**
-   - GitHub Actions integration
-   - Automation scripts and workflows
-   - Quality gates and reporting
-   - Monitoring and notifications
+### 工程篇
+7. **[CI/CD 集成](./07-cicd-integration.md)**
+   - GitHub Actions 集成
+   - 自动化脚本和工作流
+   - 质量门控和报告
+   - 监控和通知
 
-8. **[Security Testing](./08-security-testing.md)**
-   - Common vulnerability testing
-   - Economic attack testing
-   - Governance and oracle attack testing
-   - Static analysis integration
+8. **[安全测试](./08-security-testing.md)**
+   - 常见漏洞测试
+   - 经济攻击测试
+   - 治理和预言机攻击测试
+   - 静态分析集成
 
-### Real World
-9. **[Real World Examples](./09-real-world-examples.md)**
-   - ERC20 token contract testing
-   - AMM exchange testing
-   - Lending protocol testing
-   - Complex DeFi scenarios
+### 实战篇
+9. **[实战案例分析](./09-real-world-examples.md)**
+   - ERC20 代币合约测试
+   - AMM 交易所测试
+   - 借贷协议测试
+   - 复杂 DeFi 场景
 
-10. **[Troubleshooting](./10-troubleshooting.md)**
-    - Compilation and configuration issues
-    - Test execution issues
-    - Performance and debugging issues
-    - Common error solutions
+10. **[故障排除](./10-troubleshooting.md)**
+    - 编译和配置问题
+    - 测试执行问题
+    - 性能和调试问题
+    - 常见错误解决方案
 
-## 🚀 Quick Start
+## 🚀 快速开始
 
-If you're new to Foundry, follow this learning path:
+如果你是 Foundry 初学者，建议按以下顺序学习：
 
-### Week 1: Basics
-1. Read [Foundry Basics](./01-foundry-basics.md), set up environment
-2. Learn [Writing Tests](./02-writing-tests.md), master basic testing
-3. Practice: Write complete tests for a simple ERC20 contract
+### 第一周：基础掌握
+1. 阅读 [Foundry 基础](./01-foundry-basics.md)，完成环境搭建
+2. 学习 [编写测试用例](./02-writing-tests.md)，掌握基本测试方法
+3. 实践：为一个简单的 ERC20 合约编写完整测试
 
-### Week 2: Skills
-4. Learn [Advanced Testing](./03-advanced-testing.md), master fuzzing and invariant testing
-5. Learn [Debugging Tools](./04-debugging-tools.md), improve problem-solving skills
-6. Practice: Write advanced tests for an AMM contract
+### 第二周：技能提升
+4. 学习 [高级测试技巧](./03-advanced-testing.md)，掌握模糊测试和不变量测试
+5. 学习 [调试技巧和工具](./04-debugging-tools.md)，提升问题解决能力
+6. 实践：为一个 AMM 合约编写高级测试
 
-### Week 3: Engineering
-7. Learn [Best Practices](./05-best-practices.md), standardize code quality
-8. Learn [Performance Optimization](./06-performance-optimization.md), improve test efficiency
-9. Learn [CI/CD Integration](./07-cicd-integration.md), automate testing workflow
+### 第三周：工程化
+7. 学习 [测试最佳实践](./05-best-practices.md)，规范代码质量
+8. 学习 [性能优化](./06-performance-optimization.md)，提升测试效率
+9. 学习 [CI/CD 集成](./07-cicd-integration.md)，自动化测试流程
 
-### Week 4: Professional
-10. Learn [Security Testing](./08-security-testing.md), master security testing methods
-11. Learn [Real World Examples](./09-real-world-examples.md), understand real project practices
-12. Learn [Troubleshooting](./10-troubleshooting.md), improve problem-solving skills
+### 第四周：专业提升
+10. 学习 [安全测试](./08-security-testing.md)，掌握安全测试方法
+11. 学习 [实战案例分析](./09-real-world-examples.md)，了解真实项目实践
+12. 学习 [故障排除](./10-troubleshooting.md)，提升问题解决能力
 
-## 💡 Learning Tips
+## 💡 学习建议
 
-### Theory and Practice
-- **Learn by doing**: Practice immediately after each chapter
-- **Project-driven**: Choose a real project and apply what you learn
-- **Code reproduction**: Try to reproduce all code examples
+### 理论与实践结合
+- **边学边练**：每学完一个章节，立即动手实践
+- **项目驱动**：选择一个实际项目，逐步应用学到的知识
+- **代码复现**：尝试复现指南中的所有代码示例
 
-### Progressive Learning
-- **Don't skip**: Learn in order, each chapter has value
-- **Practice repeatedly**: Important concepts require multiple practice sessions
-- **Summarize regularly**: Regularly summarize what you've learned
+### 循序渐进
+- **不要跳跃**：按顺序学习，每个章节都有其价值
+- **反复练习**：重要概念需要多次练习才能掌握
+- **总结归纳**：定期总结学到的知识点
 
-### Community Participation
-- **Ask questions**: Ask in the community when you encounter problems
-- **Share experience**: Share your learning experience with others
-- **Contribute code**: Participate in open source projects to improve practical experience
+### 社区参与
+- **提问交流**：遇到问题及时在社区提问
+- **分享经验**：将学习心得分享给其他人
+- **贡献代码**：参与开源项目，提升实战经验
 
-## 🛠️ Prerequisites
+## 🛠️ 准备工作
 
-Before starting, ensure you have:
+在开始学习之前，请确保你已经：
 
-### Basic Knowledge
-- ✅ Familiar with Solidity syntax
-- ✅ Understand basic smart contract concepts
-- ✅ Have command line experience
+### 基础知识
+- ✅ 熟悉 Solidity 基础语法
+- ✅ 了解智能合约基本概念
+- ✅ 有一定的命令行使用经验
 
-### Development Environment
-- ✅ Install Node.js (recommended v18+)
-- ✅ Install Git
-- ✅ Prepare code editor (VS Code recommended)
+### 开发环境
+- ✅ 安装 Node.js (推荐 v18+)
+- ✅ 安装 Git
+- ✅ 准备代码编辑器 (推荐 VS Code)
 
-### Optional but Recommended
-- 📖 Understand DeFi basics
-- 🔧 Familiar with JavaScript/TypeScript
-- 🌐 Understand blockchain basics
+### 可选但推荐
+- 📖 了解 DeFi 基础概念
+- 🔧 熟悉 JavaScript/TypeScript
+- 🌐 了解区块链基础知识
 
-## 📖 How to Use This Guide
+## 📖 如何使用本指南
 
-### Symbols
-- 🎯 **Key Points**: Important knowledge points
-- ⚠️ **Warnings**: Easy to make mistakes
-- 💡 **Best Practices**: Recommended approaches
-- 🔧 **Practice**: Hands-on practice suggestions
-- 📚 **Further Reading**: Resources for deeper learning
+### 符号说明
+- 🎯 **重点内容**：需要特别关注的知识点
+- ⚠️ **注意事项**：容易出错的地方
+- 💡 **最佳实践**：推荐的做法
+- 🔧 **实践练习**：动手练习的建议
+- 📚 **扩展阅读**：深入学习的资源
 
-### Code Conventions
+### 代码约定
 ```solidity
-// ✅ Recommended
+// ✅ 推荐的做法
 function test_GoodPractice() public {
-    // Clear test logic
+    // 清晰的测试逻辑
 }
 
-// ❌ Not recommended
+// ❌ 不推荐的做法
 function badTest() public {
-    // Unclear test
+    // 不清晰的测试
 }
 ```
 
-### Learning Paths
-- **🟢 Beginners**: Learn all chapters in order
-- **🟡 Experienced**: Can skip basics, focus on advanced techniques
-- **🔴 Expert**: Focus on best practices and real-world cases
+### 学习路径
+- **🟢 初学者**：按顺序学习所有章节
+- **🟡 有经验者**：可以跳过基础章节，重点学习高级技巧
+- **🔴 专家级**：重点关注最佳实践和实战案例
 
-## 🤝 Contributions and Feedback
+## 🤝 贡献和反馈
 
-This guide is a continuously improving project. Your contributions and feedback are welcome:
+这份指南是一个持续改进的项目，欢迎你的贡献和反馈：
 
-### How to Contribute
-- 📝 **Content improvement**: Found errors or have better explanations
-- 💡 **Case supplements**: Provide more practical cases
-- 🐛 **Issue feedback**: Report problems in the guide
-- 🌟 **Feature suggestions**: Suggest new chapters or content
+### 如何贡献
+- 📝 **内容改进**：发现错误或有更好的解释方式
+- 💡 **案例补充**：提供更多实战案例
+- 🐛 **问题反馈**：报告指南中的问题
+- 🌟 **功能建议**：提出新的章节或内容建议
 
-## 📄 License
+### 反馈渠道
+- GitHub Issues（如果有仓库）
+- 邮件反馈
+- 社区讨论
 
-This guide follows the MIT License. You can:
-- ✅ Freely use and distribute
-- ✅ Modify and improve content
-- ✅ Use for commercial purposes
+## 📄 版权信息
 
-But please retain the original copyright information.
+本指南遵循 MIT 许可证，你可以：
+- ✅ 自由使用和分发
+- ✅ 修改和改进内容
+- ✅ 用于商业目的
 
-## 🎉 Start Your Foundry Journey
+但请保留原始版权信息。
 
-Now, let's start this exciting learning journey! Begin with [Foundry Basics](./01-foundry-basics.md) and gradually master the essence of smart contract testing.
+## 🎉 开始你的 Foundry 之旅
 
-Remember, becoming a testing expert takes time and practice. Stay patient, keep learning, and you will master Foundry's powerful features and write high-quality smart contract tests!
+现在，让我们开始这个激动人心的学习之旅吧！从 [Foundry 基础](./01-foundry-basics.md) 开始，逐步掌握智能合约测试的精髓。
+
+记住，成为测试专家需要时间和实践。保持耐心，持续学习，你一定能够掌握 Foundry 的强大功能，编写出高质量的智能合约测试！
 
 ---
 
-**Happy learning!** 🚀
-
+**祝你学习愉快！** 🚀

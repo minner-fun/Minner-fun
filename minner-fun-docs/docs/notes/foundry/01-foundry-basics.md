@@ -1,37 +1,37 @@
-# 1、Foundry Basics Guide
+# 1、Foundry 基础指南
 
-## What is Foundry?
+## 什么是 Foundry？
 
-Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust. It consists of four main components:
+Foundry 是一个用 Rust 编写的快速、可移植、模块化的以太坊应用开发工具包。它包含四个主要组件：
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools)
-- **Cast**: Swiss army knife for interacting with EVM smart contracts
-- **Anvil**: Local Ethereum node (akin to Ganache, Hardhat Network)
-- **Chisel**: Fast, utilitarian, and verbose Solidity REPL
+- **Forge**: 以太坊测试框架（类似于 Truffle、Hardhat 和 DappTools）
+- **Cast**: 与 EVM 智能合约交互的多功能工具
+- **Anvil**: 本地以太坊节点（类似于 Ganache、Hardhat Network）
+- **Chisel**: 快速、实用且详细的 Solidity REPL
 
-## Installing Foundry
+## 安装 Foundry
 
-### Installation on Windows
+### 在 Windows 上安装
 
-1. **Using Foundryup (Recommended)**:
+1. **使用 Foundryup（推荐）**：
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
 ```
 
-2. **Using Scoop**:
+2. **使用 Scoop**：
 ```bash
 scoop install foundry
 ```
 
-3. **Build from Source**:
+3. **从源码构建**：
 ```bash
 git clone https://github.com/foundry-rs/foundry
 cd foundry
 cargo install --path ./cli --bins --locked
 ```
 
-### Verify Installation
+### 验证安装
 
 ```bash
 forge --version
@@ -39,40 +39,43 @@ cast --version
 anvil --version
 ```
 
-## Project Structure
+## 项目结构
 
-Standard directory structure of a Foundry project:
+Foundry 项目的标准目录结构：
 
 ```
 my-project/
-├── foundry.toml          # Foundry configuration file
-├── src/                  # Contract source directory
+├── foundry.toml          # Foundry 配置文件
+├── src/                  # 合约源码目录
 │   └── Counter.sol
-├── test/                 # Test files directory
+├── test/                 # 测试文件目录
 │   └── Counter.t.sol
-├── script/               # Deployment scripts directory
+├── script/               # 部署脚本目录
 │   └── Counter.s.sol
-├── lib/                  # Dependencies directory
+├── lib/                  # 依赖库目录
 │   └── forge-std/
-└── out/                  # Compilation output directory
+└── out/                  # 编译输出目录
     └── Counter.sol/
         └── Counter.json
 ```
 
-## Creating a New Project
+## 创建新项目
 
 ```bash
-# Create new project
+# 创建新项目
 forge init my-project
 cd my-project
 
-# Create project using template
+# 创建项目（使用模板）
 forge init --template https://github.com/foundry-rs/forge-template my-project
+
+# 强制在一个文件内初始化
+forge init --force
 ```
 
-## Basic Configuration
+## 基本配置
 
-### foundry.toml Configuration File
+### foundry.toml 配置文件
 
 ```toml
 [profile.default]
@@ -82,90 +85,90 @@ libs = ["lib"]
 test = "test"
 cache_path = "cache"
 
-# Compiler settings
+# 编译器设置
 solc = "0.8.19"
 optimizer = true
 optimizer_runs = 200
 via_ir = false
 
-# Test settings
+# 测试设置
 verbosity = 2
 fuzz = { runs = 256 }
 invariant = { runs = 256, depth = 15 }
 
-# Formatting settings
+# 格式化设置
 [fmt]
 line_length = 120
 tab_width = 4
 bracket_spacing = true
 
-# RPC endpoints
+# RPC 端点
 [rpc_endpoints]
 mainnet = "https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_API_KEY}"
 sepolia = "https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}"
 
-# Etherscan API keys
+# 以太扫描 API 密钥
 [etherscan]
 mainnet = { key = "${ETHERSCAN_API_KEY}" }
 sepolia = { key = "${ETHERSCAN_API_KEY}" }
 ```
 
-## Basic Commands
+## 基本命令
 
-### Compilation
+### 编译相关
 
 ```bash
-# Compile project
+# 编译项目
 forge build
 
-# Clean compilation cache
+# 清理编译缓存
 forge clean
 
-# Check code format
+# 检查代码格式
 forge fmt --check
 
-# Format code
+# 格式化代码
 forge fmt
 ```
 
-### Testing
+### 测试相关
 
 ```bash
-# Run all tests
+# 运行所有测试
 forge test
 
-# Run specific test file
+# 运行特定测试文件
 forge test --match-path test/Counter.t.sol
 
-# Run specific test function
+# 运行特定测试函数
 forge test --match-test test_Increment
 
-# Show verbose output
+# 显示详细输出
 forge test -vv
 
-# Show gas report
+# 显示 gas 报告
 forge test --gas-report
 
-# Run coverage testing
+# 运行覆盖率测试
 forge coverage
 ```
 
-### Dependency Management
+### 依赖管理
 
 ```bash
-# Install dependency
+# 安装依赖
 forge install OpenZeppelin/openzeppelin-contracts
 
-# Update dependencies
+# 更新依赖
 forge update
 
-# Remove dependency
+# 移除依赖
 forge remove openzeppelin-contracts
 ```
 
-## Your First Test Contract
+## 第一个测试合约
 
-### Example Contract (src/Counter.sol)
+### 示例合约 (src/Counter.sol)
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -184,7 +187,7 @@ contract Counter {
 }
 ```
 
-### Test Contract (test/Counter.t.sol)
+### 测试合约 (test/Counter.t.sol)
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -212,88 +215,116 @@ contract CounterTest is Test {
 }
 ```
 
-## Test Naming Conventions
+## 测试命名约定
 
-Foundry uses specific naming conventions to identify tests:
+Foundry 使用特定的命名约定来识别测试：
 
-1. **Test Functions**: Must start with `test`
+1. **测试函数**：必须以 `test` 开头
    - `test_BasicFunction()`
    - `testRevert_InvalidInput()`
    - `testFuzz_RandomInput(uint256 x)`
 
-2. **Test Files**: Usually end with `.t.sol`
+2. **测试文件**：通常以 `.t.sol` 结尾
    - `Counter.t.sol`
    - `Token.test.sol`
 
-3. **Test Contracts**: Usually end with `Test`
+3. **测试合约**：通常以 `Test` 结尾
    - `CounterTest`
    - `TokenTest`
 
-## Environment Variables
+## 环境变量
 
-Create a `.env` file to manage sensitive information:
+创建 `.env` 文件来管理敏感信息：
 
 ```bash
-# .env file
+# .env 文件
 PRIVATE_KEY=your_private_key_here
 ETHERSCAN_API_KEY=your_etherscan_api_key
 ALCHEMY_API_KEY=your_alchemy_api_key
 ```
 
-Reference in foundry.toml:
+在 foundry.toml 中引用：
 
 ```toml
 [rpc_endpoints]
 mainnet = "https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_API_KEY}"
 ```
 
-## Common Issues
+## 常见问题
 
-### 1. Compilation Errors
+### 1. 编译错误
 
 ```bash
-# Check Solidity version
+# 检查 Solidity 版本
 forge --version
 
-# Update foundry
+# 更新 foundry
 foundryup
 
-# Clean cache
+# 清理缓存
 forge clean
 ```
 
-### 2. Test Failures
+### 2. 测试失败
 
 ```bash
-# Increase verbosity
+# 增加详细输出
 forge test -vvv
 
-# Run specific test
+# 运行特定测试
 forge test --match-test test_specific_function -vvv
 ```
 
-### 3. Dependency Issues
+### 3. 依赖问题
 
 ```bash
-# Reinstall dependencies
+# 重新安装依赖
 forge install
 
-# Check dependency versions
+# 检查依赖版本
 forge tree
 ```
 
-## Next Steps
+## 下一步
 
-Now that you understand the basics of Foundry, you can learn:
+现在你已经了解了 Foundry 的基础知识，接下来可以学习：
 
-1. [Writing Tests](./02-writing-tests.md) - Learn how to write effective tests
-2. [Advanced Testing](./03-advanced-testing.md) - Master fuzzing, invariant testing, etc.
-3. [Debugging Tools](./04-debugging-tools.md) - Learn debugging techniques and tools
-4. [Best Practices](./05-best-practices.md) - Understand testing best practices
+1. [编写测试用例](./02-writing-tests.md) - 学习如何编写有效的测试
+2. [高级测试技巧](./03-advanced-testing.md) - 掌握模糊测试、不变量测试等
+3. [调试和工具](./04-debugging-tools.md) - 学习调试技巧和工具使用
+4. [最佳实践](./05-best-practices.md) - 了解测试的最佳实践
 
-## References
+## 参考资源
 
-- [Foundry Book](https://book.getfoundry.sh/) - Official documentation
-- [Foundry GitHub](https://github.com/foundry-rs/foundry) - Source code and issue tracking
-- [Forge Std](https://github.com/foundry-rs/forge-std) - Standard testing library
+- [Foundry Book](https://book.getfoundry.sh/) - 官方文档
+- [Foundry GitHub](https://github.com/foundry-rs/foundry) - 源代码和问题跟踪
+- [Forge Std](https://github.com/foundry-rs/forge-std) - 标准测试库
 
+
+# 启动wsl
+win键，然后terminal
+wsl.exe-d Ubuntu
+
+# 常用语句
+```solidity
+vm.assume(_caller != flaunch.owner());  模糊测试中的限定条件，不符合的直接跳过，这个语句中要求 caller不能是owner
+amount = bound(amount, min, max); 也是模糊测试中，限制条件。要求amount的范围在 min，max直接
+
+vm.prank(_caller);  prank 直接切换用户
+
+
+事件监听模式
+vm.expectEmit()        // 开始“监听期望”
+emit ExpectedEvent(...)// 定义“我期望看到什么”  这是测试合约里的emit，表示期望被测合约发出这样的emit，自身并不会真的emit出来
+call contract          // 真正触发事件
+                       // Foundry 自动比对
+
+```
+无论加多少vvv，模糊测试中的log不打印
+
+
+```
+--mp  指定路径
+--mt  匹配测试
+
+```

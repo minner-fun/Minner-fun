@@ -1,329 +1,471 @@
-# 2、Writing Tests
+# 2、编写测试用例指南
 
-Learn how to write effective tests for your smart contracts using Foundry.
+## 测试合约基础结构
 
-## Test Contract Structure
-
-A typical test contract follows this structure:
+### 基本模板
 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
 import {Test, console} from "forge-std/Test.sol";
-import {MyContract} from "../src/MyContract.sol";
+import {YourContract} from "../src/YourContract.sol";
 
-contract MyContractTest is Test {
-    MyContract public myContract;
-    address public user1;
-    address public user2;
-
+contract YourContractTest is Test {
+    YourContract public yourContract;
+    
+    // 测试用户地址
+    address public constant ALICE = address(0x1);
+    address public constant BOB = address(0x2);
+    address public constant CHARLIE = address(0x3);
+    
+    // 测试常量
+    uint256 public constant INITIAL_BALANCE = 1000 ether;
+    
     function setUp() public {
-        // Setup runs before each test
-        myContract = new MyContract();
-        user1 = address(0x1);
-        user2 = address(0x2);
+        // 部署合约
+        yourContract = new YourContract();
+        
+        // 设置测试环境
+        vm.deal(ALICE, INITIAL_BALANCE);
+        vm.deal(BOB, INITIAL_BALANCE);
     }
-
-    function test_BasicFunctionality() public {
-        // Test implementation
+    
+    function test_BasicFunction() public {
+        // 测试逻辑
     }
 }
 ```
 
-## Assertion Functions
+## 断言函数 (Assertions)
 
-Foundry provides various assertion functions through `forge-std/Test.sol`:
-
-### Equality Assertions
+### 基本断言
 
 ```solidity
-// Assert equality
-assertEq(a, b);
-assertEq(a, b, "Custom error message");
+// 相等性断言
+assertEq(a, b);                    // a == b
+assertEq(a, b, "error message");   // 带错误消息
 
-// Assert inequality
-assertNotEq(a, b);
+// 不等性断言
+assertNotEq(a, b);                 // a != b
 
-// For approximate equality (useful for decimals)
-assertApproxEqAbs(a, b, maxDelta);
-assertApproxEqRel(a, b, maxPercentDelta);
+// 大小比较
+assertGt(a, b);                    // a > b
+assertGe(a, b);                    // a >= b
+assertLt(a, b);                    // a < b
+assertLe(a, b);                    // a <= b
+
+// 布尔断言
+assertTrue(condition);             // condition == true
+assertFalse(condition);            // condition == false
+
+// 近似相等（用于处理精度问题）
+assertApproxEqAbs(a, b, maxDelta);     // |a - b| <= maxDelta
+assertApproxEqRel(a, b, maxPercentDelta); // |a - b| <= max(a,b) * maxPercentDelta / 1e18
 ```
 
-### Boolean Assertions
+### 高级断言示例
 
 ```solidity
-// Assert true/false
-assertTrue(condition);
-assertFalse(condition);
+function test_ApproximateEquality() public {
+    uint256 expected = 1000;
+    uint256 actual = 999;
+    
+    // 绝对误差：允许 ±2 的误差
+    assertApproxEqAbs(actual, expected, 2, "Values should be approximately equal");
+    
+    // 相对误差：允许 0.1% 的误差
+    assertApproxEqRel(actual, expected, 0.001e18, "Values should be within 0.1%");
+}
 ```
 
-### Greater Than / Less Than
+## 测试类型
+
+### 1. 单元测试
+
+测试单个函数的功能：
 
 ```solidity
-assertGt(a, b);  // a > b
-assertGe(a, b);  // a >= b
-assertLt(a, b);  // a < b
-assertLe(a, b);  // a <= b
+function test_Deposit() public {
+    uint256 amount = 100 ether;
+    
+    vm.prank(ALICE);
+    vault.deposit(amount);
+    
+    assertEq(vault.balanceOf(ALICE), amount);
+    assertEq(vault.totalSupply(), amount);
+}
 ```
 
-## Test Types and Patterns
+### 2. 集成测试
 
-### Unit Tests
+测试多个组件的交互：
 
-Test individual functions in isolation:
+```solidity
+function test_DepositAndWithdraw() public {
+    uint256 depositAmount = 100 ether;
+    
+    // 存款
+    vm.prank(ALICE);
+    vault.deposit(depositAmount);
+    
+    // 提取
+    uint256 shares = vault.balanceOf(ALICE);
+    vm.prank(ALICE);
+    vault.withdraw(shares);
+    
+    assertEq(vault.balanceOf(ALICE), 0);
+    assertEq(vault.totalSupply(), 0);
+}
+```
+
+### 3. 边界测试
+
+测试边界条件和异常情况：
+
+```solidity
+function test_ZeroDeposit() public {
+    vm.prank(ALICE);
+    vm.expectRevert("Amount must be greater than 0");
+    vault.deposit(0);
+}
+
+function test_InsufficientBalance() public {
+    address poorUser = address(0x999);
+    
+    vm.prank(poorUser);
+    vm.expectRevert("ERC20: insufficient balance");
+    vault.deposit(100 ether);
+}
+```
+
+## 使用 vm 作弊码 (Cheatcodes)
+
+### 身份模拟
+
+```solidity
+// 模拟特定地址调用
+vm.prank(ALICE);
+contract.someFunction();
+
+// 模拟多次调用
+vm.startPrank(ALICE);
+contract.function1();
+contract.function2();
+vm.stopPrank();
+```
+
+### 时间操作
+
+```solidity
+// 设置时间戳
+vm.warp(1641070800); // 2022-01-01 00:00:00 UTC
+
+// 前进时间
+vm.warp(block.timestamp + 365 days);
+
+// 设置区块号
+vm.roll(1000000);
+```
+
+### 余额和状态
+
+```solidity
+// 设置 ETH 余额
+vm.deal(ALICE, 100 ether);
+
+// 设置存储槽
+vm.store(address(token), bytes32(uint256(0)), bytes32(uint256(1000)));
+
+// 设置代码
+vm.etch(address(0x123), bytecode);
+```
+
+### 期望行为
+
+```solidity
+// 期望 revert
+vm.expectRevert();
+contract.failingFunction();
+
+// 期望特定 revert 消息
+vm.expectRevert("Custom error message");
+contract.failingFunction();
+
+// 期望事件
+vm.expectEmit(true, true, false, true);
+emit Transfer(from, to, amount);
+contract.transfer(to, amount);
+```
+
+## 测试模式
+
+### 1. AAA 模式 (Arrange-Act-Assert)
 
 ```solidity
 function test_Transfer() public {
-    token.mint(user1, 100);
+    // Arrange - 准备测试数据
+    uint256 amount = 100 ether;
+    vm.deal(ALICE, amount);
     
-    vm.prank(user1);
-    token.transfer(user2, 50);
+    // Act - 执行操作
+    vm.prank(ALICE);
+    bool success = token.transfer(BOB, amount);
     
-    assertEq(token.balanceOf(user1), 50);
-    assertEq(token.balanceOf(user2), 50);
+    // Assert - 验证结果
+    assertTrue(success);
+    assertEq(token.balanceOf(BOB), amount);
+    assertEq(token.balanceOf(ALICE), 0);
 }
 ```
 
-### Integration Tests
-
-Test multiple contracts working together:
+### 2. Given-When-Then 模式
 
 ```solidity
-function test_SwapOnUniswap() public {
-    // Setup multiple contracts
-    token1.approve(address(router), 100);
-    router.swapExactTokensForTokens(...);
-    // Assert final state
+function test_WithdrawAfterDeposit() public {
+    // Given - 给定初始条件
+    uint256 depositAmount = 100 ether;
+    vm.prank(ALICE);
+    vault.deposit(depositAmount);
+    
+    // When - 当执行某个操作时
+    uint256 shares = vault.balanceOf(ALICE);
+    vm.prank(ALICE);
+    vault.withdraw(shares);
+    
+    // Then - 那么应该有预期结果
+    assertEq(vault.balanceOf(ALICE), 0);
+    assertEq(vault.totalSupply(), 0);
 }
 ```
 
-### Fuzz Tests
+## 测试数据管理
 
-Test with random inputs:
+### 使用常量
 
 ```solidity
-function testFuzz_Transfer(uint256 amount) public {
-    vm.assume(amount <= token.totalSupply());
+contract TokenTest is Test {
+    // 测试常量
+    uint256 public constant INITIAL_SUPPLY = 1_000_000 ether;
+    uint256 public constant TRANSFER_AMOUNT = 1000 ether;
+    string public constant TOKEN_NAME = "Test Token";
+    string public constant TOKEN_SYMBOL = "TT";
     
-    token.mint(user1, amount);
-    vm.prank(user1);
-    token.transfer(user2, amount);
-    
-    assertEq(token.balanceOf(user2), amount);
+    // 地址常量
+    address public constant OWNER = address(0x1);
+    address public constant USER1 = address(0x2);
+    address public constant USER2 = address(0x3);
 }
 ```
 
-## Error Handling and Reverts
-
-### Testing Expected Reverts
+### 辅助函数
 
 ```solidity
-function test_RevertWhen_InsufficientBalance() public {
+contract VaultTest is Test {
+    // 创建辅助函数来减少重复代码
+    function _depositFor(address user, uint256 amount) internal {
+        vm.prank(user);
+        vault.deposit(amount);
+    }
+    
+    function _withdrawFor(address user, uint256 shares) internal {
+        vm.prank(user);
+        vault.withdraw(shares);
+    }
+    
+    function _printBalances(string memory description) internal view {
+        console.log("=== %s ===", description);
+        console.log("ALICE balance:", token.balanceOf(ALICE));
+        console.log("BOB balance:", token.balanceOf(BOB));
+        console.log("Vault balance:", token.balanceOf(address(vault)));
+    }
+}
+```
+
+## 事件测试
+
+### 基本事件测试
+
+```solidity
+function test_TransferEmitsEvent() public {
+    uint256 amount = 100 ether;
+    
+    // 期望事件被触发
+    vm.expectEmit(true, true, false, true);
+    emit Transfer(ALICE, BOB, amount);
+    
+    vm.prank(ALICE);
+    token.transfer(BOB, amount);
+}
+```
+
+### 复杂事件测试
+
+```solidity
+function test_MultipleEvents() public {
+    // 期望多个事件
+    vm.expectEmit(true, true, false, true);
+    emit Approval(ALICE, address(vault), 100 ether);
+    
+    vm.expectEmit(true, true, false, true);
+    emit Transfer(ALICE, address(vault), 100 ether);
+    
+    vm.expectEmit(true, false, false, true);
+    emit Deposit(ALICE, 100 ether);
+    
+    vm.prank(ALICE);
+    vault.deposit(100 ether);
+}
+```
+
+## 错误处理测试
+
+### 基本错误测试
+
+```solidity
+function test_RevertOnZeroAmount() public {
+    vm.expectRevert("Amount cannot be zero");
+    vault.deposit(0);
+}
+
+function test_RevertOnInsufficientBalance() public {
+    vm.prank(ALICE);
     vm.expectRevert("Insufficient balance");
-    token.transfer(user2, 1000);
-}
-
-// With custom errors
-function test_RevertWhen_Unauthorized() public {
-    vm.expectRevert(Unauthorized.selector);
-    myContract.adminFunction();
+    token.transfer(BOB, 1000 ether); // ALICE 没有这么多代币
 }
 ```
 
-### Testing Require Statements
+### 自定义错误测试
 
 ```solidity
-function test_RequireValidInput() public {
-    vm.expectRevert("Invalid input");
-    myContract.setNumber(0);
+// 合约中定义自定义错误
+error InsufficientBalance(uint256 available, uint256 required);
+
+// 测试自定义错误
+function test_CustomError() public {
+    vm.expectRevert(
+        abi.encodeWithSelector(
+            InsufficientBalance.selector,
+            0,
+            100 ether
+        )
+    );
+    vault.withdraw(100 ether);
 }
 ```
 
-## Event Testing
+## Gas 测试
 
-### Basic Event Testing
+### 基本 Gas 测试
 
 ```solidity
-function test_EmitsTransferEvent() public {
-    // Tell Foundry which event to expect
-    vm.expectEmit(true, true, false, true);
+function test_DepositGasUsage() public {
+    uint256 gasBefore = gasleft();
     
-    // Emit the expected event
-    emit Transfer(user1, user2, 100);
+    vm.prank(ALICE);
+    vault.deposit(100 ether);
     
-    // Call the function that should emit the event
-    token.transfer(user2, 100);
-}
-```
-
-### Multiple Events
-
-```solidity
-function test_EmitsMultipleEvents() public {
-    vm.expectEmit(true, true, false, true);
-    emit Approval(user1, address(router), 100);
+    uint256 gasUsed = gasBefore - gasleft();
+    console.log("Deposit gas used:", gasUsed);
     
-    vm.expectEmit(true, true, false, true);
-    emit Transfer(user1, user2, 50);
+    assertLt(gasUsed, 100000, "Deposit should use less than 100k gas");
+}
+```
+
+### Gas 快照
+
+```solidity
+function test_GasSnapshot() public {
+    vm.prank(ALICE);
+    uint256 gasUsed = gasleft();
+    vault.deposit(100 ether);
+    gasUsed = gasUsed - gasleft();
     
-    // Function that emits both events
-    token.approveAndTransfer(address(router), 100, user2, 50);
+    // 创建 gas 快照
+    vm.snapshot();
+    assertEq(gasUsed, 85432); // 具体的 gas 值
 }
 ```
 
-## Cheatcodes for Testing
+## 状态测试
 
-### Manipulating State
-
-```solidity
-// Change msg.sender for next call
-vm.prank(user1);
-myContract.doSomething();
-
-// Change msg.sender for all subsequent calls
-vm.startPrank(user1);
-myContract.doSomething();
-myContract.doSomethingElse();
-vm.stopPrank();
-
-// Deal ETH to address
-vm.deal(user1, 10 ether);
-
-// Set contract storage
-vm.store(address(token), slot, value);
-```
-
-### Time Manipulation
+### 状态验证
 
 ```solidity
-// Set block timestamp
-vm.warp(1641070800);
-
-// Increase time
-vm.warp(block.timestamp + 1 days);
-
-// Set block number
-vm.roll(12345678);
-```
-
-### Mocking Calls
-
-```solidity
-// Mock a call to a contract
-vm.mockCall(
-    address(oracle),
-    abi.encodeWithSelector(Oracle.getPrice.selector),
-    abi.encode(1000)
-);
-```
-
-## Test Organization
-
-### Using setUp for Common Setup
-
-```solidity
-function setUp() public {
-    // Common setup for all tests
-    token = new Token();
-    user1 = makeAddr("user1");
-    user2 = makeAddr("user2");
+function test_StateConsistency() public {
+    // 初始状态验证
+    assertEq(vault.totalSupply(), 0);
+    assertEq(token.balanceOf(address(vault)), 0);
     
-    vm.deal(user1, 100 ether);
-    vm.deal(user2, 100 ether);
+    // 执行操作
+    vm.prank(ALICE);
+    vault.deposit(100 ether);
+    
+    // 状态变化验证
+    assertEq(vault.totalSupply(), 100 ether);
+    assertEq(vault.balanceOf(ALICE), 100 ether);
+    assertEq(token.balanceOf(address(vault)), 100 ether);
+    assertEq(token.balanceOf(ALICE), INITIAL_BALANCE - 100 ether);
 }
 ```
 
-### Helper Functions
+## 测试组织
+
+### 按功能分组
 
 ```solidity
-function _mintAndApprove(address user, uint256 amount) internal {
-    token.mint(user, amount);
-    vm.prank(user);
-    token.approve(address(this), amount);
-}
-
-function test_WithHelper() public {
-    _mintAndApprove(user1, 100);
-    // Continue test
+contract VaultTest is Test {
+    // ============ 基础功能测试 ============
+    
+    function test_BasicDeposit() public { }
+    function test_BasicWithdraw() public { }
+    
+    // ============ 边界情况测试 ============
+    
+    function test_ZeroDeposit() public { }
+    function test_MaxDeposit() public { }
+    
+    // ============ 权限测试 ============
+    
+    function test_OnlyOwnerCanPause() public { }
+    function test_UnauthorizedAccess() public { }
+    
+    // ============ 攻击场景测试 ============
+    
+    function test_ReentrancyAttack() public { }
+    function test_InflationAttack() public { }
 }
 ```
 
-### Test Modifiers
+### 使用描述性注释
 
 ```solidity
-modifier funded(address user) {
-    vm.deal(user, 100 ether);
-    _;
+/**
+ * @notice 测试基础存款功能
+ * @dev 验证用户可以成功存款并获得正确的份额
+ */
+function test_BasicDeposit() public {
+    // 测试逻辑
 }
 
-function test_WithModifier() public funded(user1) {
-    // user1 now has 100 ETH
-}
-```
-
-## Advanced Patterns
-
-### Testing Access Control
-
-```solidity
-function test_OnlyOwnerCanCall() public {
-    vm.prank(owner);
-    myContract.adminFunction();  // Should succeed
-    
-    vm.prank(user1);
-    vm.expectRevert("Not owner");
-    myContract.adminFunction();  // Should fail
+/**
+ * @notice 测试通胀攻击场景
+ * @dev 验证合约能够抵御通胀攻击
+ * 攻击步骤：
+ * 1. 攻击者存入最小金额
+ * 2. 攻击者直接转账大量代币给合约
+ * 3. 受害者存款获得0份额
+ */
+function test_InflationAttack() public {
+    // 攻击逻辑
 }
 ```
 
-### Testing State Transitions
+## 下一步
 
-```solidity
-function test_StateTransition() public {
-    assertEq(uint(myContract.state()), uint(State.Pending));
-    
-    myContract.start();
-    assertEq(uint(myContract.state()), uint(State.Active));
-    
-    myContract.complete();
-    assertEq(uint(myContract.state()), uint(State.Completed));
-}
-```
+学会了基础测试编写后，你可以继续学习：
 
-### Snapshot and Revert
-
-```solidity
-function test_WithSnapshot() public {
-    uint256 snapshot = vm.snapshot();
-    
-    // Make some state changes
-    myContract.doSomething();
-    assertEq(myContract.value(), 100);
-    
-    // Revert to snapshot
-    vm.revertTo(snapshot);
-    assertEq(myContract.value(), 0);
-}
-```
-
-## Best Practices
-
-1. **Test One Thing**: Each test should verify one specific behavior
-2. **Clear Names**: Use descriptive test names like `test_RevertWhen_InsufficientBalance`
-3. **Arrange-Act-Assert**: Structure tests clearly
-4. **Use setUp**: Put common setup in `setUp()` function
-5. **Test Edge Cases**: Don't just test happy paths
-6. **Add Comments**: Explain complex test logic
-
-## Next Steps
-
-- [Advanced Testing](./03-advanced-testing.md) - Learn about fuzzing and invariant testing
-- [Debugging Tools](./04-debugging-tools.md) - Master debugging techniques
-- [Best Practices](./05-best-practices.md) - Learn testing best practices
-
-## References
-
-- [Forge Standard Library](https://github.com/foundry-rs/forge-std)
-- [Foundry Cheatcodes](https://book.getfoundry.sh/cheatcodes/)
-
+1. [模糊测试和不变量测试](./03-advanced-testing.md)
+2. [调试技巧和工具](./04-debugging-tools.md)
+3. [测试最佳实践](./05-best-practices.md)
+4. [性能优化](./06-performance-optimization.md)
