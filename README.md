@@ -44,49 +44,6 @@ I'm passionate about:
 
 </div>
 
-### 📖 What's Inside
-
-| Section | Content |
-|---------|---------|
-| 📝 **Notes** | Foundry guides, testing patterns, development tips |
-| 🔬 **Protocols** | Uniswap V2, AMM mechanics, security analysis |
-| 🚀 **Projects** | Fuzzing templates, best practices, workflows |
-
-## 🛠️ Tech Stack
-
-```text
-Languages     ▰▰▰▰▰▰▰▰▰▱  Solidity, TypeScript, JavaScript, Rust
-Frameworks    ▰▰▰▰▰▰▰▰▱▱  Foundry, Hardhat, Ethers.js, Web3.js
-Tools         ▰▰▰▰▰▰▰▱▱▱  Slither, Echidna, Mythril, Certora
-Platforms     ▰▰▰▰▰▰▰▰▱▱  Ethereum, Arbitrum, Optimism, Base
-```
-
-## 📊 GitHub Stats
-
-<div align="center">
-
-<img height="180em" src="https://github-readme-stats.vercel.app/api?username=Minner-fun&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true"/>
-<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Minner-fun&layout=compact&langs_count=8&theme=tokyonight"/>
-
-</div>
-
-## 🌟 Featured Project
-
-<div align="center">
-
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Minner-fun&repo=Minner-fun&theme=tokyonight)](https://github.com/Minner-fun/Minner-fun)
-
-**Minner Documentation** - A bilingual technical documentation site built with Docusaurus
-
-`TypeScript` `React` `Docusaurus` `Vercel` `i18n`
-
-</div>
-
-## 💡 Current Focus
-
-- 🔬 Researching advanced fuzzing techniques for smart contracts
-- 📝 Writing detailed protocol analysis and security guides  
-- 🛠️ Building developer tools for the Web3 ecosystem
 
 ## 📫 Let's Connect
 
@@ -98,11 +55,7 @@ Platforms     ▰▰▰▰▰▰▰▰▱▱  Ethereum, Arbitrum, Optimism, Base
 
 </div>
 
----
-
-<details>
-<summary>📊 More Stats</summary>
-
+## 📊 More Stats
 <div align="center">
 
 ![](https://github-readme-streak-stats.herokuapp.com/?user=Minner-fun&theme=tokyonight&hide_border=false)
@@ -110,8 +63,6 @@ Platforms     ▰▰▰▰▰▰▰▰▱▱  Ethereum, Arbitrum, Optimism, Base
 ![](https://github-readme-activity-graph.vercel.app/graph?username=Minner-fun&theme=tokyo-night)
 
 </div>
-
-</details>
 
 ---
 
