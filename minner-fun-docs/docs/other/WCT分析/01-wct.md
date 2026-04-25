@@ -1,0 +1,3 @@
+https://docs.walletconnect.network/contracts#wct-smart-contracts
+op wct 0xeF4461891DfB3AC8572cCf7C794664A8DD927945
+op wct deployer 0x2cE0f9e0a65aeFAE3B51D59916eacb1053907d23
