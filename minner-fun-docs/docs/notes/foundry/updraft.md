@@ -312,6 +312,17 @@ chisel 是一个交互环境
 $ forge script DeployFundMe --rpc-url $ANVIL_RPC_URL --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast
 ```
 
+Monad验证代码
+```bash
+forge verify-contract \
+  --rpc-url https://testnet-rpc.monad.xyz \
+  --verifier sourcify \
+  --verifier-url 'https://sourcify-api-monad.blockvision.org/' \
+  0xdE3651Ada44138305Af580E2627d343D6C66d0Eb \
+  src/FundMe.sol:FundMe
+```
+
+
 forge install Cyfrin/foundry-devops 安装包
 
 
