@@ -78,20 +78,17 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'notesSidebar',
+          to: '/notes',
           position: 'left',
           label: '笔记',
         },
         {
-          type: 'docSidebar',
-          sidebarId: 'protocolsSidebar',
+          to: '/protocols',
           position: 'left',
           label: '协议',
         },
         {
-          type: 'docSidebar',
-          sidebarId: 'projectsSidebar',
+          to: '/projects',
           position: 'left',
           label: '项目',
         },
