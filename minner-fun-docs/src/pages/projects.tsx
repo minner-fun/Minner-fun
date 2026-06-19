@@ -1,12 +1,16 @@
 import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 
 import styles from './directory.module.css';
 
+type Status = 'active' | 'done' | 'template';
+
 type Project = {
   path: string;
-  status: '进行中' | '已完成' | '模板';
+  status: Status;
+  statusLabel: string;
   title: string;
   desc: string;
   chips: string[];
@@ -18,57 +22,134 @@ type Project = {
   glow?: boolean;
 };
 
-const PROJECTS: Project[] = [
-  {
-    path: 'launchpad/v2',
-    status: '进行中',
-    title: 'LaunchV2 · Memecoin Launchpad',
-    desc: '完整代币发射台：internal swap 内部做市、BidWall 买墙护盘、TreasuryActionManager 国库授权流。深入 Uniswap V4 Hooks 实践。',
-    chips: ['Solidity', 'V4 Hooks', 'Foundry', 'Solady'],
-    foot: '阅读文档 →',
-    meta: '4 篇',
-    to: '/docs/projects/LaunchV2/StartLunch',
-    glow: true,
+/* ── 双语文案：按 currentLocale 选择 ── */
+const CONTENT = {
+  zh: {
+    layoutTitle: '项目 / Projects',
+    layoutDesc: '从研究到落地的构建日志。每个项目都附带设计思路、合约结构与踩坑记录。',
+    h1: '项目',
+    h1en: '/ Projects',
+    intro: '从研究到落地的构建日志。每个项目都附带设计思路、合约结构与踩坑记录——可读、可复用。',
+    projects: [
+      {
+        path: 'launchpad/v2',
+        status: 'active' as Status,
+        statusLabel: '进行中',
+        title: 'LaunchV2 · Memecoin Launchpad',
+        desc: '完整代币发射台：internal swap 内部做市、BidWall 买墙护盘、TreasuryActionManager 国库授权流。深入 Uniswap V4 Hooks 实践。',
+        chips: ['Solidity', 'V4 Hooks', 'Foundry', 'Solady'],
+        foot: '阅读文档 →',
+        meta: '4 篇',
+        to: '/docs/projects/LaunchV2/StartLunch',
+        glow: true,
+      },
+      {
+        path: 'lp-manager/',
+        status: 'active' as Status,
+        statusLabel: '进行中',
+        title: 'LpManager · 仓位策略引擎',
+        desc: '链上 LP 数据抓取 → 分析 → 策略闭环。用 TheGraph + Dune 把做市仓位盈亏拆成可量化指标，驱动再平衡决策。',
+        chips: ['TheGraph', 'Dune', 'Python'],
+        foot: '阅读文档 →',
+        meta: '3 篇',
+        to: '/docs/projects/LpManager/data-crawl',
+        glow: true,
+      },
+      {
+        path: 'launchpad/v1',
+        status: 'done' as Status,
+        statusLabel: '已完成',
+        title: 'LaunchV1 · 发射台原型',
+        desc: '第一版 launchpad 的设计与实现，验证核心代币曲线与流动性引导机制。',
+        chips: ['Solidity', 'Hardhat'],
+        foot: '阅读文档 →',
+        meta: '1 篇',
+        to: '/docs/projects/LaunchV1/launchpad',
+        alt: true,
+      },
+      {
+        path: 'template/',
+        status: 'template' as Status,
+        statusLabel: '模板',
+        title: 'Fuzzing Template · 模糊测试脚手架',
+        desc: '开箱即用的合约模糊测试模板，内置不变量测试与典型攻击面用例。',
+        chips: ['Foundry', 'Invariant'],
+        foot: '查看模板 →',
+        meta: 'GitHub',
+        to: 'https://github.com/minner-fun',
+        external: true,
+        alt: true,
+      },
+    ] as Project[],
   },
-  {
-    path: 'lp-manager/',
-    status: '进行中',
-    title: 'LpManager · 仓位策略引擎',
-    desc: '链上 LP 数据抓取 → 分析 → 策略闭环。用 TheGraph + Dune 把做市仓位盈亏拆成可量化指标，驱动再平衡决策。',
-    chips: ['TheGraph', 'Dune', 'Python'],
-    foot: '阅读文档 →',
-    meta: '3 篇',
-    to: '/docs/projects/LpManager/data-crawl',
-    glow: true,
+  en: {
+    layoutTitle: 'Projects',
+    layoutDesc: 'A build log from research to shipping. Each project comes with design rationale, contract structure and lessons learned.',
+    h1: 'Projects',
+    h1en: '',
+    intro: 'A build log from research to shipping. Each project comes with design rationale, contract structure and lessons learned — readable and reusable.',
+    projects: [
+      {
+        path: 'launchpad/v2',
+        status: 'active' as Status,
+        statusLabel: 'In Progress',
+        title: 'LaunchV2 · Memecoin Launchpad',
+        desc: 'A complete token launchpad: internal swap market making, the BidWall price-support mechanism and the TreasuryActionManager authorization flow. A deep dive into Uniswap V4 Hooks in practice.',
+        chips: ['Solidity', 'V4 Hooks', 'Foundry', 'Solady'],
+        foot: 'Read docs →',
+        meta: '4 docs',
+        to: '/docs/projects/LaunchV2/StartLunch',
+        glow: true,
+      },
+      {
+        path: 'lp-manager/',
+        status: 'active' as Status,
+        statusLabel: 'In Progress',
+        title: 'LpManager · Position Strategy Engine',
+        desc: 'On-chain LP data capture → analysis → strategy loop. Using TheGraph + Dune to break market-making PnL into quantifiable metrics that drive rebalancing decisions.',
+        chips: ['TheGraph', 'Dune', 'Python'],
+        foot: 'Read docs →',
+        meta: '3 docs',
+        to: '/docs/projects/LpManager/data-crawl',
+        glow: true,
+      },
+      {
+        path: 'launchpad/v1',
+        status: 'done' as Status,
+        statusLabel: 'Completed',
+        title: 'LaunchV1 · Launchpad Prototype',
+        desc: 'The design and implementation of the first launchpad version, validating the core token curve and liquidity bootstrapping mechanism.',
+        chips: ['Solidity', 'Hardhat'],
+        foot: 'Read docs →',
+        meta: '1 doc',
+        to: '/docs/projects/LaunchV1/launchpad',
+        alt: true,
+      },
+      {
+        path: 'template/',
+        status: 'template' as Status,
+        statusLabel: 'Template',
+        title: 'Fuzzing Template · Fuzz-Testing Scaffold',
+        desc: 'An out-of-the-box contract fuzz-testing template with built-in invariant tests and typical attack-surface cases.',
+        chips: ['Foundry', 'Invariant'],
+        foot: 'View template →',
+        meta: 'GitHub',
+        to: 'https://github.com/minner-fun',
+        external: true,
+        alt: true,
+      },
+    ] as Project[],
   },
-  {
-    path: 'launchpad/v1',
-    status: '已完成',
-    title: 'LaunchV1 · 发射台原型',
-    desc: '第一版 launchpad 的设计与实现，验证核心代币曲线与流动性引导机制。',
-    chips: ['Solidity', 'Hardhat'],
-    foot: '阅读文档 →',
-    meta: '1 篇',
-    to: '/docs/projects/LaunchV1/launchpad',
-    alt: true,
-  },
-  {
-    path: 'template/',
-    status: '模板',
-    title: 'Fuzzing Template · 模糊测试脚手架',
-    desc: '开箱即用的合约模糊测试模板，内置不变量测试与典型攻击面用例。',
-    chips: ['Foundry', 'Invariant'],
-    foot: '查看模板 →',
-    meta: 'GitHub',
-    to: 'https://github.com/minner-fun',
-    external: true,
-    alt: true,
-  },
-];
+} as const;
+
+type Locale = keyof typeof CONTENT;
 
 export default function Projects(): ReactNode {
+  const {i18n} = useDocusaurusContext();
+  const t = CONTENT[(i18n.currentLocale as Locale)] ?? CONTENT.zh;
+
   return (
-    <Layout title="项目 / Projects" description="从研究到落地的构建日志。每个项目都附带设计思路、合约结构与踩坑记录。">
+    <Layout title={t.layoutTitle} description={t.layoutDesc}>
       <main className={styles.page}>
         <div className={styles.wrap}>
           <div className={styles.crumb}>
@@ -78,14 +159,12 @@ export default function Projects(): ReactNode {
           </div>
 
           <h1 className={styles.h1} style={{marginTop: 16}}>
-            项目 <span className={styles.en}>/ Projects</span>
+            {t.h1} {t.h1en && <span className={styles.en}>{t.h1en}</span>}
           </h1>
-          <p className={styles.intro}>
-            从研究到落地的构建日志。每个项目都附带设计思路、合约结构与踩坑记录——可读、可复用。
-          </p>
+          <p className={styles.intro}>{t.intro}</p>
 
           <div className={styles.col2}>
-            {PROJECTS.map((p) => {
+            {t.projects.map((p) => {
               const inner = (
                 <>
                   {p.glow && <div className={styles.projGlow} />}
@@ -93,15 +172,15 @@ export default function Projects(): ReactNode {
                     <div className={`${styles.projPath} ${p.alt ? styles.projPathAlt : ''}`}>
                       {p.path}
                     </div>
-                    {p.status === '进行中' ? (
+                    {p.status === 'active' ? (
                       <span className={styles.statusActive}>
                         <span className={styles.sdot} style={{background: 'var(--accent)', boxShadow: '0 0 8px var(--accent)'}} />
-                        进行中
+                        {p.statusLabel}
                       </span>
                     ) : (
                       <span className={styles.statusDone}>
                         <span className={styles.sdot} style={{background: 'var(--muted)'}} />
-                        {p.status}
+                        {p.statusLabel}
                       </span>
                     )}
                   </div>

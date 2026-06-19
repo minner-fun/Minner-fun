@@ -5,14 +5,94 @@
   },
   "sidebar.notesSidebar.category.笔记": {
     "message": "Notes",
-    "description": "The label for category Notes in sidebar notesSidebar"
+    "description": "The label for category '笔记' in sidebar 'notesSidebar'"
   },
   "sidebar.protocolsSidebar.category.协议": {
     "message": "Protocols",
-    "description": "The label for category Protocols in sidebar protocolsSidebar"
+    "description": "The label for category '协议' in sidebar 'protocolsSidebar'"
   },
   "sidebar.projectsSidebar.category.项目": {
     "message": "Projects",
-    "description": "The label for category Projects in sidebar projectsSidebar"
+    "description": "The label for category '项目' in sidebar 'projectsSidebar'"
+  },
+  "sidebar.notesSidebar.category.Chainlink": {
+    "message": "Chainlink",
+    "description": "The label for category 'Chainlink' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.Cursor": {
+    "message": "Cursor",
+    "description": "The label for category 'Cursor' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.Hardhat": {
+    "message": "Hardhat",
+    "description": "The label for category 'Hardhat' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.Linux": {
+    "message": "Linux",
+    "description": "The label for category 'Linux' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.OPC": {
+    "message": "OPC",
+    "description": "The label for category 'OPC' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.Ollama": {
+    "message": "Ollama",
+    "description": "The label for category 'Ollama' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.OpenZeeplin": {
+    "message": "OpenZeeplin",
+    "description": "The label for category 'OpenZeeplin' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.Rust": {
+    "message": "Rust",
+    "description": "The label for category 'Rust' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.Solana": {
+    "message": "Solana",
+    "description": "The label for category 'Solana' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.Solidity": {
+    "message": "Solidity",
+    "description": "The label for category 'Solidity' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.foundry": {
+    "message": "foundry",
+    "description": "The label for category 'foundry' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.psql": {
+    "message": "psql",
+    "description": "The label for category 'psql' in sidebar 'notesSidebar'"
+  },
+  "sidebar.notesSidebar.category.telegram": {
+    "message": "telegram",
+    "description": "The label for category 'telegram' in sidebar 'notesSidebar'"
+  },
+  "sidebar.protocolsSidebar.category.unsiwap v2": {
+    "message": "Uniswap V2",
+    "description": "The label for category 'unsiwap v2' in sidebar 'protocolsSidebar'"
+  },
+  "sidebar.protocolsSidebar.category.V2": {
+    "message": "V2",
+    "description": "The label for category 'V2' in sidebar 'protocolsSidebar'"
+  },
+  "sidebar.protocolsSidebar.category.V3": {
+    "message": "V3",
+    "description": "The label for category 'V3' in sidebar 'protocolsSidebar'"
+  },
+  "sidebar.protocolsSidebar.category.V4": {
+    "message": "V4",
+    "description": "The label for category 'V4' in sidebar 'protocolsSidebar'"
+  },
+  "sidebar.projectsSidebar.category.LaunchV1": {
+    "message": "LaunchV1",
+    "description": "The label for category 'LaunchV1' in sidebar 'projectsSidebar'"
+  },
+  "sidebar.projectsSidebar.category.LaunchV2": {
+    "message": "LaunchV2",
+    "description": "The label for category 'LaunchV2' in sidebar 'projectsSidebar'"
+  },
+  "sidebar.projectsSidebar.category.LpManager": {
+    "message": "LpManager",
+    "description": "The label for category 'LpManager' in sidebar 'projectsSidebar'"
   }
 }

@@ -7,16 +7,116 @@ import ParticleField from '@site/src/components/ParticleField';
 
 import styles from './index.module.css';
 
-/* ── 打字机：词组循环，逐字加/删 ── */
-const TYPE_WORDS = [
-  'Uniswap V4 Hooks',
-  'AMM 做市与定价机制',
-  'MEV 与 BidWall',
-  'LP 仓位管理策略',
-  'Memecoin Launchpad',
+/* ── 双语文案：按 currentLocale 选择 ── */
+const CONTENT = {
+  zh: {
+    badge: '0xMINNER · SMART CONTRACT ENGINEER',
+    h1a: '我把协议拆开，',
+    h1b: '再重新构建它。',
+    researchingLabel: '正在研究：',
+    typeWords: ['Uniswap V4 Hooks', 'AMM 做市与定价机制', 'MEV 与 BidWall', 'LP 仓位管理策略', 'Memecoin Launchpad'],
+    lede: '智能合约工程师，专注 DeFi、AMM 与 MEV。我阅读源码、复现机制，把每一次研究写成可复用的笔记与实战项目。',
+    cta1: '查看作品集 →',
+    cta2: '阅读笔记',
+    stats: [
+      {label: '篇技术文档'},
+      {label: '协议源码精读'},
+      {label: '链上实战项目'},
+    ],
+    aboutKicker: '// 01 — ABOUT',
+    aboutH2a: '不止会写合约，',
+    aboutH2b: '更想搞懂它为什么这样写。',
+    aboutP1: '我做智能合约开发，日常在 Foundry / Hardhat 里写测试、调 gas、读协议源码。比起调用 API，我更喜欢把 Uniswap、AMM、Launchpad 这类系统从底层拆开，弄明白每一行的意图。',
+    aboutP2: '这个站点是我的研究与构建日志——中英双语，边学边写，持续更新。',
+    currentlyLabel: 'CURRENTLY',
+    currently: [
+      {c: 'var(--accent)', t: '精读 Uniswap V3 / V4 源码', s: 'Tick、流动性管理、Hooks 机制系列'},
+      {c: 'var(--accent2)', t: '构建 Memecoin Launchpad', s: 'internal swap、BidWall、TreasuryManager'},
+      {c: 'var(--accent)', t: 'LP 仓位数据 → 策略', s: '链上数据抓取、分析与做市策略'},
+    ],
+    workKicker: '// 02 — SELECTED WORK',
+    workH2: '项目与协议研究',
+    workAll: '查看全部文档 →',
+    work: [
+      {tag: 'PROJECT', title: 'LaunchV2 · Memecoin Launchpad', desc: '从 0 设计代币发射台：internal swap 内部做市、BidWall 买墙机制与国库授权流程。', chips: ['Solidity', 'Uniswap V4 Hooks', 'Foundry'], link: '阅读分析 →'},
+      {tag: 'PROJECT', title: 'LpManager · 仓位策略引擎', desc: '链上 LP 数据抓取 → 分析 → 策略闭环，把做市仓位的盈亏拆成可量化的指标。', chips: ['TheGraph', 'Dune', 'Python'], link: '阅读分析 →'},
+      {tag: 'RESEARCH', title: 'Uniswap V3 源码精读系列', desc: '20+ 篇深入：Tick 系统、流动性管理、跨 tick swap、TWAP 预言机与 gas 优化。', chips: ['Architecture', 'Math Model', 'Oracle'], link: '阅读系列 →', alt: true},
+      {tag: 'RESEARCH', title: 'Hooks & PositionManager 拆解', desc: 'Flaunch / beforeSwap / afterSwap 钩子分析，逐方法还原合约的授权与执行流。', chips: ['Hooks', 'Solady', 'Permit2'], link: '阅读分析 →', alt: true},
+    ],
+    notes: [
+      {title: 'Solidity 语法重点', sub: 'assembly · create2 · 数据位置 · NatSpec'},
+      {title: 'Foundry & Hardhat 测试', sub: 'cheatcodes · fuzzing · 最佳实践'},
+      {title: 'Chainlink VRF / Datafeed', sub: '随机数 · 喂价 · Automation'},
+    ],
+    ctaTitle: '一起在链上',
+    ctaTitleAccent: ' 构建点什么。',
+  },
+  en: {
+    badge: '0xMINNER · SMART CONTRACT ENGINEER',
+    h1a: 'I take protocols apart,',
+    h1b: 'then rebuild them.',
+    researchingLabel: 'Researching: ',
+    typeWords: ['Uniswap V4 Hooks', 'AMM pricing mechanics', 'MEV & BidWall', 'LP position strategy', 'Memecoin Launchpad'],
+    lede: 'Smart contract engineer focused on DeFi, AMM and MEV. I read source code, reproduce mechanisms, and turn every study into reusable notes and hands-on projects.',
+    cta1: 'View work →',
+    cta2: 'Read notes',
+    stats: [
+      {label: 'technical docs'},
+      {label: 'protocol deep dives'},
+      {label: 'on-chain projects'},
+    ],
+    aboutKicker: '// 01 — ABOUT',
+    aboutH2a: 'Not just writing contracts —',
+    aboutH2b: 'understanding why they are written that way.',
+    aboutP1: 'I build smart contracts: writing tests, tuning gas and reading protocol source in Foundry / Hardhat every day. Rather than just calling an API, I like taking systems like Uniswap, AMMs and launchpads apart from the ground up to understand the intent behind every line.',
+    aboutP2: 'This site is my research-and-build log — bilingual, written as I learn, continuously updated.',
+    currentlyLabel: 'CURRENTLY',
+    currently: [
+      {c: 'var(--accent)', t: 'Reading Uniswap V3 / V4 source', s: 'Ticks, liquidity management, Hooks series'},
+      {c: 'var(--accent2)', t: 'Building a Memecoin Launchpad', s: 'internal swap, BidWall, TreasuryManager'},
+      {c: 'var(--accent)', t: 'LP position data → strategy', s: 'On-chain data capture, analysis and market making'},
+    ],
+    workKicker: '// 02 — SELECTED WORK',
+    workH2: 'Projects & Protocol Research',
+    workAll: 'View all docs →',
+    work: [
+      {tag: 'PROJECT', title: 'LaunchV2 · Memecoin Launchpad', desc: 'Designing a token launchpad from scratch: internal swap market making, the BidWall mechanism and treasury authorization flow.', chips: ['Solidity', 'Uniswap V4 Hooks', 'Foundry'], link: 'Read analysis →'},
+      {tag: 'PROJECT', title: 'LpManager · Position Strategy Engine', desc: 'On-chain LP data capture → analysis → strategy loop, breaking market-making PnL into quantifiable metrics.', chips: ['TheGraph', 'Dune', 'Python'], link: 'Read analysis →'},
+      {tag: 'RESEARCH', title: 'Uniswap V3 Source Code Series', desc: '20+ deep dives: the tick system, liquidity management, cross-tick swaps, the TWAP oracle and gas optimization.', chips: ['Architecture', 'Math Model', 'Oracle'], link: 'Read series →', alt: true},
+      {tag: 'RESEARCH', title: 'Hooks & PositionManager Breakdown', desc: 'Flaunch / beforeSwap / afterSwap hook analysis, reconstructing the contract authorization and execution flow method by method.', chips: ['Hooks', 'Solady', 'Permit2'], link: 'Read analysis →', alt: true},
+    ],
+    notes: [
+      {title: 'Solidity Language Notes', sub: 'assembly · create2 · data location · NatSpec'},
+      {title: 'Foundry & Hardhat Testing', sub: 'cheatcodes · fuzzing · best practices'},
+      {title: 'Chainlink VRF / Datafeed', sub: 'randomness · price feeds · Automation'},
+    ],
+    ctaTitle: "Let's build something",
+    ctaTitleAccent: ' on-chain.',
+  },
+} as const;
+
+type Locale = keyof typeof CONTENT;
+
+const LINKS = {
+  notes: '/docs/notes/foundry/updraft',
+  work: '/docs/projects/LpManager/data-crawl',
+  card0: '/docs/projects/LaunchV2/StartLunch',
+  card1: '/docs/projects/LpManager/data-crawl',
+  card2: '/docs/protocols/Uniswap/V2/overview',
+  card3: '/docs/projects/LaunchV2/StartLunch',
+  note0: '/docs/notes/Solidity/Solidity语法重点',
+  note1: '/docs/notes/foundry/updraft',
+  note2: '/docs/notes/Chainlink/Vrf',
+};
+const CARD_LINKS = [LINKS.card0, LINKS.card1, LINKS.card2, LINKS.card3];
+const NOTE_LINKS = [LINKS.note0, LINKS.note1, LINKS.note2];
+const STAT_VALUES = [
+  {to: 180, suffix: '+'},
+  {to: 12, suffix: ''},
+  {to: 4, suffix: ''},
 ];
 
-function Typewriter(): ReactNode {
+function Typewriter({words}: {words: readonly string[]}): ReactNode {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     let wi = 0;
@@ -24,7 +124,7 @@ function Typewriter(): ReactNode {
     let del = false;
     let timer: ReturnType<typeof setTimeout>;
     const tick = () => {
-      const w = TYPE_WORDS[wi];
+      const w = words[wi];
       ci += del ? -1 : 1;
       if (ref.current) ref.current.textContent = w.slice(0, ci);
       let t = del ? 40 : 85;
@@ -33,22 +133,21 @@ function Typewriter(): ReactNode {
         del = true;
       } else if (del && ci === 0) {
         del = false;
-        wi = (wi + 1) % TYPE_WORDS.length;
+        wi = (wi + 1) % words.length;
         t = 320;
       }
       timer = setTimeout(tick, t);
     };
     timer = setTimeout(tick, 900);
     return () => clearTimeout(timer);
-  }, []);
+  }, [words]);
   return (
     <span ref={ref} className={styles.caret}>
-      Uniswap V4 Hooks
+      {words[0]}
     </span>
   );
 }
 
-/* ── 计数动画：requestAnimationFrame + easeOutCubic ── */
 function Counter({to, suffix = ''}: {to: number; suffix?: string}): ReactNode {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -68,7 +167,6 @@ function Counter({to, suffix = ''}: {to: number; suffix?: string}): ReactNode {
   return <span ref={ref}>0{suffix}</span>;
 }
 
-/* ── 实时 ETH 区块号：每 2.6s +1 ── */
 function BlockNumber(): ReactNode {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
@@ -87,18 +185,8 @@ function BlockNumber(): ReactNode {
 }
 
 const MARQUEE = [
-  'Solidity',
-  'Foundry',
-  'Hardhat',
-  'Rust',
-  'Solana',
-  'Chainlink',
-  'Uniswap V2/V3/V4',
-  'OpenZeppelin',
-  'Solady',
-  'TheGraph',
-  'Dune',
-  'Permit2',
+  'Solidity', 'Foundry', 'Hardhat', 'Rust', 'Solana', 'Chainlink',
+  'Uniswap V2/V3/V4', 'OpenZeppelin', 'Solady', 'TheGraph', 'Dune', 'Permit2',
 ];
 
 function MarqueeRow({hidden}: {hidden?: boolean}): ReactNode {
@@ -115,13 +203,12 @@ function MarqueeRow({hidden}: {hidden?: boolean}): ReactNode {
 }
 
 export default function Home(): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
+  const {siteConfig, i18n} = useDocusaurusContext();
   const logo = useBaseUrl('/img/myLogo.jpg');
+  const t = CONTENT[(i18n.currentLocale as Locale)] ?? CONTENT.zh;
 
   return (
-    <Layout
-      title={siteConfig.title}
-      description="Smart Contract Notes · Protocol Research · Builder Log">
+    <Layout title={siteConfig.title} description={t.lede}>
       <div className={styles.page}>
         {/* ░░ HERO ░░ */}
         <header className={styles.hero}>
@@ -129,53 +216,41 @@ export default function Home(): ReactNode {
           <div className={styles.heroGlow} />
           <div className={styles.wrap}>
             <div className={styles.heroGrid}>
-              {/* 左 */}
               <div className={styles.rise}>
                 <div className={styles.badge}>
                   <span className={styles.dot} />
-                  0xMINNER · SMART CONTRACT ENGINEER
+                  {t.badge}
                 </div>
                 <h1 className={styles.h1}>
-                  我把协议拆开，
+                  {t.h1a}
                   <br />
-                  <span className={styles.grad}>再重新构建它。</span>
+                  <span className={styles.grad}>{t.h1b}</span>
                 </h1>
                 <p className={styles.researching}>
-                  <span style={{color: 'var(--accent)'}}>&gt;</span> 正在研究：
-                  <Typewriter />
+                  <span style={{color: 'var(--accent)'}}>&gt;</span> {t.researchingLabel}
+                  <Typewriter words={t.typeWords} />
                 </p>
-                <p className={styles.lede}>
-                  智能合约工程师，专注 DeFi、AMM 与 MEV。我阅读源码、复现机制，把每一次研究写成可复用的笔记与实战项目。
-                </p>
+                <p className={styles.lede}>{t.lede}</p>
                 <div className={styles.ctaRow}>
                   <a href="#work" className={styles.btnPrimary}>
-                    查看作品集 →
+                    {t.cta1}
                   </a>
-                  <Link to="/docs/notes/foundry/updraft" className={styles.btnGhost}>
-                    阅读笔记
+                  <Link to={LINKS.notes} className={styles.btnGhost}>
+                    {t.cta2}
                   </Link>
                 </div>
                 <div className={styles.stats}>
-                  <div>
-                    <div className={styles.statNum}>
-                      <Counter to={180} suffix="+" />
-                    </div>
-                    <div className={styles.statLabel}>篇技术文档</div>
-                  </div>
-                  <div className={styles.statDivider} />
-                  <div>
-                    <div className={styles.statNum}>
-                      <Counter to={12} />
-                    </div>
-                    <div className={styles.statLabel}>协议源码精读</div>
-                  </div>
-                  <div className={styles.statDivider} />
-                  <div>
-                    <div className={styles.statNum}>
-                      <Counter to={4} />
-                    </div>
-                    <div className={styles.statLabel}>链上实战项目</div>
-                  </div>
+                  {STAT_VALUES.map((s, i) => (
+                    <span key={i} style={{display: 'contents'}}>
+                      {i > 0 && <div className={styles.statDivider} />}
+                      <div>
+                        <div className={styles.statNum}>
+                          <Counter to={s.to} suffix={s.suffix} />
+                        </div>
+                        <div className={styles.statLabel}>{t.stats[i].label}</div>
+                      </div>
+                    </span>
+                  ))}
                 </div>
               </div>
 
@@ -231,7 +306,6 @@ export default function Home(): ReactNode {
             </div>
           </div>
 
-          {/* 跑马灯 */}
           <div id="stack" className={styles.marquee}>
             <div className={styles.marqueeTrack}>
               <MarqueeRow />
@@ -242,41 +316,22 @@ export default function Home(): ReactNode {
 
         {/* ░░ ABOUT ░░ */}
         <section id="about" className={styles.about}>
-          <div className={styles.kicker}>// 01 — ABOUT</div>
+          <div className={styles.kicker}>{t.aboutKicker}</div>
           <div className={styles.col2}>
             <div>
               <h2 className={styles.h2}>
-                不止会写合约，
+                {t.aboutH2a}
                 <br />
-                更想搞懂它为什么这样写。
+                {t.aboutH2b}
               </h2>
-              <p className={styles.aboutText}>
-                我做智能合约开发，日常在 Foundry / Hardhat 里写测试、调 gas、读协议源码。比起调用 API，我更喜欢把
-                Uniswap、AMM、Launchpad 这类系统从底层拆开，弄明白每一行的意图。
-              </p>
+              <p className={styles.aboutText}>{t.aboutP1}</p>
               <p className={styles.aboutText} style={{marginTop: 16}}>
-                这个站点是我的研究与构建日志——中英双语，边学边写，持续更新。
+                {t.aboutP2}
               </p>
             </div>
             <div className={styles.panel}>
-              <div className={styles.panelLabel}>CURRENTLY</div>
-              {[
-                {
-                  c: 'var(--accent)',
-                  t: '精读 Uniswap V3 / V4 源码',
-                  s: 'Tick、流动性管理、Hooks 机制系列',
-                },
-                {
-                  c: 'var(--accent2)',
-                  t: '构建 Memecoin Launchpad',
-                  s: 'internal swap、BidWall、TreasuryManager',
-                },
-                {
-                  c: 'var(--accent)',
-                  t: 'LP 仓位数据 → 策略',
-                  s: '链上数据抓取、分析与做市策略',
-                },
-              ].map((it, i) => (
+              <div className={styles.panelLabel}>{t.currentlyLabel}</div>
+              {t.currently.map((it, i) => (
                 <div className={styles.currentItem} key={i}>
                   <span
                     className={styles.cdot}
@@ -315,112 +370,48 @@ export default function Home(): ReactNode {
         <section id="work" className={styles.work}>
           <div className={styles.workHead}>
             <div>
-              <div className={styles.kicker}>// 02 — SELECTED WORK</div>
-              <h2 className={styles.h2}>项目与协议研究</h2>
+              <div className={styles.kicker}>{t.workKicker}</div>
+              <h2 className={styles.h2}>{t.workH2}</h2>
             </div>
-            <Link to="/docs/projects/LpManager/data-crawl" className={styles.workHeadLink}>
-              查看全部文档 →
+            <Link to={LINKS.work} className={styles.workHeadLink}>
+              {t.workAll}
             </Link>
           </div>
 
           <div className={styles.workGrid}>
-            <Link to="/docs/projects/LaunchV2/StartLunch" className={styles.workCard}>
-              <div className={styles.workNum}>01</div>
-              <div className={styles.workInner}>
-                <div className={styles.tag}>PROJECT</div>
-                <h3 className={styles.workTitle}>LaunchV2 · Memecoin Launchpad</h3>
-                <p className={styles.workDesc}>
-                  从 0 设计代币发射台：internal swap 内部做市、BidWall 买墙机制与国库授权流程。
-                </p>
-                <div className={styles.miniChips}>
-                  {['Solidity', 'Uniswap V4 Hooks', 'Foundry'].map((t) => (
-                    <span className={styles.miniChip} key={t}>
-                      {t}
-                    </span>
-                  ))}
+            {t.work.map((w, i) => (
+              <Link
+                to={CARD_LINKS[i]}
+                key={i}
+                className={`${styles.workCard} ${w.alt ? styles.alt : ''}`}>
+                <div className={styles.workNum}>{String(i + 1).padStart(2, '0')}</div>
+                <div className={styles.workInner}>
+                  <div className={`${styles.tag} ${w.alt ? styles.tagAlt : ''}`}>{w.tag}</div>
+                  <h3 className={styles.workTitle}>{w.title}</h3>
+                  <p className={styles.workDesc}>{w.desc}</p>
+                  <div className={styles.miniChips}>
+                    {w.chips.map((c) => (
+                      <span className={styles.miniChip} key={c}>
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                  <div className={`${styles.workLink} ${w.alt ? styles.workLinkAlt : ''}`}>
+                    {w.link}
+                  </div>
                 </div>
-                <div className={styles.workLink}>阅读分析 →</div>
-              </div>
-            </Link>
-
-            <Link to="/docs/projects/LpManager/data-crawl" className={styles.workCard}>
-              <div className={styles.workNum}>02</div>
-              <div className={styles.workInner}>
-                <div className={styles.tag}>PROJECT</div>
-                <h3 className={styles.workTitle}>LpManager · 仓位策略引擎</h3>
-                <p className={styles.workDesc}>
-                  链上 LP 数据抓取 → 分析 → 策略闭环，把做市仓位的盈亏拆成可量化的指标。
-                </p>
-                <div className={styles.miniChips}>
-                  {['TheGraph', 'Dune', 'Python'].map((t) => (
-                    <span className={styles.miniChip} key={t}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <div className={styles.workLink}>阅读分析 →</div>
-              </div>
-            </Link>
-
-            <Link
-              to="/docs/protocols/Uniswap/V2/overview"
-              className={`${styles.workCard} ${styles.alt}`}>
-              <div className={styles.workNum}>03</div>
-              <div className={styles.workInner}>
-                <div className={`${styles.tag} ${styles.tagAlt}`}>RESEARCH</div>
-                <h3 className={styles.workTitle}>Uniswap V3 源码精读系列</h3>
-                <p className={styles.workDesc}>
-                  20+ 篇深入：Tick 系统、流动性管理、跨 tick swap、TWAP 预言机与 gas 优化。
-                </p>
-                <div className={styles.miniChips}>
-                  {['Architecture', 'Math Model', 'Oracle'].map((t) => (
-                    <span className={styles.miniChip} key={t}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <div className={`${styles.workLink} ${styles.workLinkAlt}`}>阅读系列 →</div>
-              </div>
-            </Link>
-
-            <Link
-              to="/docs/projects/LaunchV2/StartLunch"
-              className={`${styles.workCard} ${styles.alt}`}>
-              <div className={styles.workNum}>04</div>
-              <div className={styles.workInner}>
-                <div className={`${styles.tag} ${styles.tagAlt}`}>RESEARCH</div>
-                <h3 className={styles.workTitle}>Hooks & PositionManager 拆解</h3>
-                <p className={styles.workDesc}>
-                  Flaunch / beforeSwap / afterSwap 钩子分析，逐方法还原合约的授权与执行流。
-                </p>
-                <div className={styles.miniChips}>
-                  {['Hooks', 'Solady', 'Permit2'].map((t) => (
-                    <span className={styles.miniChip} key={t}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <div className={`${styles.workLink} ${styles.workLinkAlt}`}>阅读分析 →</div>
-              </div>
-            </Link>
+              </Link>
+            ))}
           </div>
 
           <div className={styles.notesStrip}>
-            <Link to="/docs/notes/Solidity/Solidity语法重点" className={styles.noteCard}>
-              <div className={styles.notePath}>notes/</div>
-              <div className={styles.noteTitle}>Solidity 语法重点</div>
-              <div className={styles.noteSub}>assembly · create2 · 数据位置 · NatSpec</div>
-            </Link>
-            <Link to="/docs/notes/foundry/updraft" className={styles.noteCard}>
-              <div className={styles.notePath}>notes/</div>
-              <div className={styles.noteTitle}>Foundry & Hardhat 测试</div>
-              <div className={styles.noteSub}>cheatcodes · fuzzing · 最佳实践</div>
-            </Link>
-            <Link to="/docs/notes/Chainlink/Vrf" className={styles.noteCard}>
-              <div className={styles.notePath}>notes/</div>
-              <div className={styles.noteTitle}>Chainlink VRF / Datafeed</div>
-              <div className={styles.noteSub}>随机数 · 喂价 · Automation</div>
-            </Link>
+            {t.notes.map((n, i) => (
+              <Link to={NOTE_LINKS[i]} key={i} className={styles.noteCard}>
+                <div className={styles.notePath}>notes/</div>
+                <div className={styles.noteTitle}>{n.title}</div>
+                <div className={styles.noteSub}>{n.sub}</div>
+              </Link>
+            ))}
           </div>
         </section>
 
@@ -428,8 +419,8 @@ export default function Home(): ReactNode {
         <section className={styles.cta}>
           <div className={styles.ctaInner}>
             <h2 className={styles.ctaTitle}>
-              一起在链上
-              <span style={{color: 'var(--accent)'}}> 构建点什么。</span>
+              {t.ctaTitle}
+              <span style={{color: 'var(--accent)'}}>{t.ctaTitleAccent}</span>
             </h2>
             <a href="https://github.com/minner-fun" className={styles.btnPrimary}>
               GitHub ↗

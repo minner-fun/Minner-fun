@@ -10,5 +10,17 @@
   "item.label.项目": {
     "message": "Projects",
     "description": "Navbar item with label 项目"
+  },
+  "title": {
+    "message": "Minner",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Minner Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
   }
 }
