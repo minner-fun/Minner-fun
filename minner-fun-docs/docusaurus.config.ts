@@ -36,6 +36,7 @@ const config: Config = {
       integrity: 'sha384-odtC+0UnitXhyN9sj2JKfAMrBGdTsNSFqRPqFiXxI94yt6mzAiJCb/qRcjPAIAz',
       crossorigin: 'anonymous',
     },
+    'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap',
   ],
 
   // Even if you don't use internationalization, you can use this field to set
@@ -102,6 +103,7 @@ const config: Config = {
           href: 'https://github.com/minner-fun',
           label: 'GitHub',
           position: 'right',
+          className: 'navbar-github',
         },
       ],
     },
@@ -109,24 +111,24 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: '文档',
           items: [
             {
               label: '笔记',
               to: '/docs/notes/foundry/updraft',
             },
             {
-              label: '协议',
+              label: '协议研究',
               to: '/docs/protocols/Uniswap/V2/overview',
             },
             {
               label: '项目',
-              to: '/docs/projects/LpManager/01-data-crawl',
+              to: '/docs/projects/LpManager/data-crawl',
             },
           ],
         },
         {
-          title: 'More',
+          title: '链接',
           items: [
             {
               label: 'GitHub',
@@ -134,8 +136,17 @@ const config: Config = {
             },
           ],
         },
+        {
+          title: '站点',
+          items: [
+            {
+              label: '中文 / EN',
+              to: '/',
+            },
+          ],
+        },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Minner. Built with Docusaurus.`,
+      copyright: `© ${new Date().getFullYear()} Minner · Built with an on-chain mindset.`,
     },
     prism: {
       theme: prismThemes.github,
