@@ -17,15 +17,15 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://www.minner.fun',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'minner-fun', // Usually your GitHub org/user name.
+  projectName: 'Minner-fun', // Usually your repo name.
 
   onBrokenLinks: 'warn',
 
@@ -113,7 +113,7 @@ const config: Config = {
           items: [
             {
               label: '笔记',
-              to: '/docs/notes/Foundry/updraft',
+              to: '/docs/notes/foundry/updraft',
             },
             {
               label: '协议',
@@ -121,7 +121,7 @@ const config: Config = {
             },
             {
               label: '项目',
-              to: '/docs/projects/LpManager/data-crawl',
+              to: '/docs/projects/LpManager/01-data-crawl',
             },
           ],
         },
