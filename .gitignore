@@ -22,3 +22,6 @@ yarn-debug.log*
 # Temporary files
 tmp/
 temp/
+
+# 设计稿参考（本地备查，不入库）
+design_handoff_site_redesign/
