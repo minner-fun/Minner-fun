@@ -1,128 +1,46 @@
-<div align="center">
+# Hi, I'm Minner
 
-# 👋 Hi, I'm Minner
+**Data Collection Engineer** — I turn the messy web into clean, structured data, at scale.
 
-[![Website](https://img.shields.io/badge/Website-minner--fun.vercel.app-blue?style=flat-square&logo=vercel)](https://www.minner.fun)
-[![GitHub](https://img.shields.io/badge/GitHub-Minner--fun-181717?style=flat-square&logo=github)](https://github.com/Minner-fun)
-[![English](https://img.shields.io/badge/Language-English-blue?style=flat-square)](#english)
-[![中文](https://img.shields.io/badge/语言-中文-red?style=flat-square)](#中文)
-
-**Smart Contract Developer | Blockchain Researcher | Security Enthusiast**
-
-</div>
+[Blog](https://minner.fun) · [Telegram](https://t.me/MinnerMin) · [Email](mailto:minner.fun@gmail.com)
 
 ---
 
-## 🚀 About Me
+## What I do
 
-```solidity
-contract Minner {
-    string public role = "Smart Contract Developer";
-    string[] public interests = ["DeFi", "Security", "Fuzzing"];
-    
-    function currentFocus() public pure returns (string memory) {
-        return "Building secure and efficient smart contracts";
-    }
-}
-```
+- **Web scraping** — robust, distributed crawlers built on Scrapy, Requests, httpx
+- **Browser automation** — Playwright, Selenium, Puppeteer for the hard-to-reach pages
+- **Reverse engineering** — JS & app reverse, captcha solving, anti-bot countermeasures
+- **Data pipelines** — ETL from raw HTML to queryable datasets with Pandas & Spark
+- **Distributed systems** — Kafka, Redis, and message queues keeping crawlers in sync
 
-I'm passionate about:
-- 🔐 **Smart Contract Security** - Auditing, fuzzing, and best practices
-- 🏗️ **DeFi Protocols** - Deep dive into AMM, lending, and derivatives  
-- 🛠️ **Developer Tools** - Foundry, Hardhat, and testing frameworks
-- 📝 **Technical Writing** - Sharing knowledge through documentation
-
-## 📚 My Documentation Site
-
-<div align="center">
-
-[![Minner Docs](https://img.shields.io/badge/📚_Minner_Documentation-Visit_Site-success?style=for-the-badge&logo=docusaurus)](https://minner-fun.vercel.app)
-
-**Comprehensive guides on smart contracts, protocols, and projects**
-
-🌍 Available in **English** & **简体中文**
-
-</div>
-
-
-## 📫 Let's Connect
-
-<div align="center">
-
-[![Website](https://img.shields.io/badge/🌐_Website-minner--fun.vercel.app-blue?style=for-the-badge)](https://minner-fun.vercel.app)
-[![GitHub](https://img.shields.io/badge/GitHub-Minner--fun-181717?style=for-the-badge&logo=github)](https://github.com/Minner-fun)
-[![Email](https://img.shields.io/badge/Email-Contact_Me-red?style=for-the-badge&logo=gmail)](mailto:your.email@example.com)
-
-</div>
-
-## 📊 More Stats
-<div align="center">
-
-![](https://github-readme-streak-stats.herokuapp.com/?user=Minner-fun&theme=tokyonight&hide_border=false)
-
-![](https://github-readme-activity-graph.vercel.app/graph?username=Minner-fun&theme=tokyo-night)
-
-</div>
-
----
-
-## 中文
-
-<details>
-<summary>🇨🇳 点击查看中文介绍</summary>
-
-<br>
-
-### 👨‍💻 关于我
-
-我是一名**智能合约开发者**和**区块链研究员**，专注于：
-
-- 🔐 **智能合约安全** - 审计、模糊测试和最佳实践
-- 🏗️ **DeFi 协议研究** - 深入研究 AMM、借贷和衍生品
-- 🛠️ **开发工具** - Foundry、Hardhat 等测试框架
-- 📝 **技术写作** - 通过文档分享知识
-
-### 🌐 我的文档站点
-
-📚 **[Minner 技术文档](https://minner-fun.vercel.app)** - 智能合约、协议和项目的全面指南
-
-**内容包括：**
-- 📝 **笔记** - Foundry 指南、测试模式、开发技巧
-- 🔬 **协议** - Uniswap V2、AMM 机制、安全分析  
-- 🚀 **项目** - 模糊测试模板、最佳实践、工作流程
-
-### 🔧 技术栈
+## Tech stack
 
 ```text
-编程语言    Solidity, TypeScript, JavaScript, Rust
-开发框架    Foundry, Hardhat, Ethers.js, Web3.js
-安全工具    Slither, Echidna, Mythril, Certora
-区块链      Ethereum, Arbitrum, Optimism, Base
+Languages     Python
+Scraping      Scrapy · Requests · httpx · aiohttp
+Automation    Playwright · Selenium · Puppeteer
+Distributed   Kafka · Redis · RabbitMQ · Scrapy-Redis
+Processing    Pandas · Spark · Airflow
+Storage       MySQL · MongoDB · Elasticsearch · ClickHouse
 ```
 
-### 💡 当前关注
+## Projects
 
-- 🔬 研究智能合约的高级模糊测试技术
-- 📝 编写详细的协议分析和安全指南
-- 🛠️ 为 Web3 生态系统构建开发工具
+Open-source work in progress — crawler frameworks, anti-bot toolkits, and pipeline templates coming soon.
 
-### 📫 联系方式
+<!--
+| Project | Description | Stack |
+|---------|-------------|-------|
+| [name](link) | one-line description | Python · Scrapy · Redis |
+-->
 
-- 🌐 网站: [minner-fun.vercel.app](https://minner-fun.vercel.app)
-- 💼 GitHub: [@Minner-fun](https://github.com/Minner-fun)
-- 📧 邮箱: [your.email@example.com](mailto:your.email@example.com)
+## Contact
 
-</details>
+- Blog: [minner.fun](https://minner.fun)
+- Telegram: [@MinnerMin](https://t.me/MinnerMin)
+- Email: [minner.fun@gmail.com](mailto:minner.fun@gmail.com)
 
 ---
 
-<div align="center">
-
-### 💬 "Building the future of DeFi, one smart contract at a time"
-
-![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=Minner-fun.Minner-fun)
-![Profile Views](https://komarev.com/ghpvc/?username=Minner-fun&color=brightgreen)
-
-*Last updated: December 2025*
-
-</div>
+*Data is out there — I just fetch it, politely and at scale.*
